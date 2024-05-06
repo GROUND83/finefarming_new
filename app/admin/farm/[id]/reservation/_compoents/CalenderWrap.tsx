@@ -396,7 +396,6 @@ export default function CalenderWrap({ farmId }: farmIdprops) {
                       startTime: "",
                       visible: false,
                       amount: 0,
-                      id: null,
                       count: 0,
                     });
                   }

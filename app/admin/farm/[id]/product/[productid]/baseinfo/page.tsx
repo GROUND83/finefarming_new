@@ -820,10 +820,10 @@ export default function Page({
                                             });
                                           } else {
                                             personalPriceAppend({
-                                              price: 1000,
+                                              price: "1000",
                                               message: "",
-                                              startAge: 1,
-                                              endAge: 2,
+                                              startAge: "1",
+                                              endAge: "2",
                                               isFree: false,
                                             });
                                           }

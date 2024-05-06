@@ -10,9 +10,22 @@ export async function getMoreData(options: {
   const response = await db.$transaction([
     db.reservation.count(),
     db.reservation.findMany({
-      include: {
-        user: true,
-        farm: true,
+      select: {
+        id: true,
+        reservationNumber: true,
+        checkInDate: true,
+
+        status: true,
+        user: {
+          select: {
+            username: true,
+          },
+        },
+        farm: {
+          select: {
+            name: true,
+          },
+        },
       },
       skip: options.pageSize * options.pageIndex,
       take: options.pageSize,

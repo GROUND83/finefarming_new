@@ -31,17 +31,12 @@ import { columns } from "./columns";
 
 export interface TableDataType {
   id: number;
-  reservationNumber: string;
-  farmName: string;
-  user: string | null;
-  checkInData: Date;
-  howMany: number | null;
-  totalPrice: number | null;
+  reservationNumber: string | null;
+  farm: { name: string | null } | null;
+  user: { username: string | null } | null;
+  checkInDate: Date | null;
   status: string | null;
-  created_at: Date;
-}
-export interface TableDataTypeProps {
-  tableData: TableDataType[];
+  created_at: Date | null;
 }
 
 export function DataTable() {
@@ -61,7 +56,7 @@ export function DataTable() {
     ["data", fetchDataOptions],
     async () => {
       let result = await getMoreData(fetchDataOptions);
-      console.log(result);
+      console.log("result", result);
       return result;
     }
     // { keepPreviousData: true }
@@ -78,7 +73,7 @@ export function DataTable() {
   );
   const table = useReactTable({
     data: dataQuery.data?.rows ?? defaultData,
-    columns: columns,
+    columns: columns as any,
     pageCount: dataQuery.data?.pageCount ?? -1,
     onSortingChange: setSorting,
     state: {

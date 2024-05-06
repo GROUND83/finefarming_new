@@ -114,20 +114,20 @@ export default function Page() {
 
   React.useEffect(() => {
     // do your logic here
-    if (form.formState.errors.search) {
+    if (form.formState.errors.username) {
       console.log(form.formState.errors);
       toast({
         variant: "destructive",
         title: "검색 필드가 잘못되었습니다.",
-        description: `${form.formState.errors.search?.message}`,
+        description: `${form.formState.errors.username?.message}`,
       });
     }
-    if (form.formState.errors.type) {
+    if (form.formState.errors.minDate) {
       console.log(form.formState.errors);
       toast({
         variant: "destructive",
         title: "검색 필드가 잘못되었습니다.",
-        description: `${form.formState.errors.type?.message}`,
+        description: `${form.formState.errors.minDate?.message}`,
       });
     }
   }, [form.formState.errors]);

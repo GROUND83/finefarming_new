@@ -81,9 +81,10 @@ export const columns: ColumnDef<TableDataType>[] = [
       );
     },
     cell: ({ row }) => {
+      let farm = row.original as any;
       return (
         <div className="text-left ">
-          <p>{row.getValue("farm")?.name}</p>
+          <p>{farm?.name}</p>
         </div>
       );
     },
@@ -104,11 +105,14 @@ export const columns: ColumnDef<TableDataType>[] = [
         </div>
       );
     },
-    cell: ({ row }) => (
-      <div className=" text-center">
-        <p>{row.getValue("user")?.username}</p>
-      </div>
-    ),
+    cell: ({ row }) => {
+      let user = row.original;
+      return (
+        <div className=" text-center">
+          <p>{user.username}</p>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "created_at",

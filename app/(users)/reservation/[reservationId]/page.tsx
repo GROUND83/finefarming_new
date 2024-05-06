@@ -85,11 +85,11 @@ export default function Page({
               </div>
 
               <div className="flex flex-row items-center w-full gap-2">
-                {product.educationSubject.map((item, index) => {
+                {product.educationSubject.map((item: any, index: any) => {
                   return (
                     <div
                       key={index}
-                      className="bg-primary/10 border border-primary px-3 py-1 rounded-md text-sm text-xs text-primary"
+                      className="bg-primary/10 border border-primary px-3 py-1 rounded-md text-sm text-primary"
                     >
                       <p>{item.tag}</p>
                     </div>
@@ -120,19 +120,21 @@ export default function Page({
                     <p>인원</p>
                   </div>
                   <div className=" col-span-9">
-                    {reservationDetail.personalPrice.map((item, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="flex flex-row items-center gap-2"
-                        >
-                          <p>{item.startAge}세</p>
-                          <p>~</p>
-                          <p>{item.endAge}세</p>
-                          <p>{item.amount}명</p>
-                        </div>
-                      );
-                    })}
+                    {reservationDetail.personalPrice.map(
+                      (item: any, index: any) => {
+                        return (
+                          <div
+                            key={index}
+                            className="flex flex-row items-center gap-2"
+                          >
+                            <p>{item.startAge}세</p>
+                            <p>~</p>
+                            <p>{item.endAge}세</p>
+                            <p>{item.amount}명</p>
+                          </div>
+                        );
+                      }
+                    )}
                   </div>
                 </>
               )}
@@ -206,21 +208,23 @@ export default function Page({
                     <p>기본</p>
                   </div>
                   <div className=" col-span-9">
-                    {reservationDetail.personalPrice.map((item, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="flex flex-row items-center gap-2"
-                        >
-                          <p>{item.startAge}세</p>
-                          <p>~</p>
-                          <p>{item.endAge} 세</p>
-                          <p>{item.amount} 명</p>
-                          <p>{item.price} 원</p>
-                          <p>{Number(item.amount) * Number(item.price)} 원</p>
-                        </div>
-                      );
-                    })}
+                    {reservationDetail.personalPrice.map(
+                      (item: any, index: any) => {
+                        return (
+                          <div
+                            key={index}
+                            className="flex flex-row items-center gap-2"
+                          >
+                            <p>{item.startAge}세</p>
+                            <p>~</p>
+                            <p>{item.endAge} 세</p>
+                            <p>{item.amount} 명</p>
+                            <p>{item.price} 원</p>
+                            <p>{Number(item.amount) * Number(item.price)} 원</p>
+                          </div>
+                        );
+                      }
+                    )}
                   </div>
                   <div className=" col-span-3">
                     <p>결제 예정 금액</p>

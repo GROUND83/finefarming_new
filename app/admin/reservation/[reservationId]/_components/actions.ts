@@ -1,7 +1,7 @@
 "use server";
 import db from "@/lib/db";
 import getDateTime from "@/lib/getDateTime";
-import { Prisma } from "@prisma/client";
+import { Prisma, ReservationStatus } from "@prisma/client";
 import moment from "moment";
 import nodemailer from "nodemailer";
 
@@ -89,7 +89,7 @@ export async function changeComplete(reservationId: number) {
   }`;
   let howmany = 0;
   if (result.personalPrice.length > 0) {
-    result.personalPrice.map((item) => {
+    result.personalPrice.map((item: any) => {
       howmany += Number(item.amount);
     });
   }
@@ -141,7 +141,7 @@ export async function changeStatus({
   status,
 }: {
   reservationId: number;
-  status: Prisma.EnumReservationStatusFieldUpdateOperationsInput;
+  status: ReservationStatus;
 }) {
   //
   if (status) {

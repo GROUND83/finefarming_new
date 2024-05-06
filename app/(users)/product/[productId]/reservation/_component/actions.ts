@@ -88,7 +88,7 @@ export async function getReservationDate({ farmId, date }: getReservationDate) {
 }
 
 export async function makeReservation(formData: FormData) {
-  let newData = formData.get("newData");
+  let newData: any = formData.get("newData");
   if (newData) {
     let result = await JSON.parse(newData);
 

@@ -33,15 +33,12 @@ import { empty_avatar_url } from "@/lib/constants";
 
 export interface TableDataType {
   id: number;
-  username: string;
+  username: string | null;
   email: string | null;
   phone: string | null;
   avatar: string | null;
   created_at: Date;
   approve: boolean;
-}
-export interface TableDataTypeProps {
-  tableData: TableDataType[];
 }
 
 export const columns: ColumnDef<TableDataType>[] = [
@@ -70,7 +67,7 @@ export const columns: ColumnDef<TableDataType>[] = [
             </Avatar>
           ) : (
             <Avatar>
-              <AvatarImage src={`${empty_avatar_url}`} />
+              <AvatarFallback>FF</AvatarFallback>
             </Avatar>
           )}
           <p>{row.getValue("username")}</p>
@@ -169,10 +166,10 @@ export const columns: ColumnDef<TableDataType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const manger = row.original;
+      const farmer = row.original;
       return (
         <div className="text-xs text-right">
-          <Link href={`/admin/customer/${manger.id}`}>
+          <Link href={`/admin/farmer/${farmer.id}`}>
             <Button variant="outline" size="icon">
               <MagnifyingGlassIcon className="size-4" />
             </Button>
@@ -182,7 +179,6 @@ export const columns: ColumnDef<TableDataType>[] = [
     },
   },
 ];
-
 export function DataTable() {
   const [{ pageIndex, pageSize }, setPagination] =
     React.useState<PaginationState>({
@@ -198,7 +194,11 @@ export function DataTable() {
   };
   const dataQuery = useQuery(
     ["data", fetchDataOptions],
-    () => getMoreData(fetchDataOptions)
+    async () => {
+      let result = await getMoreData(fetchDataOptions);
+      console.log("result", result);
+      return result;
+    }
     // { keepPreviousData: true }
   );
 
@@ -213,7 +213,7 @@ export function DataTable() {
   );
   const table = useReactTable({
     data: dataQuery.data?.rows ?? defaultData,
-    columns,
+    columns: columns,
     pageCount: dataQuery.data?.pageCount ?? -1,
     onSortingChange: setSorting,
     state: {

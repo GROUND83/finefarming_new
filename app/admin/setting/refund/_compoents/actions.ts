@@ -9,7 +9,8 @@ export async function getDefaultRefund() {
   let farm = await db.refundPolicy.findMany();
   console.log("farm", farm);
   if (farm) {
-    return farm;
+    let newdata = JSON.stringify(farm);
+    return newdata;
   } else {
     redirect("/not-found");
   }
@@ -41,9 +42,11 @@ export async function updateData(formData: FormData) {
             },
           });
           console.log("response", response);
-          return resolve(response);
+          let newdata = JSON.stringify(response);
+          resolve(newdata);
         } catch (e: any) {
           console.log(e);
+          reject(e);
         }
       }
     }

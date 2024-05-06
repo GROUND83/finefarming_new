@@ -7,7 +7,7 @@ import { UseFormSetValue } from "react-hook-form";
 interface InputProps {
   name: string;
 
-  setvalue: UseFormSetValue<T>;
+  setvalue: UseFormSetValue<any>;
 }
 export const NumberInput = ({
   name,

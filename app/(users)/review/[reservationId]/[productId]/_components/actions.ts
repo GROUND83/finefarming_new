@@ -39,13 +39,25 @@ export async function getReviews({
 export async function createReview(data: string) {
   let parserData = JSON.parse(data);
   console.log("parserData", parserData);
-
+  let product = await db.product.findUnique({
+    where: {
+      id: parserData.productId,
+    },
+    select: {
+      farmId: true,
+    },
+  });
   let createReview = await db.review.create({
     data: {
       image: parserData.image,
       title: parserData.title,
       point: parserData.point,
       reservationId: parserData.reservationId,
+      farm: {
+        connect: {
+          id: product?.farmId,
+        },
+      },
       product: {
         connect: {
           id: parserData.productId,

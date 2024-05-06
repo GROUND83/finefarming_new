@@ -59,14 +59,14 @@ export default function Page({
   const clickDone = async () => {
     let result = await changeStatus({
       reservationId: Number(params.reservationId),
-      status: "done",
+      status: `done`,
     });
     getData();
   };
   const clickNoShow = async () => {
     let result = await changeStatus({
       reservationId: Number(params.reservationId),
-      status: "noShow",
+      status: "noshow",
     });
     getData();
   };
@@ -269,7 +269,7 @@ export default function Page({
                   <div className=" col-span-6 flex flex-col gap-1">
                     <p className=" font-semibold">필수상품</p>
                     <p className="text-neutral-500">
-                      {product.subProduct.map((item, index) => {
+                      {product.subProduct.map((item: any, index: any) => {
                         return (
                           <div
                             key={index}
@@ -279,13 +279,15 @@ export default function Page({
                             {item.selectProducts.length > 0 && (
                               <div>
                                 <p>옵션상품</p>
-                                {item.selectProducts.map((sub, subIndex) => {
-                                  return (
-                                    <div key={subIndex}>
-                                      <p>{sub.title}</p>
-                                    </div>
-                                  );
-                                })}
+                                {item.selectProducts.map(
+                                  (sub: any, subIndex: any) => {
+                                    return (
+                                      <div key={subIndex}>
+                                        <p>{sub.title}</p>
+                                      </div>
+                                    );
+                                  }
+                                )}
                               </div>
                             )}
                           </div>
@@ -315,7 +317,7 @@ export default function Page({
                   <div className=" col-span-6 flex flex-col gap-1">
                     <p className=" font-semibold">인원</p>
                     <p className="text-neutral-500">
-                      {detail.personalPrice.map((item, index) => {
+                      {detail.personalPrice.map((item: any, index: any) => {
                         return (
                           <div
                             key={index}
@@ -371,7 +373,7 @@ export default function Page({
                   {detail.priceType === "PERSONAL" && (
                     <div className=" col-span-6 flex flex-col gap-2 items-start">
                       <Badge>개인별</Badge>
-                      {detail.personalPrice.map((item, index) => {
+                      {detail.personalPrice.map((item: any, index: any) => {
                         return (
                           <div
                             key={index}

@@ -74,8 +74,9 @@ export default function Page() {
 
     //   show search Modal
     if (response) {
-      if (response.length > 0) {
-        setSearchData(response);
+      let newData = JSON.parse(response);
+      if (newData.length > 0) {
+        setSearchData(newData);
         setModalOpen(true);
       } else {
         setSearchData([]);
@@ -175,7 +176,7 @@ export default function Page() {
         </FormDescription>
       </Form>
 
-      <div className=" w-full flex   flex-col items-start p-6 h-[80vh] overflow-y-auto">
+      {/* <div className=" w-full flex   flex-col items-start p-6 h-[80vh] overflow-y-auto">
         {searchData.length > 0 ? (
           <SearchTable tableData={searchData} totalCount={searchData.length} />
         ) : (
@@ -183,7 +184,7 @@ export default function Page() {
             <p>검색 결과가 없습니다.</p>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -27,7 +27,7 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+    return JSON.stringify(searchData);
   } else if (type === "farmer") {
     let searchData = await db.farm.findMany({
       select: {
@@ -55,6 +55,6 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+    return JSON.stringify(searchData);
   }
 }

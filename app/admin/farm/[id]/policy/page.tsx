@@ -56,7 +56,8 @@ export default function Page({ params }: { params: { id: string } }) {
       console.log("Response", response);
       setLoading(false);
       if (response) {
-        return { refundPolicy: response.refundPolicy };
+        let newData = JSON.parse(response);
+        return { refundPolicy: newData.refundPolicy };
       }
       return {
         refundPolicy: "",

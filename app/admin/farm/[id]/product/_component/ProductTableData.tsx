@@ -46,8 +46,8 @@ type baseProductType = {
 };
 export interface TableDataType {
   id: number;
-  title: string;
-  description: string;
+  title: string | null;
+  description: string | null;
   visible: boolean;
   created_at: Date;
   farmId: number;

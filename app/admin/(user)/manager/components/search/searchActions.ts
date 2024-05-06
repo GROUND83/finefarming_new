@@ -20,7 +20,7 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+    return JSON.stringify(searchData);
   } else if (type === "email") {
     //
     let searchData = await db.manager.findMany({
@@ -40,7 +40,7 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+    return JSON.stringify(searchData);
   } else if (type === "phone") {
     let searchData = await db.manager.findMany({
       where: {
@@ -59,6 +59,6 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+    return JSON.stringify(searchData);
   }
 }

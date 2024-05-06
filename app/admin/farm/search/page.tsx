@@ -63,8 +63,9 @@ export default function Page() {
 
     //   show search Modal
     if (response) {
-      if (response.length > 0) {
-        setSearchData(response);
+      let newData = JSON.parse(response);
+      if (newData.length > 0) {
+        setSearchData(newData);
         setModalOpen(true);
       } else {
         setSearchData([]);

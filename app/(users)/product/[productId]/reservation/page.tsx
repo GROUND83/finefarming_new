@@ -46,13 +46,17 @@ import { Badge } from "@/components/ui/badge";
 import { NumberInput } from "@/components/form/NumberInput";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SelectProductField } from "./_component/selectProductField";
+import dayjs from "dayjs";
 
 type clickSelectDate = {
   date: Date;
   detail: any;
 };
 const FormSchema = z.object({
-  checkInDate: z.date({ required_error: "방문일자을 선택하세요." }),
+  checkInDate: z.union([
+    z.date({ required_error: "방문일자을 선택하세요." }),
+    z.string(),
+  ]),
   checkInTime: z.string().min(1, { message: "예약 가능 시간을 선택하세요." }),
   // optionProduct: z.array(z.string().nullable()).nullable(),
   groupNumber: z
@@ -177,21 +181,21 @@ export default function Page({ params }: { params: { productId: string } }) {
       console.log("images", images);
       setImages(images);
       console.log("result", result);
-      let optionVaules = result.subProduct.map((item) => {
+      let optionVaules = result.subProduct.map((item: any) => {
         if (item.essential) {
           return item.title;
         }
       });
       let agePrice = [];
       if (result.personalPrice.length > 0) {
-        agePrice = result.personalPrice.map((item) => {
+        agePrice = result.personalPrice.map((item: any) => {
           return { ...item, amount: "0" };
         });
       }
       let subProduct = [];
       if (result.subProduct.length > 0) {
-        subProduct = result.subProduct.map((item) => {
-          let selectProducts = item.selectProducts.map((selectProduct) => {
+        subProduct = result.subProduct.map((item: any) => {
+          let selectProducts = item.selectProducts.map((selectProduct: any) => {
             return { ...selectProduct, amount: "0" };
           });
           return { ...item, selectProducts: selectProducts };
@@ -202,7 +206,6 @@ export default function Page({ params }: { params: { productId: string } }) {
         checkInDate: "",
         checkInTime: "",
         groupNumber: "",
-        // optionProduct: optionVaules ? optionVaules : [],
         agePrice: agePrice.length > 0 ? agePrice : [],
         subProduct: subProduct.length > 0 ? subProduct : [],
         visitor: "",
@@ -260,7 +263,7 @@ export default function Page({ params }: { params: { productId: string } }) {
       if (name === "checkInDate") {
         console.log(data.checkInDate, name, detail);
         if (data.checkInDate) {
-          clickSelectDate({ date: data.checkInDate, detail });
+          clickSelectDate({ date: new Date(data.checkInDate), detail });
           form.resetField("checkInTime");
         }
       }
@@ -290,13 +293,15 @@ export default function Page({ params }: { params: { productId: string } }) {
           console.log(data.subProduct);
           let totleSum = 0;
           for (const subProduct of data.subProduct) {
-            for (const selectProducts of subProduct?.selectProducts) {
-              console.log(selectProducts);
-              if (selectProducts) {
-                let price = Number(selectProducts.price);
-                let amount = Number(selectProducts.amount);
-                let sum = price * amount;
-                totleSum += sum;
+            if (subProduct?.selectProducts) {
+              for (const selectProducts of subProduct?.selectProducts) {
+                console.log(selectProducts);
+                if (selectProducts) {
+                  let price = Number(selectProducts.price);
+                  let amount = Number(selectProducts.amount);
+                  let sum = price * amount;
+                  totleSum += sum;
+                }
               }
             }
           }
@@ -395,7 +400,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                               )}
                             >
                               {field.value ? (
-                                format(field.value, "yyyy년 MM월 dd일")
+                                dayjs(field.value).format("YYYY-MM-DD")
                               ) : (
                                 <span>방문일자를 선택하세요.</span>
                               )}
@@ -410,7 +415,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                           <Calendar
                             locale={ko}
                             mode="single"
-                            selected={field.value}
+                            selected={new Date(field.value) || undefined}
                             onSelect={(date) => {
                               field.onChange(date);
                               setCalenderOpen(false);
@@ -514,8 +519,9 @@ export default function Page({ params }: { params: { productId: string } }) {
                             <FormLabel>그룹 인원</FormLabel>
                             <FormControl>
                               <Input
+                                value={field.value || "0"}
+                                onChange={field.onChange}
                                 placeholder="그룹의 인원수을입력하세요."
-                                {...field}
                               />
                             </FormControl>
                             <FormDescription>

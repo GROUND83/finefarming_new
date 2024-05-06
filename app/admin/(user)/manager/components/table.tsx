@@ -33,7 +33,7 @@ import { empty_avatar_url } from "@/lib/constants";
 
 export interface TableDataType {
   id: number;
-  username: string;
+  username: string | null;
   email: string | null;
   phone: string | null;
   avatar: string | null;

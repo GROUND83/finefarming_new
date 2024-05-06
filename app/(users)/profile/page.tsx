@@ -19,14 +19,19 @@ export default function Profile() {
   const [doneReservation, setDoneReservation] = React.useState<any[]>([]);
   const [reviews, setReviews] = React.useState<any[]>([]);
   const getUserData = async () => {
-    let userresponse = await getUser();
-    console.log("userresponse", userresponse);
-    setUser(userresponse);
-    setReservation(userresponse?.reservation);
-    setDoneReservation(
-      userresponse?.reservation.filter((item) => item.status === "done")
-    );
-    setReviews(userresponse?.reviews);
+    let userresponse: any = await getUser();
+    if (userresponse) {
+      console.log("userresponse", userresponse);
+      let newData = JSON.parse(userresponse);
+      setUser(newData);
+      if (newData.reservation.length > 0) {
+        setReservation(newData.reservation);
+        setDoneReservation(
+          newData.reservation.filter((item: any) => item.status === "done")
+        );
+      }
+      setReviews(newData?.reviews);
+    }
   };
   React.useEffect(() => {
     getUserData();

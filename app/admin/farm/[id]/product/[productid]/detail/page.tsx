@@ -577,27 +577,29 @@ export default function Page({
                               </p>
                             </div>
                             <div className="flex flex-col items-start gap-2 mt-3 w-full">
-                              {product?.process.map((process, processindex) => {
-                                return (
-                                  <div
-                                    key={processindex}
-                                    className="w-full  bg-white flex flex-row items-start"
-                                  >
-                                    <div className=" w-[35px] ">
-                                      <div className="w-[25px] h-[25px] flex flex-col items-center justify-center bg-primary  rounded-full">
-                                        <p className="  text-white text-xs ">
-                                          {processindex + 1}
+                              {product?.process.map(
+                                (process: any, processindex: any) => {
+                                  return (
+                                    <div
+                                      key={processindex}
+                                      className="w-full  bg-white flex flex-row items-start"
+                                    >
+                                      <div className=" w-[35px] ">
+                                        <div className="w-[25px] h-[25px] flex flex-col items-center justify-center bg-primary  rounded-full">
+                                          <p className="  text-white text-xs ">
+                                            {processindex + 1}
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div className="flex-1">
+                                        <p className="text-[#575757] text-sm">
+                                          {process.title}
                                         </p>
                                       </div>
                                     </div>
-                                    <div className="flex-1">
-                                      <p className="text-[#575757] text-sm">
-                                        {process.title}
-                                      </p>
-                                    </div>
-                                  </div>
-                                );
-                              })}
+                                  );
+                                }
+                              )}
                             </div>
                             <div className="mt-3">
                               <div className="w-full  flex flex-row items-center gap-1  border flex-1 resize-none p-3 bg-neutral-100 rounded-md text-sm">
@@ -623,32 +625,36 @@ export default function Page({
                                   </p>
                                 </div>
                                 <div className="flex flex-col items-start mt-2 text-neutral-500">
-                                  {product.personalPrice.map((item, index) => {
-                                    return (
-                                      <div
-                                        key={index}
-                                        className="flex flex-col items-start justify-start w-full  text-sm"
-                                      >
-                                        <div className="flex flex-row items-center justify-start gap-1 pl-6">
-                                          <p className="">{item.startAge}세</p>
-                                          <p>~</p>
-                                          <p>{item.endAge}세</p>
-                                          <p>: 1인당</p>
-                                          <p>
-                                            {Number(
-                                              item.price
-                                            ).toLocaleString()}
-                                            원
-                                          </p>
+                                  {product.personalPrice.map(
+                                    (item: any, index: any) => {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col items-start justify-start w-full  text-sm"
+                                        >
+                                          <div className="flex flex-row items-center justify-start gap-1 pl-6">
+                                            <p className="">
+                                              {item.startAge}세
+                                            </p>
+                                            <p>~</p>
+                                            <p>{item.endAge}세</p>
+                                            <p>: 1인당</p>
+                                            <p>
+                                              {Number(
+                                                item.price
+                                              ).toLocaleString()}
+                                              원
+                                            </p>
+                                          </div>
+                                          <div className="pl-6">
+                                            <p className="text-sm">
+                                              {item.message}
+                                            </p>
+                                          </div>
                                         </div>
-                                        <div className="pl-6">
-                                          <p className="text-sm">
-                                            {item.message}
-                                          </p>
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
+                                      );
+                                    }
+                                  )}
                                 </div>
                               </div>
                             ) : (
@@ -682,71 +688,75 @@ export default function Page({
 
                             {product?.subProduct.length > 0 && (
                               <div className="flex flex-col items-start mt-2 gap-3 ">
-                                {product?.subProduct.map((item, index) => {
-                                  return (
-                                    <div
-                                      key={index}
-                                      className="flex flex-col items-start justify-start w-full gap-1"
-                                    >
-                                      <div className="flex flex-row items-start gap-2 ">
-                                        <div>
-                                          <CheckCircleIcon className="size-4 text-primary" />
+                                {product?.subProduct.map(
+                                  (item: any, index: any) => {
+                                    return (
+                                      <div
+                                        key={index}
+                                        className="flex flex-col items-start justify-start w-full gap-1"
+                                      >
+                                        <div className="flex flex-row items-start gap-2 ">
+                                          <div>
+                                            <CheckCircleIcon className="size-4 text-primary" />
+                                          </div>
+                                          <p className="text-sm text-neutral-500">
+                                            {item.title}는 필수사항으로 체험
+                                            인원과 무관하게 반드시 예약에
+                                            포함됩니다.
+                                          </p>
                                         </div>
-                                        <p className="text-sm text-neutral-500">
-                                          {item.title}는 필수사항으로 체험
-                                          인원과 무관하게 반드시 예약에
-                                          포함됩니다.
-                                        </p>
-                                      </div>
-                                      <div className="flex flex-row items-center justify-start gap-1 pl-6 text-sm text-neutral-500">
-                                        <p className="">{item.title}</p>
-                                        <p className="">
-                                          {Number(item.price).toLocaleString()}
-                                          원
-                                        </p>
-                                      </div>
-                                      <div className="flex flex-row items-center justify-start  pl-6 text-sm text-neutral-500">
-                                        <p>
-                                          [{item.title}] 체험은 필수사항으로
-                                          제외할 수 없습니다.
-                                        </p>
-                                      </div>
-                                      {item.selectProducts.length > 0 && (
-                                        <>
-                                          <div className="flex flex-row items-start gap-2  ">
-                                            <div>
-                                              <CheckCircleIcon className="size-4 text-primary" />
+                                        <div className="flex flex-row items-center justify-start gap-1 pl-6 text-sm text-neutral-500">
+                                          <p className="">{item.title}</p>
+                                          <p className="">
+                                            {Number(
+                                              item.price
+                                            ).toLocaleString()}
+                                            원
+                                          </p>
+                                        </div>
+                                        <div className="flex flex-row items-center justify-start  pl-6 text-sm text-neutral-500">
+                                          <p>
+                                            [{item.title}] 체험은 필수사항으로
+                                            제외할 수 없습니다.
+                                          </p>
+                                        </div>
+                                        {item.selectProducts.length > 0 && (
+                                          <>
+                                            <div className="flex flex-row items-start gap-2  ">
+                                              <div>
+                                                <CheckCircleIcon className="size-4 text-primary" />
+                                              </div>
+                                              <p className="text-sm text-neutral-500">
+                                                선택 옵션
+                                              </p>
                                             </div>
-                                            <p className="text-sm text-neutral-500">
-                                              선택 옵션
-                                            </p>
-                                          </div>
-                                          <div className="flex flex-col items-start justify-start w-full gap-1">
-                                            {item.selectProducts.map(
-                                              (selectp, sp) => {
-                                                return (
-                                                  <div key={sp}>
-                                                    <div className="flex flex-row items-center justify-start gap-1 pl-6 text-sm text-neutral-500">
-                                                      <p className="">
-                                                        {selectp.title}
-                                                      </p>
-                                                      <p className="">
-                                                        {Number(
-                                                          selectp.price
-                                                        ).toLocaleString()}
-                                                        원
-                                                      </p>
+                                            <div className="flex flex-col items-start justify-start w-full gap-1">
+                                              {item.selectProducts.map(
+                                                (selectp: any, sp: any) => {
+                                                  return (
+                                                    <div key={sp}>
+                                                      <div className="flex flex-row items-center justify-start gap-1 pl-6 text-sm text-neutral-500">
+                                                        <p className="">
+                                                          {selectp.title}
+                                                        </p>
+                                                        <p className="">
+                                                          {Number(
+                                                            selectp.price
+                                                          ).toLocaleString()}
+                                                          원
+                                                        </p>
+                                                      </div>
                                                     </div>
-                                                  </div>
-                                                );
-                                              }
-                                            )}
-                                          </div>
-                                        </>
-                                      )}
-                                    </div>
-                                  );
-                                })}
+                                                  );
+                                                }
+                                              )}
+                                            </div>
+                                          </>
+                                        )}
+                                      </div>
+                                    );
+                                  }
+                                )}
                               </div>
                             )}
                           </div>

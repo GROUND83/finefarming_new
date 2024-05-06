@@ -46,7 +46,7 @@ type editProps = {
   setContent: any;
 };
 export default function QuillEditor({ content, setContent }: editProps) {
-  const quillRef = useRef(null);
+  const quillRef = useRef<any>(null);
 
   const imageHandler = () => {
     const input = document.createElement("input");

@@ -30,7 +30,6 @@ export async function getUser() {
             farm: true,
           },
         },
-
         reviews: {
           include: {
             product: true,
@@ -38,8 +37,9 @@ export async function getUser() {
         },
       },
     });
+    console.log("user", user);
     if (user) {
-      return user;
+      return JSON.stringify(user);
     }
   } else if (session.id && session.role === "superAdmin") {
     const user = await db.superManager.findUnique({

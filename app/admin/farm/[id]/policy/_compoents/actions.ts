@@ -1,8 +1,8 @@
 "use server";
 import db from "@/lib/db";
 import { redirect } from "next/navigation";
-import { editSchema, refundSchema } from "./editSchema";
-import { ParkingType } from "@prisma/client";
+import { refundSchema } from "./editSchema";
+
 import getDateTime from "@/lib/getDateTime";
 
 export async function getOpenData(id: number) {
@@ -17,7 +17,7 @@ export async function getOpenData(id: number) {
   });
   console.log("farm", farm);
   if (farm) {
-    return farm;
+    return JSON.stringify(farm);
   } else {
     redirect("/not-found");
   }

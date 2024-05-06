@@ -68,7 +68,7 @@ export default function Page({ params }: { params: { id: string } }) {
       const id = Number(params.id);
       const response: any = await getSlotData(id);
       console.log("Response", response);
-      let sortArray: any = response.slot.sort((a, b) => {
+      let sortArray: any = response.slot.sort((a: any, b: any) => {
         if (
           Number(a.startTime.split(":")[0]) > Number(b.startTime.split(":")[0])
         ) {

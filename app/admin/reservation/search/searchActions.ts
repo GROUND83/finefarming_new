@@ -34,7 +34,8 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+
+    return JSON.stringify(searchData);
   } else if (type === "farmName") {
     let searchData = await db.reservation.findMany({
       select: {
@@ -67,7 +68,7 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+    return JSON.stringify(searchData);
   } else if (type === "userName") {
     let searchData = await db.reservation.findMany({
       select: {
@@ -100,7 +101,7 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+    return JSON.stringify(searchData);
   } else if (type === "status") {
     let newSearch = "";
     if (search === "확정대기") {
@@ -143,7 +144,7 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+    return JSON.stringify(searchData);
   } else if (type === "create") {
     let korean = moment(search).subtract(9, "hours");
     console.log("korean", korean);
@@ -181,7 +182,7 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+    return JSON.stringify(searchData);
   } else if (type === "checkIndate") {
     let korean = moment(search);
     let searchData = await db.reservation.findMany({
@@ -214,6 +215,6 @@ export default async function searchDatabase({ type, search }: any) {
       },
     });
     console.log("searchData", searchData);
-    return searchData;
+    return JSON.stringify(searchData);
   }
 }
