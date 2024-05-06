@@ -38,7 +38,9 @@ export default function Page() {
           <div className="flex flex-col col-span-2">
             <div className="w-full  aspect-square bg-cover relative">
               <Image
-                src={`${process.env.SERVER_URL}/image.webp`}
+                src={
+                  "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/0ed1d450-6d6b-4b8e-2104-7ab4c3d79900/public"
+                }
                 alt="section1"
                 fill
                 priority={true}
@@ -57,7 +59,9 @@ export default function Page() {
             <div className="col-span-2  flex flex-col">
               <div className="w-full  aspect-square bg-cover relative">
                 <Image
-                  src={`${process.env.SERVER_URL}/image1.webp`}
+                  src={
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/5eb67a29-229d-4ff4-8b60-ec5a2cc75c00/public"
+                  }
                   alt="section1"
                   fill
                   priority={true}
@@ -103,7 +107,9 @@ export default function Page() {
             <div className="col-span-2   flex flex-col">
               <div className="w-full aspect-[16/10]  bg-contain relative">
                 <Image
-                  src={`${process.env.SERVER_URL}/image3.webp`}
+                  src={
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/9184127f-ef0b-4adf-75ef-becf127cc500/public"
+                  }
                   alt="section1"
                   fill
                   priority={true}
@@ -158,7 +164,9 @@ export default function Page() {
             <div className="col-span-2   flex flex-col">
               <div className="w-full aspect-[16/10]  bg-contain relative">
                 <Image
-                  src={`${process.env.SERVER_URL}/image4.webp`}
+                  src={
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/85dbe136-1ff4-4a17-7f9e-12292fb06c00/public"
+                  }
                   alt="section1"
                   fill
                   priority={true}
@@ -215,7 +223,9 @@ export default function Page() {
             <div className="col-span-2   flex flex-col">
               <div className="w-full aspect-[16/10]  bg-contain relative">
                 <Image
-                  src={`${process.env.SERVER_URL}/image5.webp`}
+                  src={
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/e5a2ac6f-6769-4c1a-deda-93e20ce98900/public"
+                  }
                   alt="section1"
                   fill
                   priority={true}
@@ -270,7 +280,9 @@ export default function Page() {
             <div className="col-span-2 flex flex-col">
               <div className="w-full aspect-[16/10]  bg-contain relative">
                 <Image
-                  src={`${process.env.SERVER_URL}/image6.webp`}
+                  src={
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/6f2e29be-4aef-4276-1b71-65eec22f4700/public"
+                  }
                   alt="section1"
                   fill
                   priority={true}
@@ -336,7 +348,9 @@ export default function Page() {
             <div className="col-span-2 flex flex-col gap-2">
               <div className="relative w-full aspect-video bg-contain">
                 <Image
-                  src={`${process.env.SERVER_URL}/image7.webp`}
+                  src={
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/537a67b9-00b2-43be-82fb-ad5a31d34800/public"
+                  }
                   alt="value image1"
                   fill
                 />
@@ -372,7 +386,9 @@ export default function Page() {
             <div className="col-span-2 flex flex-col gap-2">
               <div className="relative w-full aspect-video bg-contain">
                 <Image
-                  src={`${process.env.SERVER_URL}/image9.webp`}
+                  src={
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/833a827d-75d0-401c-522d-6bfc4f40b500/public"
+                  }
                   alt="value image1"
                   fill
                 />
@@ -449,7 +465,9 @@ export default function Page() {
           <div className="col-span-2 flex flex-col">
             <div className="w-full aspect-[441/591]  bg-cover relative">
               <Image
-                src={`${process.env.SERVER_URL}/image10.webp`}
+                src={
+                  "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/6ba866f0-703c-484f-d784-5fbb67206100/public"
+                }
                 alt="section1"
                 fill
                 priority={true}
@@ -462,7 +480,9 @@ export default function Page() {
           <div className="col-span-2 flex flex-col">
             <div className="w-full aspect-[1/1]  bg-cover relative">
               <Image
-                src={`${process.env.SERVER_URL}/image11.webp`}
+                src={
+                  "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/5d83aee8-1609-4a25-7ad4-d1fb4dcd5000/public"
+                }
                 alt="section1"
                 fill
                 style={{ objectFit: "cover" }}
@@ -484,7 +504,9 @@ export default function Page() {
             <div className="w-full flex flex-col gap-3 mt-12">
               <div className="w-full aspect-[425/296]  bg-contain relative">
                 <Image
-                  src={`${process.env.SERVER_URL}/image12.webp`}
+                  src={
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/2b7dca9f-a024-4502-11c7-3d510258c400/public"
+                  }
                   alt="section1"
                   fill
                   priority={true}
