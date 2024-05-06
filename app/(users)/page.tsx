@@ -37,7 +37,12 @@ export default function Page() {
           </div>
           <div className="flex flex-col col-span-2">
             <div className="w-full  aspect-square bg-cover relative">
-              <Image src={"/image.png"} alt="section1" fill priority={true} />
+              <Image
+                src={`${process.env.SERVER_URL}/image.png`}
+                alt="section1"
+                fill
+                priority={true}
+              />
             </div>
           </div>
         </section>
@@ -52,7 +57,7 @@ export default function Page() {
             <div className="col-span-2  flex flex-col">
               <div className="w-full  aspect-square bg-cover relative">
                 <Image
-                  src={"/image1.png"}
+                  src={`${process.env.SERVER_URL}/image1.png`}
                   alt="section1"
                   fill
                   priority={true}
@@ -98,7 +103,7 @@ export default function Page() {
             <div className="col-span-2   flex flex-col">
               <div className="w-full aspect-[16/10]  bg-contain relative">
                 <Image
-                  src={"/image3.png"}
+                  src={`${process.env.SERVER_URL}/image3.png`}
                   alt="section1"
                   fill
                   priority={true}
@@ -153,7 +158,7 @@ export default function Page() {
             <div className="col-span-2   flex flex-col">
               <div className="w-full aspect-[16/10]  bg-contain relative">
                 <Image
-                  src={"/image4.png"}
+                  src={`${process.env.SERVER_URL}/image4.png`}
                   alt="section1"
                   fill
                   priority={true}
@@ -210,7 +215,7 @@ export default function Page() {
             <div className="col-span-2   flex flex-col">
               <div className="w-full aspect-[16/10]  bg-contain relative">
                 <Image
-                  src={"/image5.png"}
+                  src={`${process.env.SERVER_URL}/image5.png`}
                   alt="section1"
                   fill
                   priority={true}
@@ -265,7 +270,7 @@ export default function Page() {
             <div className="col-span-2 flex flex-col">
               <div className="w-full aspect-[16/10]  bg-contain relative">
                 <Image
-                  src={"/image6.png"}
+                  src={`${process.env.SERVER_URL}/image6.png`}
                   alt="section1"
                   fill
                   priority={true}
@@ -330,7 +335,11 @@ export default function Page() {
           <div className="w-full grid grid-cols-2  col-span-2 px-12 gap-3">
             <div className="col-span-2 flex flex-col gap-2">
               <div className="relative w-full aspect-video bg-contain">
-                <Image src={"/image7.png"} alt="value image1" fill />
+                <Image
+                  src={`${process.env.SERVER_URL}/image7.png`}
+                  alt="value image1"
+                  fill
+                />
               </div>
               <div className="flex flex-col gap-1">
                 <p className="font-semibold  text-lg">
@@ -344,7 +353,11 @@ export default function Page() {
             </div>
             <div className="col-span-2 flex flex-col gap-2">
               <div className="relative w-full aspect-video bg-contain">
-                <Image src={"/image8.png"} alt="value image1" fill />
+                <Image
+                  src={`${process.env.SERVER_URL}/image8.png`}
+                  alt="value image1"
+                  fill
+                />
               </div>
               <div className="flex flex-col gap-1">
                 <p className="font-semibold  text-lg">
@@ -358,7 +371,11 @@ export default function Page() {
             </div>
             <div className="col-span-2 flex flex-col gap-2">
               <div className="relative w-full aspect-video bg-contain">
-                <Image src={"/image9.png"} alt="value image1" fill />
+                <Image
+                  src={`${process.env.SERVER_URL}/image9.png`}
+                  alt="value image1"
+                  fill
+                />
               </div>
               <div className="flex flex-col gap-1">
                 <p className="font-semibold  text-lg">
@@ -432,7 +449,7 @@ export default function Page() {
           <div className="col-span-2 flex flex-col">
             <div className="w-full aspect-[441/591]  bg-cover relative">
               <Image
-                src={"/image10.png"}
+                src={`${process.env.SERVER_URL}/image10.png`}
                 alt="section1"
                 fill
                 priority={true}
@@ -445,7 +462,7 @@ export default function Page() {
           <div className="col-span-2 flex flex-col">
             <div className="w-full aspect-[1/1]  bg-cover relative">
               <Image
-                src={"/image11.png"}
+                src={`${process.env.SERVER_URL}/image11.png`}
                 alt="section1"
                 fill
                 style={{ objectFit: "cover" }}
@@ -467,7 +484,7 @@ export default function Page() {
             <div className="w-full flex flex-col gap-3 mt-12">
               <div className="w-full aspect-[425/296]  bg-contain relative">
                 <Image
-                  src={"/image12.png"}
+                  src={`${process.env.SERVER_URL}/image12.png`}
                   alt="section1"
                   fill
                   priority={true}
