@@ -38,7 +38,7 @@ export async function login(formdata: FormData) {
       session.id = user!.id;
       session.role = user!.role;
       await session.save();
-      redirect("/admin");
+      redirect("/admin/farm");
     } else {
       return {
         fieldErrors: { password: ["잘못된 비밀번호 입니다."], email: [] },
