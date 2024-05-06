@@ -96,6 +96,6 @@ export const config = {
   matcher: [
     "/admin/:path*",
     "/writer/:path*",
-    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|.*\\.jpg$).*)", //제외
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.webp$).*)", //제외
   ], // 미들웨어 실행할 path
 };
