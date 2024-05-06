@@ -39,7 +39,7 @@ import moment from "moment";
 export const dynamic = "force-static";
 export const dynamicParams = false;
 //
-export default function page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [imageUrlUpload, setImageUrlUpload] = useState(false);
   const [loading, setLoading] = useState(false);
