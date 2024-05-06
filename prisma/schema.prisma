@@ -1,0 +1,405 @@
+
+// npx prisma migrate dev
+// npx prisma studio
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+// admin
+model SuperManager {
+  id Int @id  @default(autoincrement())
+  password String?
+  username String @unique
+  email String? @unique
+  phone String? @unique
+  avatar String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt 
+  role String @default("superAdmin")
+  approve Boolean @default(true)
+}
+// admin
+model Manager {
+  id Int @id  @default(autoincrement())
+  password String?
+  username String @unique
+  email String? @unique
+  phone String? @unique
+  avatar String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt 
+  role String @default("manager")
+  approve Boolean @default(false)
+}
+// 고객
+model User {
+  id Int @id  @default(autoincrement())
+  password String?
+  username String?
+  email String? @unique
+  phone String? @unique
+  avatar String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  reservation Reservation[]
+  kakaoId String? @unique
+  naverId String? @unique
+  provider ProviderType
+  role String @default("user")
+  approve Boolean @default(true)
+  reviews Review[]
+
+}
+// 라이터
+model Writer {
+  id Int @id  @default(autoincrement())
+  password String?
+  username String?
+  email String? @unique
+  phone String? @unique
+  avatar String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  magazines Magazine[]
+  intruduceTitle String?
+  intruduce String?
+  link String?
+  role String @default("writer")
+  approve Boolean @default(false)
+}
+enum ProviderType {
+  email
+  kakao
+  naver
+}
+// farmer 
+model Farmer {
+  id Int @id  @default(autoincrement())
+  password String?
+  username String // 이름
+  email String? @unique // 이메일
+  phone String? @unique // 전화번호
+  avatar String? //아바타
+  farm Farm[] // 농장
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  role String @default("farmer")
+  approve Boolean @default(false)
+}
+
+model Farm {
+  id Int @id  @default(autoincrement())
+  visible Boolean @default(false) // 상태
+  name String? // 농장이름
+  initail String? @unique // 4글자 랜덤 스트링 대문자
+  owner Farmer @relation(fields: [ownerId], references: [id],onDelete: Cascade) // 농장주
+  ownerId Int  // 농장주
+  companyNumber String? // 사업자번호
+  address String? // 주소
+  lat String? //x
+  lang String? //y
+  sigungu String? // 시군구
+  sido String? // 시도
+  mainPhone String? // 대표번호
+  resevationManager String? // 예약담장자 이름
+  resevationPhone String? // 예약담당자 전화번호
+  mainImage String? //메인이미지
+  images String[] // 추가이미지
+  detail String? // 상세페이지
+  farmItems String[] // 체험품종
+  introduction String? // 소개글
+  parking ParkingType?
+  parkinngFee String?
+  facilities String[]
+  pet Boolean @default(true)
+  mondayOpen Boolean @default(false)
+  mondayStart String @default("9:00")
+  mondayEnd String @default("18:00")
+  tuesdayOpen Boolean @default(false)
+  tuesdayStart String  @default("9:00")
+  tuesdayEnd String @default("18:00")
+  wednesdayOpen Boolean @default(false)
+  wednesdayStart String  @default("9:00")
+  wednesdayEnd String @default("18:00")
+  thursdayOpen Boolean @default(false)
+  thursdayStart String  @default("9:00")
+  thursdayEnd String @default("18:00")
+  fridayOpen Boolean @default(false)
+  fridayStart String  @default("9:00")
+  fridayEnd String @default("18:00")
+  saturdayOpen Boolean @default(false)
+  saturdayStart String  @default("9:00")
+  saturdayEnd String @default("18:00")
+  sundayOpen Boolean @default(false)
+  sundayStart String  @default("9:00")
+  sundayEnd String @default("18:00")
+  holidayOpen Boolean @default(false)
+  holidayStart String  @default("9:00")
+  holidayEnd String @default("18:00")
+  products Product[]
+  refundPolicy String? @default("본 체험상품은 현장결제 상품으로 농장 방문 시 카드결제를 요청드립니다.\n- 카드 외 다른 결제수단 이용 시 농장과 협의하여 주시기 바랍니다.\n원활한 체험 운영을 위해 취소 필요 시 이용일 2일 전 오후11시까지 취소 부탁드립니다.\n- 취소정책을 지키지 않은 고객에 대해서는 향후 파인파밍 서비스 이용에 제한이 있을 수 있습니다.\n기상환경 등 불가피한 사유 발생 시 농장 운영자에 의해 체험 취소될 수 있습니다.\n- 체험 취소 시 유선전화, 문자 등을 통해 고객에게 안내드립니다.")
+  reservationMax Int @default(60)
+  reservationMin Int @default(2)
+  slot Json[] @default(["{ \"type\": false ,\"visible\": true ,\"startTime\": \"8:00\" ,\"amount\": 3}"])
+  reserVationDates ReserVationDate[]
+  reservation Reservation[]
+  magazines Magazine[]
+  reivews Review[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+enum ParkingType {
+  free
+  paid
+  noPark
+}
+enum PriceType {
+  GROUP
+  PERSONAL
+}
+// 상품
+model Product {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  visible Boolean @default(false)
+  title String? // 상품명
+  description String? // 상품설명
+  process Json[]//상품진행설명
+  processNotice String? //상품진행설명 노트스
+  mainImage String? //메인이미지
+  images String[] // 추가이미지
+  priceType PriceType @default(GROUP)
+  groupLimit Int @default(5)// 그룹제한
+  groupPrice Int @default(10000)// 그룹요금
+  personalPrice Json[] @default(["{ \"isFree\": true ,\"startAge\": \"0\" ,\"endAge\": \"1\", \"price\": \"0\",\"message\": \"\"}"])// 인원요금
+  farmInsideType Boolean @default(true) // 체험공간 실내 
+  tools Json[] //도구 및 복장
+  cloth String? // 도구 및 복장 안내문구
+  educationTitle String? // 교육안내문구
+  educationData Boolean @default(true) // 교육자료제공
+  educationSubject Json[]
+  detail Json? // 상세페이지
+  subProduct SubOptionProduct[] // 욥션상품
+  farm Farm @relation(fields: [farmId], references: [id],onDelete: Cascade) // 상품
+  farmId Int  // 상품
+  reviews Review[]
+  magazines Magazine[]
+}
+enum ProductType {
+  MANDATORY
+  SELECT
+}
+
+// 옵션 필수상품요소
+model SubOptionProduct {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  essential Boolean @default(true)
+  title String // 상품명
+  description String // 상품설명
+  howto String? //진행설명
+  price Int @default(10000)// 기본가격
+  selectProducts Json[] // 선택 상품
+  product Product @relation(fields: [productId], references: [id],onDelete: Cascade) // 상품
+  productId Int  // 상품
+}
+
+// 농장 품목
+model FarmItem {
+  id Int @id @default(autoincrement())
+  title String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+// 교육
+model Education {
+  id Int @id @default(autoincrement())
+  title String
+  data Boolean @default(true)
+  subjects EducationSubject[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+// 교육 주제
+model EducationSubject {
+  id Int @id @default(autoincrement())
+  title String
+  education Education @relation(fields: [educationId], references: [id],onDelete:Cascade)
+  educationId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+// 편의시설
+model Facility {
+  id Int @id @default(autoincrement())
+  title String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+// 도구
+model Tool {
+  id Int @id @default(autoincrement())
+  title String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+
+model ReserVationDate {
+  id Int @id @default(autoincrement())
+  visible Boolean @default(true)
+  type Boolean @default(true)
+  date DateTime 
+  strignDate String?
+  startTime String
+  amount Int
+  farm Farm @relation(fields: [farmId], references: [id], onDelete:Cascade)
+  farmId Int 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+// 농장 또는 유저 삭제시 유지
+model Reservation {
+  id Int @id @default(autoincrement())
+  reservationNumber String  // 
+  farm Farm @relation(fields: [farmId], references: [id],onDelete:Cascade)
+  farmId Int
+  farmName String?
+  user User @relation(fields: [userId], references: [id],onDelete:Cascade)
+  userId Int
+  productId Int
+  visitor String?
+  visitorPhone String?
+  groupPrice Int?
+  groupNumber Int?
+  personalPrice Json[]
+  totalprice Int
+  priceType String
+  status ReservationStatus @default(waiting)
+  checkInDate DateTime
+  checkInTime String
+  isPaid Boolean @default(false)
+  optionProduct Json[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  
+}
+// const optionProduct = {
+//   essentialProductPrice:0
+//   selectPrice :0
+//   selelctAmount:1
+// }
+enum ReservationStatus {
+  waiting
+  complete
+  cancle
+  done
+  noshow
+}
+
+
+model Magazine {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  visible Boolean @default(false)
+  author Writer @relation(fields: [authorId], references: [id],onDelete: Cascade)
+  authorId Int
+  farm  Farm @relation(fields: [farmId], references: [id],onDelete: Cascade)
+  farmId Int
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+  title String
+  image String
+  sections Json[]
+  suggestion Json[]
+}
+model Holiday {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  dateName String
+  locdate String 
+  year  String
+  month String
+  day String 
+}
+model Review {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  image String?
+  reservationId Int?
+  farm Farm @relation(fields: [farmId], references: [id],onDelete: Cascade) // 상품
+  farmId Int
+  
+  product Product @relation(fields: [productId], references: [id],onDelete: Cascade) // 상품
+  productId Int
+
+  user User @relation(fields: [userId], references: [id],onDelete: Cascade) // 상품
+  userId Int   
+  point Int @default(3)
+  visible Boolean @default(false)
+  title String
+
+  replys Reply[]
+}
+model Reply {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  review Review @relation(fields: [reviewId], references: [id],onDelete: Cascade) // 상품
+  reviewId Int 
+  title String
+
+  visble Boolean @default(false)
+}
+
+model Community {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  title String
+  content String
+  image String?
+  isNotice Boolean @default(false)
+  reader Json[]
+  visible Boolean @default(true)
+  authorName String?
+  autherId Int?
+  authorType CommunityAuthor @default(manager)
+  
+}
+enum CommunityAuthor {
+  manager
+  user
+}
+model PersonalPolicy {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  content String?
+}
+model ServicePolicy {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  content String?
+}
+model RefundPolicy {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  content String?
+}

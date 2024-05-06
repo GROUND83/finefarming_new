@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Farm" ALTER COLUMN "facilities" SET DATA TYPE TEXT[],
+ALTER COLUMN "farmItems" SET DATA TYPE TEXT[];
