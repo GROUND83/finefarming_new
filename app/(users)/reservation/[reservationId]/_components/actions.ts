@@ -20,5 +20,5 @@ export async function getReservationDetail(reservatonId: number) {
       farm: true,
     },
   });
-  return { reservation, product };
+  return JSON.stringify({ reservation, product });
 }

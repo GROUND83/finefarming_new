@@ -20,7 +20,7 @@ export const NumberInput = ({
     console.log(rest.value);
     if (rest) {
       if (rest.value) {
-        let result = (Number(rest.value) + 1).toString();
+        let result = Number(rest.value) + 1;
         setvalue(name, result);
       }
     }
@@ -30,7 +30,7 @@ export const NumberInput = ({
     if (rest) {
       if (rest.value) {
         if (Number(rest.value) > 0) {
-          let result = (Number(rest.value) - 1).toString();
+          let result = Number(rest.value) - 1;
 
           setvalue(name, result);
         }

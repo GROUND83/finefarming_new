@@ -2,6 +2,7 @@
 
 import db from "@/lib/db";
 import { Prisma } from "@prisma/client";
+import dayjs from "dayjs";
 import moment from "moment";
 import { redirect } from "next/navigation";
 
@@ -19,7 +20,7 @@ export async function getProductDetail(productId: number) {
   let farmInd = products?.farm.id;
 
   console.log("product", products, farmInd);
-  return products;
+  return JSON.stringify(products);
 }
 
 type getReservationDate = {
@@ -28,10 +29,10 @@ type getReservationDate = {
 };
 export async function getReservationDate({ farmId, date }: getReservationDate) {
   let newdate = new Date(date);
-  console.log(farmId, "date", date);
 
-  let newKoreanDate = newdate.setHours(newdate.getHours() + 9);
-
+  let newKoreanDate = new Date(dayjs(newdate).add(9, "hour").format());
+  let plusDay = new Date(dayjs(newKoreanDate).add(1, "d").format());
+  console.log(farmId, "date", newKoreanDate, plusDay);
   const farm = await db.farm.findUnique({
     where: {
       id: farmId,
@@ -50,18 +51,17 @@ export async function getReservationDate({ farmId, date }: getReservationDate) {
       visible: true,
       AND: [
         {
-          date: { gte: new Date(newKoreanDate) },
+          date: { gte: newKoreanDate },
         },
         {
           date: {
-            lt: new Date(
-              moment(newKoreanDate).add(1, "days").format("YYYY-MM-DD")
-            ),
+            lt: plusDay,
           },
         },
       ],
     },
   });
+  console.log("reservationDate", reservationDate);
   // 슬롯 합치고 중복제거
   let totalReservationDate = [...slot, ...reservationDate];
 
@@ -71,18 +71,17 @@ export async function getReservationDate({ farmId, date }: getReservationDate) {
       farmId: farmId,
       AND: [
         {
-          checkInDate: { gte: new Date(newKoreanDate) },
+          checkInDate: { gte: newKoreanDate },
         },
         {
           checkInDate: {
-            lt: new Date(
-              moment(newKoreanDate).add(1, "days").format("YYYY-MM-DD")
-            ),
+            lt: plusDay,
           },
         },
       ],
     },
   });
+  console.log("reservation", totalReservationDate, reservation);
   // 슬롯에 예약 반영해서 슬롯 리턴 남은수량 계산
   return totalReservationDate;
 }

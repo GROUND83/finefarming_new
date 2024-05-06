@@ -43,7 +43,7 @@ export const SelectProductField = ({
                     <NumberInput
                       name={`subProduct.${nestIndex}.selectProducts.${k}.amount`}
                       onChange={onChange}
-                      value={value || "0"}
+                      value={value || 0}
                       setvalue={setvalue}
                     />
                   </div>

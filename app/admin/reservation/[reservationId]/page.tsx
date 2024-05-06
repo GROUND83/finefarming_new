@@ -268,7 +268,7 @@ export default function Page({
 
                   <div className=" col-span-6 flex flex-col gap-1">
                     <p className=" font-semibold">필수상품</p>
-                    <p className="text-neutral-500">
+                    <div className="text-neutral-500">
                       {product.subProduct.map((item: any, index: any) => {
                         return (
                           <div
@@ -293,7 +293,7 @@ export default function Page({
                           </div>
                         );
                       })}
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -316,7 +316,7 @@ export default function Page({
                   </div>
                   <div className=" col-span-6 flex flex-col gap-1">
                     <p className=" font-semibold">인원</p>
-                    <p className="text-neutral-500">
+                    <div className="text-neutral-500">
                       {detail.personalPrice.map((item: any, index: any) => {
                         return (
                           <div
@@ -330,7 +330,7 @@ export default function Page({
                           </div>
                         );
                       })}
-                    </p>
+                    </div>
                   </div>
                   <div className=" col-span-6 flex flex-col gap-1">
                     <p className=" font-semibold">옵션</p>

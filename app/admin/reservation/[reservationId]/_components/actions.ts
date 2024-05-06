@@ -44,16 +44,12 @@ export async function changeComplete(reservationId: number) {
     },
     include: {
       user: true,
-      farm: {
-        include: {
-          owner: true,
-        },
-      },
+      farm: true,
     },
   });
   console.log("result", result);
   let user = result.user;
-  let farmer = result.farm.owner;
+
   // 카카오 메세지 발송
   // 네이너 톡톡 발송
   // 이메일 발송
@@ -84,14 +80,21 @@ export async function changeComplete(reservationId: number) {
   let username = user.username;
   let userPhone = user.phone;
   let farmName = result.farm.name;
+  let farmAddress = result.farm.address;
   let checkIndate = `${moment(result.checkInDate).format("YYYY년 MM월 DD일")} ${
     result.checkInTime
   }`;
   let howmany = 0;
-  if (result.personalPrice.length > 0) {
-    result.personalPrice.map((item: any) => {
-      howmany += Number(item.amount);
-    });
+  if (result.priceType === "PERSONAL") {
+    if (result.personalPrice.length > 0) {
+      result.personalPrice.map((item: any) => {
+        howmany += Number(item.amount);
+      });
+    }
+  } else {
+    if (result.groupNumber) {
+      howmany += result.groupNumber;
+    }
   }
   let totalPrice = result.totalprice;
   let mainPhone = result.farm.mainPhone;
@@ -103,30 +106,162 @@ export async function changeComplete(reservationId: number) {
     to: to,
     subject: subject,
     from: from,
-    html: `<div style="border: 1px;width: 400px;background-color: white;border: 1px solid #f4f4f4;padding: 40px;border-radius: 20px;display: flex;flex-direction: column;align-items: center;">
-  <h1>예약확정</h1>
-  <p style="font-size: 24px">${username} 고객님의 예약이 확정되었습니다.</p>
-  <span style="margin-top: 10px">고객연락처 : ${userPhone}</span>
-  <span style="margin-top: 10px">농장명 : ${farmName}</span>
-  <span style="margin-top: 10px">방문일시 : ${checkIndate}</span>
-  <span style="margin-top: 10px">방문인원 : ${howmany}명</span>
-  <span style="margin-top: 10px">결제예정금액 : ${totalPrice}원</span>
-  <span style="margin-top: 10px">문의 : ${mainPhone}</span>
-  <div style="margin-top: 20px">
-    <a href="https://finefarming.co.kr"
+    html: `<div
+    style="
+      border: 1px;
+      width: 400px;
+      background-color: #f5f5f5;
+      border: 1px solid #e5e7eb;
+      padding: 70px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+    "
+  >
+    <div>
+      <img
+        src="https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/85d9c211-3818-463c-9205-bf6a66ca2800/avatar"
+        alt="파인파밍 로고"
+        style="width: 100px; height: 50px"
+      />
+    </div>
+    <h1 style="font-size: 24px; margin-top: 20px">예약확정</h1>
+    <p style="font-size: 24px">${username} 고객님의 예약이 확정되었습니다.</p>
+    <div
       style="
-        padding: 10px 10px;
-        border: 1px solid black;
-        border-radius: 10px;
-        text-decoration: none;
-        background-color: white;
-        color: #000;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        width: 100%;
+        margin-top: 20px;
       "
     >
-      파인파밍 바로가기</a
-    >
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e5e7eb;
+        "
+      >
+        <span>고객연락처</span>
+        <span style="margin-left: 10px">${userPhone}</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          margin-top: 10px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e5e7eb;
+        "
+      >
+        <span>농장명</span>
+        <span style="margin-left: 10px">${farmName}</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          margin-top: 10px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e5e7eb;
+        "
+      >
+        <span>농장 주소</span>
+        <span style="margin-left: 10px">${farmAddress}</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e5e7eb;
+          margin-top: 10px;
+        "
+      >
+        <span>방문일시</span>
+        <span style="margin-left: 10px">${checkIndate}</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e5e7eb;
+          margin-top: 10px;
+        "
+      >
+        <span>방문인원</span>
+        <span style="margin-left: 10px">${howmany}</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e5e7eb;
+          margin-top: 10px;
+        "
+      >
+        <span>결제예정금액</span>
+        <span style="margin-left: 10px">${totalPrice}</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e5e7eb;
+          margin-top: 10px;
+        "
+      >
+        <span>농장 예약 문의</span>
+        <span style="margin-left: 10px">${mainPhone}</span>
+      </div>
+    </div>
+    <div style="margin-top: 50px">
+      <a
+        href="https://finefarming.co.kr"
+        style="
+          padding: 10px 20px;
+          border-radius: 10px;
+          text-decoration: none;
+          background-color: #21c45d;
+          color: white;
+        "
+      >
+        파인파밍 바로가기</a
+      >
+    </div>
+    <div style="margin-top: 50px">
+      <p style="color: #737373">© 2024. FineFarming All rights reserved.</p>
+    </div>
   </div>
-</div>`,
+  
+  `,
     //	attachments 옵션으로 첨부파일도 전송 가능함
     //	attachments : [첨부파일]
   };

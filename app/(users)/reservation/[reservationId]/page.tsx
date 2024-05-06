@@ -33,12 +33,13 @@ export default function Page({
       return notFound();
     }
     let result: any = await getReservationDetail(reservationId);
-    console.log("result", result);
-    setReservationDetail(result.reservation);
-    setProduct(result.product);
-    let min = result.product.farm.reservationMin;
+    let newDate = JSON.parse(result);
+    console.log("result", newDate);
+    setReservationDetail(newDate.reservation);
+    setProduct(newDate.product);
+    let min = newDate.product.farm.reservationMin;
     let today = moment().format("YYYY-MM-DD");
-    let reservationData = moment(result.reservation.checkInDate)
+    let reservationData = moment(newDate.reservation.checkInDate)
       .subtract(min, "day")
       .format("YYYY-MM-DD");
     console.log(
@@ -199,10 +200,10 @@ export default function Page({
               </div>
             </div>
             <div className="p-6 grid grid-cols-12  gap-1 w-full bg-white border-b mt-1">
-              <div className=" col-span-12">
+              <div className=" col-span-3">
                 <p className="font-semibold">결제 예정 금액</p>
               </div>
-              {reservationDetail.priceType === "PERSONAL" && (
+              {reservationDetail.priceType === "PERSONAL" ? (
                 <>
                   <div className=" col-span-3">
                     <p>기본</p>
@@ -230,7 +231,13 @@ export default function Page({
                     <p>결제 예정 금액</p>
                   </div>
                   <div className=" col-span-9">
-                    <p>{reservationDetail.totalprice}원</p>
+                    <p>{reservationDetail.totalprice.toLocaleString()}원</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className=" col-span-9">
+                    <p>{reservationDetail.totalprice.toLocaleString()}원</p>
                   </div>
                 </>
               )}

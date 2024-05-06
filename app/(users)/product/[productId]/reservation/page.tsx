@@ -64,6 +64,8 @@ const FormSchema = z.object({
       required_error: "그룹의 인원수를 입력하세요.",
     })
     .nullable(),
+  groupPrice: z.string().nullable(),
+
   agePrice: z.array(
     z.object({
       amount: z.string(),
@@ -76,17 +78,15 @@ const FormSchema = z.object({
   ),
   subProduct: z.array(
     z.object({
-      howto: z.string(),
       title: z.string(),
-      description: z.string(),
-      price: z.string(),
+      description: z.string().optional(),
+      price: z.number(),
       selectProducts: z.array(
         z.object({
-          amount: z.string(),
-          howto: z.string(),
-          title: z.string(),
-          description: z.string(),
-          price: z.string(),
+          amount: z.number().optional(),
+          title: z.string().optional(),
+          description: z.string().optional(),
+          price: z.number(),
         })
       ),
     })
@@ -129,8 +129,9 @@ export default function Page({ params }: { params: { productId: string } }) {
     // setDate(date);
     let result = await getProductDetail(Number(params.productId));
     if (result) {
+      let newdata = JSON.parse(result);
       let totalReservationDate = await getReservationDate({
-        farmId: Number(result.farm.id),
+        farmId: Number(newdata.farm.id),
         date,
       });
       console.log("totalReservationDate", totalReservationDate);
@@ -156,13 +157,14 @@ export default function Page({ params }: { params: { productId: string } }) {
     }
     let result: any = await getProductDetail(productId);
     console.log("result", result);
-    setDetail(result);
-    let reservationMax = result.farm.reservationMax;
-    let reservationMin = result.farm.reservationMin;
-    let slot = result.farm.slot;
-    let reservationDate = result.farm.reservationDate;
+    let newdata = JSON.parse(result);
+    setDetail(newdata);
+    let reservationMax = newdata.farm.reservationMax;
+    let reservationMin = newdata.farm.reservationMin;
+    let slot = newdata.farm.slot;
+    let reservationDate = newdata.farm.reservationDate;
     console.log(reservationMax, reservationMin, slot, reservationDate);
-    return result;
+    return newdata;
   };
 
   //
@@ -203,6 +205,7 @@ export default function Page({ params }: { params: { productId: string } }) {
       }
       console.log("subProduct", subProduct);
       return {
+        groupPrice: result.groupPrice.toString(),
         checkInDate: "",
         checkInTime: "",
         groupNumber: "",
@@ -236,7 +239,7 @@ export default function Page({ params }: { params: { productId: string } }) {
       visitorPhone: data.visitorPhone,
       personalPrice: data.agePrice,
       groupPrice: detail.groupPrice,
-      groupNumber: data.groupNumber,
+      groupNumber: Number(data.groupNumber),
       priceType: detail.priceType,
       totalPrice: totalPrice,
     };
@@ -248,14 +251,6 @@ export default function Page({ params }: { params: { productId: string } }) {
     console.log(result);
     if (result) {
     }
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
   });
   React.useEffect(() => {
     const subscirbe = form.watch((data, { name }) => {
@@ -309,6 +304,18 @@ export default function Page({ params }: { params: { productId: string } }) {
           console.log("subProduct totleSum", totleSum, totalPrice);
         }
       }
+      if (name?.includes("groupNumber")) {
+        console.log(data.groupNumber);
+        console.log(form.getValues("groupNumber"));
+        if (data.groupNumber) {
+          console.log(data.groupNumber);
+          let totleSum = 0;
+          console.log(Number(data.groupNumber), data.groupPrice);
+          totleSum = Number(data.groupNumber) * Number(data.groupPrice);
+          setSelectPrice(totleSum);
+          console.log("subProduct totleSum", totleSum, totalPrice);
+        }
+      }
     });
 
     return () => subscirbe.unsubscribe();
@@ -330,6 +337,11 @@ export default function Page({ params }: { params: { productId: string } }) {
   }, [agePrice, selectPrice]);
 
   //
+  React.useEffect(() => {
+    if (form.formState.errors) {
+      console.log(form.formState.errors);
+    }
+  }, [form.formState]);
   return (
     <div className="w-full    container mx-auto relative  min-h-screen">
       {detail && (
@@ -420,7 +432,21 @@ export default function Page({ params }: { params: { productId: string } }) {
                               field.onChange(date);
                               setCalenderOpen(false);
                             }}
-                            disabled={(date) => date < new Date()}
+                            disabled={(date) => {
+                              let limitDate = detail?.farm
+                                ? detail?.farm.reservationMin
+                                : 0;
+                              let now = dayjs().format();
+                              // console.log(
+                              //   "newData",
+                              //   new Date(),
+                              //   new Date(dayjs().add(limitDate, "day").format())
+                              // );
+                              return (
+                                date <=
+                                new Date(dayjs().add(limitDate, "day").format())
+                              );
+                            }}
                           />
                         </PopoverContent>
                       </Popover>
@@ -511,27 +537,36 @@ export default function Page({ params }: { params: { productId: string } }) {
                       />
                     </div>
                     {detail.priceType === "GROUP" ? (
-                      <FormField
-                        control={form.control}
-                        name="groupNumber"
-                        render={({ field }) => (
-                          <FormItem className="gap-8 col-span-12  grid grid-cols-12 ">
-                            <FormLabel>그룹 인원</FormLabel>
-                            <FormControl>
-                              <Input
-                                value={field.value || "0"}
-                                onChange={field.onChange}
-                                placeholder="그룹의 인원수을입력하세요."
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              체험상품의 그룹 인원수 제한은 {detail.groupLimit}
-                              명입니다.
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      detail.groupPrice && (
+                        <>
+                          <FormField
+                            control={form.control}
+                            name="groupNumber"
+                            render={({ field }) => (
+                              <FormItem className="gap-2 col-span-12   flex flex-col items-start  ">
+                                <FormLabel>그룹 인원</FormLabel>
+                                <div className="flex flex-row items-center gap-2 text-sm">
+                                  <p>그룹당 가격</p>
+                                  <p>{detail.groupPrice.toLocaleString()}원</p>
+                                </div>
+                                <FormControl>
+                                  <Input
+                                    value={field.value || "0"}
+                                    onChange={field.onChange}
+                                    placeholder="그룹의 인원수을입력하세요."
+                                  />
+                                </FormControl>
+                                <FormDescription>
+                                  체험상품의 그룹 인원수 제한은{" "}
+                                  {detail.groupLimit}
+                                  명입니다.
+                                </FormDescription>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </>
+                      )
                     ) : (
                       <div className="gap-3 col-span-12  grid grid-cols-12 ">
                         <div className="flex flex-col items-start col-span-12 gap-1">
