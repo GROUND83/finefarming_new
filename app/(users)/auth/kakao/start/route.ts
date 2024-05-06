@@ -5,7 +5,9 @@ export function GET() {
   const params = {
     response_type: "code",
     client_id: process.env.KAKAO_CLIENT_ID!,
-    redirect_uri: encodeURI("http://localhost:3000/auth/kakao/complete"),
+    redirect_uri: encodeURI(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/kakao/complete`
+    ),
   };
   const formattedParams = new URLSearchParams(params).toString();
   const finalUrl = `${baseURL}?${formattedParams}`;
