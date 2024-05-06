@@ -351,7 +351,7 @@ export default function Page() {
                   src={
                     "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/537a67b9-00b2-43be-82fb-ad5a31d34800/public"
                   }
-                  alt="value image1"
+                  alt="value image7"
                   fill
                 />
               </div>
@@ -368,8 +368,10 @@ export default function Page() {
             <div className="col-span-2 flex flex-col gap-2">
               <div className="relative w-full aspect-video bg-contain">
                 <Image
-                  src={`${process.env.SERVER_URL}/image8.webp`}
-                  alt="value image1"
+                  src={
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/833a827d-75d0-401c-522d-6bfc4f40b500/public"
+                  }
+                  alt="value image8"
                   fill
                 />
               </div>
@@ -387,9 +389,9 @@ export default function Page() {
               <div className="relative w-full aspect-video bg-contain">
                 <Image
                   src={
-                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/833a827d-75d0-401c-522d-6bfc4f40b500/public"
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/6ba866f0-703c-484f-d784-5fbb67206100/public"
                   }
-                  alt="value image1"
+                  alt="value image9"
                   fill
                 />
               </div>
@@ -466,9 +468,9 @@ export default function Page() {
             <div className="w-full aspect-[441/591]  bg-cover relative">
               <Image
                 src={
-                  "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/6ba866f0-703c-484f-d784-5fbb67206100/public"
+                  "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/5d83aee8-1609-4a25-7ad4-d1fb4dcd5000/public"
                 }
-                alt="section1"
+                alt="section10"
                 fill
                 priority={true}
                 style={{ objectFit: "cover" }}
@@ -481,9 +483,9 @@ export default function Page() {
             <div className="w-full aspect-[1/1]  bg-cover relative">
               <Image
                 src={
-                  "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/5d83aee8-1609-4a25-7ad4-d1fb4dcd5000/public"
+                  "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/2b7dca9f-a024-4502-11c7-3d510258c400/public"
                 }
-                alt="section1"
+                alt="section11"
                 fill
                 style={{ objectFit: "cover" }}
                 priority={true}
@@ -505,9 +507,9 @@ export default function Page() {
               <div className="w-full aspect-[425/296]  bg-contain relative">
                 <Image
                   src={
-                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/2b7dca9f-a024-4502-11c7-3d510258c400/public"
+                    "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/387665f8-0423-4b59-227c-3d11556b4a00/public"
                   }
-                  alt="section1"
+                  alt="section12"
                   fill
                   priority={true}
                 />
