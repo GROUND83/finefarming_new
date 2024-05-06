@@ -152,7 +152,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                         <h2 className="font-semibold">체험 준비물</h2>
                         <div className="px-2 flex flex-col items-start gap-2 w-full">
                           <div className="flex flex-row items-center gap-1  ">
-                            {detail.tools.map((item, index) => {
+                            {detail.tools.map((item: any, index: any) => {
                               return (
                                 <Badge key={index} variant={"outline"}>
                                   {item}
@@ -185,13 +185,15 @@ export default function Page({ params }: { params: { productId: string } }) {
                       <div className="flex flex-col items-start w-full gap-2">
                         <h2 className="font-semibold">교육주제</h2>
                         <div className="w-full px-2 flex flex-row items-center flex-wrap gap-1">
-                          {detail.educationSubject.map((item, index) => {
-                            return (
-                              <Badge key={index} className="">
-                                {item.tag}
-                              </Badge>
-                            );
-                          })}
+                          {detail.educationSubject.map(
+                            (item: any, index: any) => {
+                              return (
+                                <Badge key={index} className="">
+                                  {item.tag}
+                                </Badge>
+                              );
+                            }
+                          )}
                         </div>
                       </div>
                       <div className="flex flex-row items-center gap-3"></div>
@@ -237,24 +239,26 @@ export default function Page({ params }: { params: { productId: string } }) {
                         <div className="flex flex-col items-start w-full gap-2">
                           <h2 className="font-semibold">개인 요금</h2>
                           <div className="flex flex-col items-start w-full gap-2 px-2">
-                            {detail.personalPrice.map((item, index) => {
-                              return (
-                                <div
-                                  key={index}
-                                  className=" grid grid-cols-9 gap-2 bg-neutral-100  w-full px-2 py-2 border"
-                                >
-                                  <div className="flex flex-row items-center gap-3 col-span-3">
-                                    <p>{item.startAge}세</p>
-                                    <p>~</p>
-                                    <p>{item.endAge}세</p>
+                            {detail.personalPrice.map(
+                              (item: any, index: any) => {
+                                return (
+                                  <div
+                                    key={index}
+                                    className=" grid grid-cols-9 gap-2 bg-neutral-100  w-full px-2 py-2 border"
+                                  >
+                                    <div className="flex flex-row items-center gap-3 col-span-3">
+                                      <p>{item.startAge}세</p>
+                                      <p>~</p>
+                                      <p>{item.endAge}세</p>
+                                    </div>
+                                    <div className="flex flex-row items-center gap-3 col-span-6">
+                                      <p>{item.isFree && "뮤료"}</p>
+                                      <p>{item.message}</p>
+                                    </div>
                                   </div>
-                                  <div className="flex flex-row items-center gap-3 col-span-6">
-                                    <p>{item.isFree && "뮤료"}</p>
-                                    <p>{item.message}</p>
-                                  </div>
-                                </div>
-                              );
-                            })}
+                                );
+                              }
+                            )}
                           </div>
                         </div>
                       )}
@@ -325,78 +329,83 @@ export default function Page({ params }: { params: { productId: string } }) {
                         </div>
                       </div>
                       <div className="w-full bg-white flex flex-col items-start px-3 gap-3 mt-9 ">
-                        {detail.detail.sections.map((session, sessionIndex) => {
-                          console.log("session", session);
-                          return (
-                            <div
-                              key={sessionIndex}
-                              className="w-full flex flex-col items-start gap-3 mb-6"
-                            >
-                              {session.subtitle && (
-                                <div className="bg-primary px-3 py-1 rounded-[3px] flex flex-col items-start">
-                                  <p className="text-sm  text-white ">
-                                    {session.subtitle}
-                                  </p>
-                                </div>
-                              )}
-                              {session.title && (
-                                <div className="flex flex-col items-start w-full">
-                                  <p className="text-xl  whitespace-pre-wrap w-full font-semibold text-pretty">
-                                    {session.title}
-                                  </p>
-                                </div>
-                              )}
-                              {session.titleDescription && (
-                                <div className="flex flex-col items-start w-full">
-                                  <p className="text-sm  whitespace-pre-wrap w-full text-pretty">
-                                    {session.titleDescription}
-                                  </p>
-                                </div>
-                              )}
-                              {session.images.length > 0 && (
-                                <div
-                                  className={`w-full grid grid-cols-2  gap-2 `}
-                                >
-                                  {session.images.map((image, k) => {
-                                    return (
-                                      <div
-                                        key={k}
-                                        className={`${
-                                          session.images.length > 2 && k === 0
-                                            ? " col-span-2 aspect-square relative"
-                                            : session.images.length > 2 &&
+                        {detail.detail.sections.map(
+                          (session: any, sessionIndex: any) => {
+                            console.log("session", session);
+                            return (
+                              <div
+                                key={sessionIndex}
+                                className="w-full flex flex-col items-start gap-3 mb-6"
+                              >
+                                {session.subtitle && (
+                                  <div className="bg-primary px-3 py-1 rounded-[3px] flex flex-col items-start">
+                                    <p className="text-sm  text-white ">
+                                      {session.subtitle}
+                                    </p>
+                                  </div>
+                                )}
+                                {session.title && (
+                                  <div className="flex flex-col items-start w-full">
+                                    <p className="text-xl  whitespace-pre-wrap w-full font-semibold text-pretty">
+                                      {session.title}
+                                    </p>
+                                  </div>
+                                )}
+                                {session.titleDescription && (
+                                  <div className="flex flex-col items-start w-full">
+                                    <p className="text-sm  whitespace-pre-wrap w-full text-pretty">
+                                      {session.titleDescription}
+                                    </p>
+                                  </div>
+                                )}
+                                {session.images.length > 0 && (
+                                  <div
+                                    className={`w-full grid grid-cols-2  gap-2 `}
+                                  >
+                                    {session.images.map(
+                                      (image: any, k: any) => {
+                                        return (
+                                          <div
+                                            key={k}
+                                            className={`${
+                                              session.images.length > 2 &&
                                               k === 0
-                                            ? " col-span-1 aspect-square relative"
-                                            : session.images.length > 1 &&
-                                              k === 0
-                                            ? " col-span-1 aspect-square relative"
-                                            : session.images.length > 1 &&
-                                              k !== 0
-                                            ? " col-span-1 aspect-square relative"
-                                            : session.images.length === 1 &&
-                                              k !== 0
-                                            ? " col-span-2 aspect-[4/3] relative"
-                                            : session.images.length === 1 &&
-                                              k === 0
-                                            ? " col-span-2  aspect-square relative"
-                                            : " col-span-2  aspect-square relative"
-                                        } relative border`}
-                                      >
-                                        <Image
-                                          src={image}
-                                          fill
-                                          priority
-                                          alt={`image${k}`}
-                                          style={{ objectFit: "cover" }}
-                                        />
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
+                                                ? " col-span-2 aspect-square relative"
+                                                : session.images.length > 2 &&
+                                                  k === 0
+                                                ? " col-span-1 aspect-square relative"
+                                                : session.images.length > 1 &&
+                                                  k === 0
+                                                ? " col-span-1 aspect-square relative"
+                                                : session.images.length > 1 &&
+                                                  k !== 0
+                                                ? " col-span-1 aspect-square relative"
+                                                : session.images.length === 1 &&
+                                                  k !== 0
+                                                ? " col-span-2 aspect-[4/3] relative"
+                                                : session.images.length === 1 &&
+                                                  k === 0
+                                                ? " col-span-2  aspect-square relative"
+                                                : " col-span-2  aspect-square relative"
+                                            } relative border`}
+                                          >
+                                            <Image
+                                              src={image}
+                                              fill
+                                              priority
+                                              alt={`image${k}`}
+                                              style={{ objectFit: "cover" }}
+                                            />
+                                          </div>
+                                        );
+                                      }
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+                        )}
                       </div>
                     </>
                   )}
@@ -487,17 +496,21 @@ export default function Page({ params }: { params: { productId: string } }) {
                       <div className="flex flex-col items-start w-full gap-2">
                         <h2 className="font-semibold">농장 생산물</h2>
                         <div className="flex flex-row items-center gap-2 flex-wrap w-full">
-                          {detail.farm.farmItems.map((item, index) => {
-                            return <Badge key={index}>{item}</Badge>;
-                          })}
+                          {detail.farm.farmItems.map(
+                            (item: any, index: any) => {
+                              return <Badge key={index}>{item}</Badge>;
+                            }
+                          )}
                         </div>
                       </div>
                       <div className="flex flex-col items-start w-full gap-2">
                         <h2 className="font-semibold">농장 시설</h2>
                         <div className="flex flex-row items-center gap-2 flex-wrap w-full">
-                          {detail.farm.facilities.map((item, index) => {
-                            return <Badge key={index}>{item}</Badge>;
-                          })}
+                          {detail.farm.facilities.map(
+                            (item: any, index: any) => {
+                              return <Badge key={index}>{item}</Badge>;
+                            }
+                          )}
                         </div>
                       </div>
                       <div className="flex flex-col items-start w-full gap-2">
