@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/table";
 
 import { columns } from "./colums";
-import { getMoreData } from "./actions";
+import { getCommunity } from "./actions";
 
 type ownerType = {
   id: number;
@@ -57,7 +57,7 @@ export function DataTable() {
     pageSize,
   };
   const dataQuery = useQuery(["data", fetchDataOptions], async () => {
-    let data = await getMoreData(fetchDataOptions);
+    let data = await getCommunity(fetchDataOptions);
     console.log("data", data);
     return data;
   });
