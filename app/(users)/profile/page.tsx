@@ -3,8 +3,8 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 import moment from "moment";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { notFound, redirect, useRouter } from "next/navigation";
-import { getUser, logOut } from "./_components/actions";
+import { useRouter } from "next/navigation";
+import { getUser } from "./_components/actions";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { Badge } from "@/components/ui/badge";
@@ -72,11 +72,6 @@ export default function Page() {
     signOut();
   };
 
-  // if (session) {
-  //   console.log("logind");
-  // } else {
-
-  // }
   return (
     <div className="w-full p-6">
       {loading ? (
