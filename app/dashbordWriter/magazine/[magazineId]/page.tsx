@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/select";
 import { JsonArray } from "@prisma/client/runtime/library";
 import { Prisma } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 //
 export default function Page({ params }: { params: { magazineId: string } }) {
@@ -67,7 +68,7 @@ export default function Page({ params }: { params: { magazineId: string } }) {
   const [updateloading, setUpdateLoading] = useState(false);
   const { toast } = useToast();
   const imageRef = useRef<any>(null);
-
+  const { data: session } = useSession();
   //
   const form = useForm<magazineSchemaType>({
     resolver: zodResolver(magazineSchema),
@@ -141,15 +142,16 @@ export default function Page({ params }: { params: { magazineId: string } }) {
   };
 
   const getUser = async () => {
-    let result = await getInitData();
-    if (result) {
-      setUser(result.user);
-      setProducts(result.products);
+    let userId = session?.user.id;
+    if (userId) {
+      let result = await getInitData(userId);
+      if (result) {
+        setUser(result.user);
+        setProducts(result.products);
+      }
     }
   };
-  React.useEffect(() => {
-    getUser();
-  }, []);
+
   const onSubmit = form.handleSubmit(async (data) => {
     setUpdateLoading(true);
     console.log("data", data);
@@ -295,7 +297,8 @@ export default function Page({ params }: { params: { magazineId: string } }) {
 
   React.useEffect(() => {
     reload();
-  }, []);
+    getUser();
+  }, [session]);
   return (
     <div className=" w-full  flex-1 flex flex-col items-start  p-3 ">
       <div className="w-full  flex-1 flex ">

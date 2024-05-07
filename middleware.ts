@@ -1,6 +1,7 @@
+import { getToken } from "next-auth/jwt";
+import { getSession } from "next-auth/react";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import getSession from "./lib/session";
 
 interface Routes {
   [key: string]: boolean;
@@ -19,49 +20,54 @@ const publicOnlyUrls: Routes = {
   "/github/complete": true,
   "/auth/error": true,
 };
+const secret = process.env.NEXTAUTH_SECRET;
 
-export async function middleware(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
+export async function middleware(req: NextRequest) {
+  const pathname = req.nextUrl.pathname;
   console.log("pathname", pathname);
-  // const session = await getSession();
-  // // const exists = publicOnlyUrls[request.nextUrl.pathname];
-  // if (pathname.startsWith("/admin")) {
-  //   if (session) {
-  //     if (session.id && session.role) {
-  //       if (session.role === "manager") {
-  //         console.log("session", session);
-  //         return NextResponse.next();
-  //       } else if (session.role === "superAdmin") {
-  //         return NextResponse.next();
-  //       } else {
-  //         return NextResponse.redirect(new URL("/mangerAuth", request.url));
-  //       }
-  //       //
-  //     } else {
-  //       console.log("session", session);
-  //       return NextResponse.redirect(new URL("/mangerAuth", request.url));
-  //     }
-  //   } else {
-  //     return NextResponse.redirect(new URL("/mangerAuth", request.url));
-  //   }
-  // } else if (pathname.startsWith("/dashbordWriter")) {
-  //   if (session) {
-  //     // console.log("session", session);
-  //     if (session.id && session.role) {
-  //       if (session.role === "writer") {
-  //         return NextResponse.next();
-  //       } else {
-  //         return NextResponse.redirect(new URL("/writerAuth", request.url));
-  //       }
-  //       //
-  //     } else {
-  //       // console.log("session", session);
-  //       return NextResponse.redirect(new URL("/writerAuth", request.url));
-  //     }
-  //   } else {
-  //     return NextResponse.redirect(new URL("/writerAuth", request.url));
-  //   }
-  // }
+  const session = await getToken({ req, secret, raw: false });
+  // console.log("session", session);
+  // const exists = publicOnlyUrls[request.nextUrl.pathname];
+  if (pathname.startsWith("/admin")) {
+    if (session) {
+      if (session.id && session.role) {
+        if (session.role === "manager") {
+          console.log("session", session);
+          return NextResponse.next();
+        } else if (session.role === "superAdmin") {
+          return NextResponse.next();
+        } else {
+          return NextResponse.redirect(new URL("/mangerAuth", req.url));
+        }
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.redirect(new URL("/mangerAuth", req.url));
+      }
+    } else {
+      return NextResponse.redirect(new URL("/mangerAuth", req.url));
+    }
+  }
+  if (pathname.startsWith("/dashbordWriter")) {
+    if (session) {
+      console.log("session writer", session, session.role, session.id);
+      if (session.id && session.role) {
+        console.log("check");
+        if (session.role === "writer") {
+          console.log("check");
+          return NextResponse.next();
+        } else {
+          return NextResponse.redirect(new URL("/", req.url));
+        }
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.redirect(new URL("/", req.url));
+      }
+    } else {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  }
   // if (!session.id) {
   //   //   유저가 없으면 퍼블릭 URL로 이동 못한다.
   //   if (!exists) {
@@ -94,6 +100,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   //   matcher: ["/", "/profile", "auth/:path*"], // 미들웨어 실행할 path
   matcher: [
+    "/dashbordWriter/:path*",
     "/admin/:path*",
     "/writer/:path*",
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.svg$).*)", //제외

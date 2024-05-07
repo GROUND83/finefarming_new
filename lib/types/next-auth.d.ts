@@ -18,6 +18,8 @@ declare module "next-auth" {
     phone: string;
     role: string | null;
     avatar: string;
+    type: string;
+    role: string;
   }
 }
 

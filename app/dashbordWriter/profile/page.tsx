@@ -24,6 +24,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getUploadUrl } from "@/lib/uploadUrl";
+import { signOut, useSession } from "next-auth/react";
 
 // async function getUserData() {
 //   const user = await getWriter();
@@ -70,6 +71,8 @@ export default function Page() {
   const [updateloading, setUpdateLoading] = React.useState(false);
   const imageRef = useRef<any>(null);
   const { toast } = useToast();
+  const { data: session } = useSession();
+
   //
   // const getUser = async () => {
   //   let session = await getSession();
@@ -87,40 +90,43 @@ export default function Page() {
   // }, []);
 
   const reload = async () => {
-    setLoading(true);
-
-    try {
+    console.log("session", session);
+    if (session) {
       setLoading(true);
 
-      let response = await getUserData();
-      console.log("user", user);
+      try {
+        setLoading(true);
+        let userId = session.user.id;
+        let response = await getUserData(userId);
+        console.log("response", response);
 
-      if (!response) {
-        notFound();
+        if (!response) {
+          notFound();
+        }
+        form.reset({
+          id: response.id ?? undefined,
+          link: response.link ?? undefined,
+          username: response.username ?? undefined,
+          email: response.email ?? undefined,
+          avatar: {
+            image: response.avatar ?? undefined,
+            uploadUrl: response.avatar ?? undefined,
+            downUrl: response.avatar ?? undefined,
+            file: "",
+          },
+
+          intruduceTitle: response.intruduceTitle ?? undefined,
+          intruduce: response.intruduce ?? undefined,
+        });
+      } catch (e) {
+        // router.push("/admin/user/farmer");
+        // notFound();
+        console.log(e);
+      } finally {
+        setLoading(false);
       }
-      form.reset({
-        id: response.id ?? undefined,
-        link: response.link ?? undefined,
-        username: response.username ?? undefined,
-        email: response.email ?? undefined,
-        avatar: {
-          image: response.avatar ?? undefined,
-          uploadUrl: response.avatar ?? undefined,
-          downUrl: response.avatar ?? undefined,
-          file: "",
-        },
-
-        intruduceTitle: response.intruduceTitle ?? undefined,
-        intruduce: response.intruduce ?? undefined,
-      });
-    } catch (e) {
-      // router.push("/admin/user/farmer");
-      // notFound();
-      console.log(e);
-    } finally {
       setLoading(false);
     }
-    setLoading(false);
   };
 
   const form = useForm<writerSchemaType>({
@@ -213,7 +219,7 @@ export default function Page() {
   };
   React.useEffect(() => {
     reload();
-  }, []);
+  }, [session]);
   return (
     <div className=" w-full  flex-1 flex flex-col items-start    ">
       <SubSectionWrap isLoading={loading}>
@@ -231,6 +237,11 @@ export default function Page() {
                   updateloading
                 }
               />
+            </div>
+            <div>
+              <Button type="button" onClick={() => signOut()}>
+                로그아웃
+              </Button>
             </div>
             <div className="w-full bg-white border gap-2 p-12 flex flex-col items-start justify-center">
               <FormField

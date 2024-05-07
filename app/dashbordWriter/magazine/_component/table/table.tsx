@@ -23,6 +23,7 @@ import {
 import { getMoreData } from "./actions";
 import { columns } from "./colums";
 import SubSectionWrap from "@/app/admin/_component/subSectionWrap";
+import { getSession, useSession } from "next-auth/react";
 
 type ownerType = {
   id: number;
@@ -43,6 +44,7 @@ export type TableDataType = {
 
 export function DataTable() {
   //
+  const { data: session } = useSession();
   const [{ pageIndex, pageSize }, setPagination] =
     React.useState<PaginationState>({
       pageIndex: 0, //initial page index
@@ -52,12 +54,20 @@ export function DataTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   //
-  const fetchDataOptions = {
-    pageIndex,
-    pageSize,
+  const fetchDataOptions = async () => {
+    const session = await getSession();
+    console.log("session", session);
+    return {
+      pageIndex,
+      pageSize,
+      userId: session?.user.id,
+    };
   };
-  const { data, isLoading } = useQuery(["data", fetchDataOptions], async () => {
-    let data = await getMoreData(fetchDataOptions);
+  const { data, isLoading } = useQuery(["data"], async () => {
+    const session = await getSession();
+    console.log("session", session);
+    let option = await fetchDataOptions();
+    let data = await getMoreData(option);
     console.log("data", data);
     return data;
   });
@@ -85,7 +95,7 @@ export function DataTable() {
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
-    debugTable: true,
+    // debugTable: true,
   });
 
   return (

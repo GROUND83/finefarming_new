@@ -6,7 +6,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import getDateTime from "@/lib/getDateTime";
 import { NextResponse } from "next/server";
 
-export async function POST(req, res) {
+export async function POST(req: any, res: any) {
   let errors = [];
   const body = await req.json();
   const { username, email, password, phone } = body;

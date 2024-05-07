@@ -5,28 +5,22 @@ import getDateTime from "@/lib/getDateTime";
 import getSession from "@/lib/session";
 import { notFound } from "next/navigation";
 
-export async function getUserData() {
-  let session = await getSession();
-  console.log(session);
-  if (session) {
-    let result = await db.writer.findUnique({
-      where: {
-        id: Number(session.id),
-      },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        avatar: true,
-        intruduce: true,
-        intruduceTitle: true,
-        link: true,
-      },
-    });
-    return result;
-  } else {
-    return notFound();
-  }
+export async function getUserData(userId: number) {
+  let result = await db.writer.findUnique({
+    where: {
+      id: Number(userId),
+    },
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      avatar: true,
+      intruduce: true,
+      intruduceTitle: true,
+      link: true,
+    },
+  });
+  return result;
 }
 
 export async function updateUser(formdata: FormData) {

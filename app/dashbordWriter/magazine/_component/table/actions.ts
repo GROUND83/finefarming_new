@@ -2,18 +2,18 @@
 
 import db from "@/lib/db";
 import getSession from "@/lib/session";
+import { getToken } from "next-auth/jwt";
 
 export async function getMoreData(options: {
   pageIndex: number;
   pageSize: number;
+  userId: number | undefined;
 }) {
-  const user = await getSession();
-  console.log("user", user);
   const response = await db.$transaction([
     db.magazine.count(),
     db.magazine.findMany({
       where: {
-        authorId: user.id,
+        authorId: options.userId,
       },
       include: {
         farm: {

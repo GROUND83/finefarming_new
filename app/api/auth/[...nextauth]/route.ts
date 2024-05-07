@@ -1,15 +1,17 @@
 "use server";
-import NextAuth, { DefaultSession } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import NaverProvider from "next-auth/providers/naver";
 import KakaoProvider from "next-auth/providers/kakao";
-import EmailProvider from "next-auth/providers/email";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
-import db from "@/lib/db";
-import getDateTime from "@/lib/getDateTime";
-const prisma = new PrismaClient();
+import bcrypt from "bcrypt";
 
+import db from "@/lib/db";
+function exclude(user: any, keys: any) {
+  for (let key of keys) {
+    delete user[key];
+  }
+  return user;
+}
 const handler = NextAuth({
   // Configure one or more authentication providers
   // adapter: PrismaAdapter(db),
@@ -27,27 +29,171 @@ const handler = NextAuth({
       },
 
       async authorize(credentials, req) {
-        console.log("credentials", credentials);
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/login`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
-            }),
+        console.log("credentials", credentials, req.body);
+        if (req.body) {
+          let { type } = req.body;
+          console.log("type", type);
+          if (type === "user") {
+            if (!credentials?.email || !credentials?.password) {
+              return false;
+            }
+            try {
+              const user = await db.user.findUnique({
+                where: { email: credentials?.email },
+                select: {
+                  id: true,
+                  username: true,
+                  email: true,
+                  password: true,
+                  avatar: true,
+                  role: true,
+                },
+              });
+              const ok = await bcrypt.compare(
+                credentials?.password,
+                user!.password ?? ""
+              );
+              if (ok) {
+                let userdata = exclude(user, ["password"]);
+                if (userdata) {
+                  return userdata;
+                } else {
+                  return null;
+                }
+              }
+            } catch (e: any) {
+              console.log(e);
+              throw new Error(e);
+            }
+          } else if (type === "manager") {
+            if (!credentials?.email || !credentials?.password) {
+              return false;
+            }
+            try {
+              const user = await db.manager.findUnique({
+                where: { email: credentials?.email },
+                select: {
+                  id: true,
+                  username: true,
+                  email: true,
+                  password: true,
+                  avatar: true,
+                  role: true,
+                },
+              });
+              const ok = await bcrypt.compare(
+                credentials?.password,
+                user!.password ?? ""
+              );
+              if (ok) {
+                let userdata = exclude(user, ["password"]);
+                if (userdata) {
+                  return userdata;
+                } else {
+                  return null;
+                }
+              }
+            } catch (e: any) {
+              console.log(e);
+              throw new Error(e);
+            }
+          } else if (type === "superManager") {
+            if (!credentials?.email || !credentials?.password) {
+              return false;
+            }
+            try {
+              const user = await db.superManager.findUnique({
+                where: { email: credentials?.email },
+                select: {
+                  id: true,
+                  username: true,
+                  email: true,
+                  password: true,
+                  avatar: true,
+                  role: true,
+                },
+              });
+              const ok = await bcrypt.compare(
+                credentials?.password,
+                user!.password ?? ""
+              );
+              if (ok) {
+                let userdata = exclude(user, ["password"]);
+                if (userdata) {
+                  return userdata;
+                } else {
+                  return null;
+                }
+              }
+            } catch (e: any) {
+              console.log(e);
+              throw new Error(e);
+            }
+          } else if (type === "writer") {
+            if (!credentials?.email || !credentials?.password) {
+              return false;
+            }
+            try {
+              const user = await db.writer.findUnique({
+                where: { email: credentials?.email },
+                select: {
+                  id: true,
+                  username: true,
+                  email: true,
+                  password: true,
+                  avatar: true,
+                  role: true,
+                },
+              });
+              const ok = await bcrypt.compare(
+                credentials?.password,
+                user!.password ?? ""
+              );
+              if (ok) {
+                let userdata = exclude(user, ["password"]);
+                if (userdata) {
+                  return userdata;
+                } else {
+                  return null;
+                }
+              }
+            } catch (e: any) {
+              console.log(e);
+              throw new Error(e);
+            }
+          } else if (type === "farmer") {
+            if (!credentials?.email || !credentials?.password) {
+              return false;
+            }
+            try {
+              const user = await db.farmer.findUnique({
+                where: { email: credentials?.email },
+                select: {
+                  id: true,
+                  username: true,
+                  email: true,
+                  password: true,
+                  avatar: true,
+                  role: true,
+                },
+              });
+              const ok = await bcrypt.compare(
+                credentials?.password,
+                user!.password ?? ""
+              );
+              if (ok) {
+                let userdata = exclude(user, ["password"]);
+                if (userdata) {
+                  return userdata;
+                } else {
+                  return null;
+                }
+              }
+            } catch (e: any) {
+              console.log(e);
+              throw new Error(e);
+            }
           }
-        );
-        const user = await res.json();
-        console.log("user", user);
-
-        if (user) {
-          return user;
-        } else {
-          return null;
         }
       },
     }),
@@ -66,6 +212,8 @@ const handler = NextAuth({
           email,
           phone,
           avatar,
+          type: "kakao",
+          role: "user",
         } as any;
       },
     }),
@@ -85,13 +233,15 @@ const handler = NextAuth({
           email,
           phone,
           avatar,
+          type: "naver",
+          role: "user",
         } as any;
       },
     }),
   ],
   callbacks: {
-    async signIn({ user, profile }) {
-      console.log(" user, profile ", user, profile);
+    async signIn({ user, profile, credentials }) {
+      console.log(" user, profile ", user, profile, credentials);
       if (profile) {
         user.name = profile?.name || user.name;
         user.email = profile?.email || user.email;
@@ -99,9 +249,32 @@ const handler = NextAuth({
 
       try {
         // 데이터베이스에 유저가 있는지 확인
-        let db_user = await db.user.findUnique({
-          where: { email: user.email! },
-        });
+        let db_user: any = {};
+        if (user.role === "writer") {
+          db_user = await db.writer.findUnique({
+            where: { email: user.email! },
+          });
+        }
+        if (user.role === "user") {
+          db_user = await db.user.findUnique({
+            where: { email: user.email! },
+          });
+        }
+        if (user.role === "manager") {
+          db_user = await db.manager.findUnique({
+            where: { email: user.email! },
+          });
+        }
+        if (user.role === "farmer") {
+          db_user = await db.farmer.findUnique({
+            where: { email: user.email! },
+          });
+        }
+        if (user.role === "superAdmin") {
+          db_user = await db.superManager.findUnique({
+            where: { email: user.email! },
+          });
+        }
         console.log("db_user", db_user);
         // // 없으면 데이터베이스에 유저 추가
         if (!db_user) {
@@ -111,7 +284,12 @@ const handler = NextAuth({
               email: user.email!,
               phone: user.phone,
               avatar: user.avatar,
-              provider: "kakao",
+              provider:
+                user.type === "kakao"
+                  ? "kakao"
+                  : user.type === "naver"
+                  ? "naver"
+                  : "email",
             },
           });
         }

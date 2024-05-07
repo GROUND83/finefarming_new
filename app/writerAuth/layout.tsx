@@ -10,7 +10,7 @@ export default async function AdminLayOut({
   //   await getManager();
   // };
   // checkAuth();
-  console.log("어드민 레이아웃");
+  // console.log("어드민 레이아웃");
   return (
     <div className="w-full flex flex-row items-start h-screen">{children}</div>
   );

@@ -1,57 +1,13 @@
-import {
-  BookOpenIcon,
-  BuildingStorefrontIcon,
-  CalendarIcon,
-  ChatBubbleLeftIcon,
-  Cog6ToothIcon,
-  CreditCardIcon,
-  LifebuoyIcon,
-  UserIcon,
-} from "@heroicons/react/24/outline";
+import { BuildingStorefrontIcon, UserIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-import { notFound, redirect } from "next/navigation";
-import getSession from "@/lib/session";
-import { Button } from "@/components/ui/button";
-import getWriter from "./actions";
-
-async function getUserData() {
-  const user = await getWriter();
-  if (user) {
-    console.log(user);
-    return user;
-  }
-  notFound();
-}
-async function Username() {
-  //await new Promise((resolve) => setTimeout(resolve, 10000));
-  const user = await getUserData();
-  const logOut = async () => {
-    "use server";
-    const session = await getSession();
-    session.destroy();
-    redirect("/");
-  };
-  return (
-    <div className="flex flex-col w-full items-start gap-2 border rounded-md p-2">
-      <h1 className="">Welcome!</h1>
-      <p className="text-sm">{user?.username}</p>
-      {/* <p className="text-xs text-neutral-500">{user?.email}</p> */}
-      <form action={logOut}>
-        <Button>로그아웃</Button>
-      </form>
-    </div>
-  );
-}
-
-export default async function AdminLayOut({
+export default function WriterLayOut({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUserData();
   return (
     <div className="w-full flex flex-row items-start">
       <div className="py-6 border-r-[1px]  bg-white  w-[180px] h-screen fixed top-0 left-0">

@@ -19,6 +19,7 @@ import { toast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import { login } from "./actions";
 import { FormSchema } from "./mangerAuthShema";
+import { signIn } from "next-auth/react";
 
 export default function Page() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -30,17 +31,26 @@ export default function Page() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    let newData = JSON.stringify(data);
-    let formdata = new FormData();
-    formdata.append("email", data.email);
-    formdata.append("password", data.password);
-    let result = await login(formdata);
-    console.log(result);
+    // let newData = JSON.stringify(data);
+    // let formdata = new FormData();
+    // formdata.append("email", data.email);
+    // formdata.append("password", data.password);
+    // let result = await login(formdata);
+    // console.log(result);
+
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      type: "writer",
+      callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+      redirect: true,
+    });
+    console.log("result", result);
   }
 
   return (
     <div className="bg-white p-12 w-full h-full flex flex-col items-center justify-center">
-      <div className="w-1/2 bg-white border rounded-md p-12 flex flex-col items-center gap-12">
+      <div className="w-full bg-white border rounded-md p-12 flex flex-col items-center gap-3">
         <div className="flex flex-col items-center gap-3 relative">
           <Image src="/logocolor.svg" alt="logo" width={90} height={100} />
           <p>파인파밍에 어서오세요!</p>

@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import AuthProvider from "@/lib/next-auth";
 dayjs.locale("ko");
 
 dayjs.extend(utc);
@@ -47,10 +48,11 @@ export default async function RootLayout({
             strategy="beforeInteractive"
             src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAO_MAP_KEY}&libraries=services&autoload=false`}
           />
-
-          <main className="w-screen  flex flex-row  items-stretch bg-neutral-100 relative">
-            {children}
-          </main>
+          <AuthProvider>
+            <main className="w-screen  flex flex-row  items-stretch bg-neutral-100 relative">
+              {children}
+            </main>
+          </AuthProvider>
           <Toaster />
           {/* <NextScript /> */}
         </body>

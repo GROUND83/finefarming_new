@@ -5,41 +5,35 @@ import getSession from "@/lib/session";
 import { Prisma } from "@prisma/client";
 import { notFound } from "next/navigation";
 
-export async function getInitData() {
-  let session = await getSession();
-  console.log(session);
-  if (session) {
-    let user = await db.writer.findUnique({
-      where: {
-        id: Number(session.id),
-      },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        avatar: true,
-        intruduce: true,
-        intruduceTitle: true,
-        link: true,
-      },
-    });
-    let products = await db.product.findMany({
-      select: {
-        id: true,
-        title: true,
-        farmId: true,
-        farm: {
-          select: {
-            id: true,
-            name: true,
-          },
+export async function getInitData(userId: number) {
+  let user = await db.writer.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      avatar: true,
+      intruduce: true,
+      intruduceTitle: true,
+      link: true,
+    },
+  });
+  let products = await db.product.findMany({
+    select: {
+      id: true,
+      title: true,
+      farmId: true,
+      farm: {
+        select: {
+          id: true,
+          name: true,
         },
       },
-    });
-    return { user, products };
-  } else {
-    return notFound();
-  }
+    },
+  });
+  return { user, products };
 }
 
 export async function createMagazine(jsonData: string) {

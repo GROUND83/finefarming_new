@@ -32,6 +32,7 @@ export default function Login() {
     const result = await signIn("credentials", {
       email: data.email,
       password: data.password,
+      type: "user",
       callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}`,
       redirect: true,
     });
@@ -46,7 +47,7 @@ export default function Login() {
         </div>
         <Form {...form}>
           <form
-            className="flex flex-col gap-3 w-full"
+            className="flex flex-col gap-6 w-full"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
@@ -94,6 +95,17 @@ export default function Login() {
           <span>아직 계정이 없나요?</span>
           <Link href={"/auth/register"} className="text-primary font-bold">
             회원가입
+          </Link>
+        </div>
+        <div className="flex flex-row items-center gap-3 ">
+          <Link href={"/farmerAuth"} className="text-neutral-500 text-sm ">
+            농장주
+          </Link>
+          <Link href={"/writerAuth"} className="text-neutral-500 text-sm ">
+            매거진 작가
+          </Link>
+          <Link href={"/mangerAuth"} className="text-neutral-500 text-sm ">
+            매니저
           </Link>
         </div>
       </div>
