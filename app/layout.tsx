@@ -42,10 +42,9 @@ export default async function RootLayout({
           className={inter.className}
           style={{ fontSize: 16, margin: 0, padding: 0 }}
         >
-          <script
-            // strategy="beforeInteractive"
+          <Script
+            strategy="beforeInteractive"
             src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAO_MAP_KEY}&libraries=services&autoload=false`}
-            type="text/jsvascript"
           />
 
           <main className="w-screen  flex flex-row  items-stretch bg-neutral-100 relative">
