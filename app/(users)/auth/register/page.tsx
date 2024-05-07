@@ -22,9 +22,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
-import db from "@/lib/db";
+
 import { useRouter } from "next/navigation";
-import { createAccount } from "./actions";
+
+import { formSchema } from "./registerSchema";
 const checkPassword = ({
   password,
   confirmPassword,
@@ -32,20 +33,6 @@ const checkPassword = ({
   password: string;
   confirmPassword: string;
 }) => password === confirmPassword;
-
-export const formSchema = z.object({
-  email: z.string().email({ message: "이메일 형식이 아닙니다." }),
-  username: z.string(),
-  phone: z.string(),
-  password: z
-    .string()
-    .min(PASSWORD_MIN_LENGHT, PASSWORD_ERROR_MESSAGE)
-    .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
-  confirmPassword: z
-    .string()
-    .min(PASSWORD_MIN_LENGHT, PASSWORD_ERROR_MESSAGE)
-    .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
-});
 
 export default function Page() {
   const router = useRouter();

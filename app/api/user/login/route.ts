@@ -5,6 +5,10 @@ import { NextResponse } from "next/server";
 export async function POST(req: any, res: any) {
   const body = await req.json();
   const { email, password } = body;
+  console.log(email, password);
+  if (!email || !password) {
+    return res.status(400).json({ message: "invalid input" });
+  }
 
   try {
     const user = await db.user.findUnique({
