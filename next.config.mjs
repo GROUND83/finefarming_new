@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       { hostname: "imagedelivery.net" },
@@ -10,7 +11,6 @@ const nextConfig = {
       { hostname: "dapi.kakao.com" },
     ],
   },
-  reactStrictMode: false,
 };
 
 export default nextConfig;

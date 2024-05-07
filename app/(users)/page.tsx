@@ -152,7 +152,7 @@ export default function Page() {
                 </div>
               </div>
               <Link
-                href={"/recommand"}
+                href={"/product"}
                 className="text-primary  font-semibold flex flex-row items-center gap-3"
               >
                 추천농장 보기
@@ -211,7 +211,7 @@ export default function Page() {
                 </div>
               </div>
               <Link
-                href={"/recommand"}
+                href={"/product"}
                 className="text-primary  font-semibold flex flex-row items-center gap-3"
               >
                 추천농장 보기
@@ -268,7 +268,7 @@ export default function Page() {
                 </div>
               </div>
               <Link
-                href={"/recommand"}
+                href={"/product"}
                 className="text-primary  font-semibold flex flex-row items-center gap-3"
               >
                 추천농장 보기
@@ -325,7 +325,7 @@ export default function Page() {
                 </div>
               </div>
               <Link
-                href={"/recommand"}
+                href={"/product"}
                 className="text-primary  font-semibold flex flex-row items-center gap-3"
               >
                 추천농장 보기
@@ -426,7 +426,7 @@ export default function Page() {
               </div>
               <div className="flex flex-col gap-6 ml-6 border-l-2 pl-6">
                 <div className="flex flex-col gap-3">
-                  <p className="font-semibold">Journal</p>
+                  <p className="font-semibold">Magazine</p>
                   <ul className="flex flex-col gap-1">
                     <li className="text-neutral-500">
                       - 교육 전문가가 직접 경험한 체험 후기
@@ -436,15 +436,15 @@ export default function Page() {
                     </li>
                   </ul>
                   <Link
-                    href={"/journal"}
+                    href={"/magazine"}
                     className="text-primary  font-semibold flex flex-row items-center gap-3"
                   >
-                    Journal 추천글 보기
+                    Magazine 추천글 보기
                     <ArrowRightIcon className="size-4" />
                   </Link>
                 </div>
                 <div className="flex flex-col gap-3">
-                  <p className="font-semibold">Board</p>
+                  <p className="font-semibold">Community</p>
                   <ul className="flex flex-col gap-1">
                     <li className="text-neutral-500">
                       - 직접 경험한 체험과 농장에 대한 다양한 정보 공유
@@ -454,10 +454,10 @@ export default function Page() {
                     </li>
                   </ul>
                   <Link
-                    href={"/board"}
+                    href={"/community"}
                     className="text-primary  font-semibold flex flex-row items-center gap-3"
                   >
-                    Board 게시판 보기
+                    Community 보기
                     <ArrowRightIcon className="size-4" />
                   </Link>
                 </div>
