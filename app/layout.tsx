@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 
 import { Toaster } from "@/components/ui/toaster";
 import { ReactQueryClientProvider } from "@/components/reactQuery/ClientProvider";

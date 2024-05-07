@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { getUser } from "../profile/_components/actions";
 import React from "react";
@@ -15,24 +16,21 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { empty_avatar_url } from "@/lib/constants";
 
 export function MobileUserComponet() {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [user, setUser] = React.useState<any>("");
+  const { data: session } = useSession();
 
-  const getUserData = async () => {
-    let user = await getUser();
-    if (user) {
-      setUser(user);
-    }
-  };
   React.useEffect(() => {
-    getUserData();
-  }, []);
+    console.log("session", session);
+  }, [session]);
   return (
     <div className="flex flex-row items-center gap-3">
-      {user ? (
+      {session?.user ? (
         <Drawer.Root direction="right" open={open}>
           <Drawer.Trigger asChild>
             <Button
@@ -51,14 +49,22 @@ export function MobileUserComponet() {
             <Drawer.Content className="bg-white flex flex-col rounded-t-[10px] h-full w-[60vw] mt-24 fixed bottom-0 right-0 z-50">
               <div className=" bg-white flex-1 h-full">
                 <div className="max-w-md mx-auto">
-                  {user ? (
+                  {session?.user ? (
                     <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b p-3">
                       <Avatar>
-                        <AvatarImage src={user.avatar} />
+                        <AvatarImage
+                          src={
+                            session?.user.avatar
+                              ? session?.user.avatar
+                              : empty_avatar_url
+                          }
+                        />
                       </Avatar>
                       <div>
-                        <p className=" text-md">{user.username}</p>
-                        <p className="text-neutral-500 text-sm">{user.email}</p>
+                        <p className=" text-md">{session?.user.username}</p>
+                        <p className="text-neutral-500 text-sm">
+                          {session?.user.email}
+                        </p>
                       </div>
                     </Drawer.Title>
                   ) : (
@@ -76,7 +82,7 @@ export function MobileUserComponet() {
                     </Drawer.Title>
                   )}
                   <div className="flex flex-col items-start p-3 gap-3">
-                    {user && (
+                    {session?.user && (
                       <div className="w-full">
                         <Button
                           onClick={() => {
@@ -171,43 +177,39 @@ export function MobileUserComponet() {
 }
 
 export function UserComponet() {
-  const router = useRouter();
-  const [open, setOpen] = React.useState(false);
   const [user, setUser] = React.useState<any>("");
+  const { data: session } = useSession();
 
-  const getUserData = async () => {
-    let user = await getUser();
-    console.log("user", user);
-    if (user) {
-      setUser(user);
-    }
-  };
   React.useEffect(() => {
-    getUserData();
-  }, []);
+    console.log("session", session);
+  }, [session]);
   return (
     <div className="flex flex-row items-center gap-3 mt-3">
-      {user ? (
+      {session?.user ? (
         <Link
           href={
-            user.role === "user"
+            session.user?.role === "user"
               ? "/profile"
-              : user.role === "manager"
+              : session?.user.role === "manager"
               ? "/admin/farm"
-              : user.role === "superAdmin"
+              : session?.user.role === "superAdmin"
               ? "/admin/farm"
-              : user.role === "writer"
+              : session?.user.role === "writer"
               ? "/dashbordWriter"
               : "/"
           }
           className="  flex flex-row items-center gap-3  "
         >
           <Avatar>
-            <AvatarImage src={user.avatar} />
+            <AvatarImage
+              src={
+                session?.user.avatar ? session?.user.avatar : empty_avatar_url
+              }
+            />
           </Avatar>
           <div>
-            <p className=" text-md">{user.username}</p>
-            <p className="text-neutral-500 text-sm">{user.email}</p>
+            <p className=" text-md">{session?.user.username}</p>
+            <p className="text-neutral-500 text-sm">{session?.user.email}</p>
           </div>
         </Link>
       ) : (

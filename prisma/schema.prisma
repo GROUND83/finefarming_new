@@ -9,6 +9,9 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+
 // admin
 model SuperManager {
   id Int @id  @default(autoincrement())
@@ -21,6 +24,7 @@ model SuperManager {
   updated_at DateTime @updatedAt 
   role String @default("superAdmin")
   approve Boolean @default(true)
+  provider ProviderType @default(email)
 }
 // admin
 model Manager {
@@ -32,6 +36,7 @@ model Manager {
   avatar String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt 
+  provider ProviderType @default(email)
   role String @default("manager")
   approve Boolean @default(false)
 }
@@ -52,7 +57,6 @@ model User {
   role String @default("user")
   approve Boolean @default(true)
   reviews Review[]
-
 }
 // 라이터
 model Writer {
@@ -89,6 +93,7 @@ model Farmer {
   updated_at DateTime @updatedAt
   role String @default("farmer")
   approve Boolean @default(false)
+  provider ProviderType @default(email)
 }
 
 model Farm {

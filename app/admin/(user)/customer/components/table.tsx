@@ -169,7 +169,7 @@ export const columns: ColumnDef<TableDataType>[] = [
       const farmer = row.original;
       return (
         <div className="text-xs text-right">
-          <Link href={`/admin/farmer/${farmer.id}`}>
+          <Link href={`/admin/customer/${farmer.id}`}>
             <Button variant="outline" size="icon">
               <MagnifyingGlassIcon className="size-4" />
             </Button>

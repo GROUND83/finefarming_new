@@ -213,7 +213,7 @@ export default function Page({ params }: { params: { id: string } }) {
           title: "삭제 완료",
           description: "삭제 완료 되었습니다.",
         });
-        router.push("/admin/manager");
+        router.push("/admin/customer");
       }
     } catch (e) {
       toast({

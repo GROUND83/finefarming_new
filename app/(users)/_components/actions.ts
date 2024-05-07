@@ -1,16 +1,7 @@
 "use server";
 import db from "@/lib/db";
-import getSession from "@/lib/session";
-import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
-import { notFound, permanentRedirect, redirect } from "next/navigation";
 
-// export async function logOut() {
-//   const session = await getServerSession();
-//   session.destroy();
-//   // revalidatePath("/");
-//   return permanentRedirect("/");
-// }
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 
 export async function getUser({
   userId,
@@ -37,18 +28,6 @@ export async function getUser({
         username: true,
         created_at: true,
         role: true,
-        approve: true,
-        provider: true,
-        reservation: {
-          include: {
-            farm: true,
-          },
-        },
-        reviews: {
-          include: {
-            product: true,
-          },
-        },
       },
     });
     console.log("user", user);
@@ -66,7 +45,6 @@ export async function getUser({
         avatar: true,
         username: true,
         created_at: true,
-        provider: true,
         role: true,
         approve: true,
       },
@@ -86,7 +64,6 @@ export async function getUser({
         username: true,
         created_at: true,
         role: true,
-        provider: true,
         approve: true,
       },
     });
