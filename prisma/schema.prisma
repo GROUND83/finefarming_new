@@ -265,7 +265,7 @@ model ReserVationDate {
   visible Boolean @default(true)
   type Boolean @default(true)
   date DateTime 
-  strignDate String?
+ 
   startTime String
   amount Int
   farm Farm @relation(fields: [farmId], references: [id], onDelete:Cascade)

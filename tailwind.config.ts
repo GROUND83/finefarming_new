@@ -15,8 +15,16 @@ const config = {
     //   padding: "2rem",
     // },
     screens: {
-      sm: { max: "1023px" },
-      md: { min: "1024px" },
+      xs: { max: "380px" },
+      sm: {
+        min: "381px",
+        max: "500px",
+      },
+      md: {
+        min: "501px",
+        max: "1023px",
+      },
+      lg: { min: "1024px", max: "3000px" },
     },
     extend: {
       colors: {

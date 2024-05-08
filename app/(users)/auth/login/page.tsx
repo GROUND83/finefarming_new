@@ -18,8 +18,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
 import { formSchema } from "./loginSchema";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function Login() {
+function Login() {
+  const searchParams = useSearchParams();
+
+  let redirect = searchParams.get("redirect");
+  // console.log(redirect);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,15 +34,15 @@ export default function Login() {
     },
   });
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log("data", data);
-    const result = await signIn("credentials", {
+    // console.log("data", data);
+    await signIn("credentials", {
       email: data.email,
       password: data.password,
       type: "user",
-      callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+      callbackUrl: redirect ? redirect : "/",
       redirect: true,
     });
-    console.log("result", result);
+    // console.log("result", result);
   }
   return (
     <main className=" w-full grid grid-cols-2 gap-1 h-screen">
@@ -90,7 +96,7 @@ export default function Login() {
           </form>
         </Form>
 
-        <SocialLogin />
+        <SocialLogin redirect={redirect ? redirect : ""} />
         <div className="flex flex-row items-center gap-3 ">
           <span>아직 계정이 없나요?</span>
           <Link href={"/auth/register"} className="text-primary font-bold">
@@ -110,5 +116,13 @@ export default function Login() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <Login />
+    </Suspense>
   );
 }

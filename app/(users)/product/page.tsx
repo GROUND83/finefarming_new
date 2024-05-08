@@ -11,23 +11,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductTitleWrap } from "./_components/ProductTitleWrap";
 
-// async function getIsOwner(authorId: number) {
-//   const session = await getSession();
-//   if (session.id) {
-//     return session.id === authorId;
-//   }
-//   return false;
-// }
-
-// let productData = {
-//   id: 1,
-// };
 export default function Page() {
-  const [products, setProducts] = React.useState<any>([]);
-  //   const productId = Number(params.productId);
-  //   if (isNaN(productId)) {
-  //     return notFound();
-  //   }
+  const [products, setProducts] = React.useState<any[]>([]);
+
   const getProductsData = async () => {
     let result = await getProducts();
     console.log("result", result);
@@ -37,23 +23,27 @@ export default function Page() {
     getProductsData();
   }, []);
   return (
-    <div className="w-full ">
+    <div className="w-full container mx-auto ">
       <div className="w-full   relative  grid grid-cols-12 gap-6 p-6 ">
         {products.length > 0 &&
           products.map((item: any, index: any) => {
             return (
               <div
                 key={index}
-                className="bg-white  col-span-12  flex flex-col items-start justify-start  rounded-md overflow-hidden border"
+                className="bg-white  col-span-12  lg:col-span-4 flex flex-col items-start justify-start  rounded-md overflow-hidden border"
               >
                 <div className="w-full  aspect-[4/3] relative bg-cover ">
-                  <Image
-                    src={item.mainImage}
-                    fill
-                    priority
-                    alt={item.title}
-                    style={{ objectFit: "cover" }}
-                  />
+                  {item.mainImage ? (
+                    <Image
+                      src={item.mainImage}
+                      fill
+                      priority
+                      alt={item.title}
+                      style={{ objectFit: "cover" }}
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-neutral-100"></div>
+                  )}
                 </div>
                 <ProductTitleWrap
                   productId={item.id}
@@ -84,12 +74,6 @@ export default function Page() {
               </div>
             );
           })}
-        {/* <Image
-          src="/image.png"
-          fill
-          alt="image"
-          style={{ objectFit: "cover", objectPosition: "center center" }}
-        /> */}
       </div>
     </div>
   );

@@ -1,7 +1,5 @@
 "use client";
-
-import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, usePathname, useRouter } from "next/navigation";
 import React from "react";
 import {
   getProductDetail,
@@ -9,13 +7,9 @@ import {
   makeReservation,
 } from "./_component/actions";
 import { Button } from "@/components/ui/button";
-import { de, ko } from "date-fns/locale";
+import { ko } from "date-fns/locale";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { object, z } from "zod";
 import { cn } from "@/lib/utils";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
@@ -27,7 +21,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Swiper, SwiperSlide } from "swiper/react";
 import {
   Popover,
   PopoverContent,
@@ -40,11 +33,9 @@ import { CalendarIcon, Loader2 } from "lucide-react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
-import { Pagination, Navigation } from "swiper/modules";
 import { Badge } from "@/components/ui/badge";
 import { NumberInput } from "@/components/form/NumberInput";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { SelectProductField } from "./_component/selectProductField";
 import dayjs from "dayjs";
 import { getSession, useSession } from "next-auth/react";
@@ -52,6 +43,7 @@ import {
   getHolidays,
   getNationalHoliday,
 } from "@/app/admin/farm/[id]/reservation/_compoents/actions";
+import { z } from "zod";
 
 const FormSchema = z.object({
   checkInDate: z.union([
@@ -106,7 +98,8 @@ type nationalholidayType = {
   year: string;
 };
 export default function Page({ params }: { params: { productId: string } }) {
-  const [images, setImages] = React.useState<string[]>([]);
+  const pathname = usePathname();
+
   const [calenderLoading, setCalenderLoading] = React.useState(false);
   const [calenderOpen, setCalenderOpen] = React.useState(false);
   const [nationalholiday, setNationalHoliday] = React.useState<
@@ -123,7 +116,9 @@ export default function Page({ params }: { params: { productId: string } }) {
   const [selectPrice, setSelectPrice] = React.useState(0);
 
   const [totalPrice, setTotalPrice] = React.useState(0);
+
   let { data: session } = useSession();
+  const router = useRouter();
 
   const clickSelectDate = async (date: Date) => {
     console.log("date", date, detail, params.productId);
@@ -142,6 +137,7 @@ export default function Page({ params }: { params: { productId: string } }) {
         });
         console.log("totalReservationDate", totalReservationDate);
         setTotalReservationDate(totalReservationDate.result);
+        getProductsDetailData();
       } catch (e) {
         //
         notFound();
@@ -156,13 +152,6 @@ export default function Page({ params }: { params: { productId: string } }) {
   //4. 가능슬롯 선택
 
   const getProductsDetailData = async () => {
-    // 1.제품정보 가져오기
-    // 2.농장의 예약데이트 가져오기
-    //3. 농장의 예약 슬롯가져오기
-    //   4. 농장의 취소 예약 맥스 가져오기
-
-    // 3. 농장의 영업시간 가져오기
-
     const productId = Number(params.productId);
     if (isNaN(productId)) {
       return notFound();
@@ -176,24 +165,15 @@ export default function Page({ params }: { params: { productId: string } }) {
     let slot = newdata.farm.slot;
 
     console.log("getProductDetail", reservationMax, reservationMin, slot);
+
     return newdata;
   };
-
-  //
-  React.useEffect(() => {
-    if (params.productId) {
-      getProductsDetailData();
-    }
-  }, [params.productId]);
 
   const form = useForm<optionSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: async () => {
       let result = await getProductsDetailData();
-      let newImage = [...result.images];
-      let images = [result.mainImage, ...newImage];
-      console.log("images", images);
-      setImages(images);
+
       console.log("result", result);
       let optionVaules = result.subProduct.map((item: any) => {
         if (item.essential) {
@@ -439,6 +419,13 @@ export default function Page({ params }: { params: { productId: string } }) {
       ) {
         return true;
       }
+
+      if (
+        date >
+        new Date(dayjs().add(detail?.farm.reservationMax, "day").format())
+      ) {
+        return true;
+      }
       if (farmHoliday) {
         if (!farmHoliday.mondayOpen) {
           if (getDay === 1) {
@@ -493,50 +480,31 @@ export default function Page({ params }: { params: { productId: string } }) {
 
     return false;
   };
+  const getUser = async () => {
+    let sessiondata = await getSession();
+    console.log("sessiondata", sessiondata);
+    if (sessiondata) {
+      //
+    } else {
+      return router.push(`/auth/login?redirect=${pathname}`);
+    }
+  };
+  React.useEffect(() => {
+    //
+    getUser();
+  }, []);
   return (
-    <div className="w-full    container mx-auto relative  min-h-screen bg-neutral-100">
+    <div className="w-full    container mx-auto relative  bg-white min-h-screen">
       {detail && (
         <div className="w-full">
-          <div className=" col-span-12 bg-white">
-            {images.length > 0 && (
-              <Swiper
-                loop
-                speed={2000}
-                autoplay
-                pagination={true}
-                modules={[Pagination, Navigation]}
-                className=" w-full h-full "
-              >
-                {images.map((image, index) => {
-                  return (
-                    <SwiperSlide key={index}>
-                      <div className=" relative w-full bg-red-200  aspect-[4/3]">
-                        <Image
-                          src={image}
-                          alt={`${detail.name}-${index}`}
-                          fill
-                          priority
-                        />
-                      </div>
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
-            )}
+          <div className="w-full bg-primary p-3 ">
+            <p className="text-lg font-semibold text-white">예약하기</p>
           </div>
-          <div className="p-3 col-span-12 bg-white  border-b">
+          <div className="p-6 col-span-12 bg-white  border-b">
             <p className="text-lg font-semibold">{detail.title}</p>
             <p className="text-sm text-neutral-500">{detail.description}</p>
-            <p>메거진 링크</p>
-            {detail.educationSubject.length > 0 && (
-              <div className="flex flex-row items-center gap-2 flex-wrap">
-                {detail.educationSubject.map((item: any, index: any) => {
-                  return <Badge key={index}>{item.tag}</Badge>;
-                })}
-              </div>
-            )}
           </div>
-          <div className="w-full flex flex-col items-start  gap-3 flex-1 mt-1  ">
+          <div className="w-full flex flex-col items-start  flex-1  ">
             <Form {...form}>
               <form
                 onSubmit={onSubmit}
@@ -546,7 +514,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                   control={form.control}
                   name="checkInDate"
                   render={({ field }) => (
-                    <FormItem className="gap-2 col-span-12  grid grid-cols-12 border-t border-b p-6  bg-white">
+                    <FormItem className="gap-2 col-span-12  grid grid-cols-12  border-b p-6  bg-white">
                       <FormLabel className=" col-span-12 flex flex-row items-center font-semibold text-lg">
                         방문 일자
                       </FormLabel>
@@ -604,7 +572,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                           control={form.control}
                           name="checkInTime"
                           render={({ field }) => (
-                            <FormItem className="gap-3 col-span-12  grid grid-cols-12  border-t border-b p-6 bg-white">
+                            <FormItem className="gap-3 col-span-12  grid grid-cols-12  border-b p-6 bg-white">
                               <div className="col-span-12 flex flex-row items-center gap-3 justify-between">
                                 <FormLabel className="col-span-4 flex flex-row items-start font-semibold text-lg">
                                   예약가능 시간
@@ -691,7 +659,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                             </FormItem>
                           )}
                         />
-                        <div className=" col-span-12  border-t border-b p-6 bg-white">
+                        <div className=" col-span-12   border-b p-6 bg-white">
                           <div className="mb-4">
                             <FormLabel className="text-lg font-semibold">
                               옵션 상품
@@ -741,7 +709,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                                 control={form.control}
                                 name="groupNumber"
                                 render={({ field }) => (
-                                  <FormItem className="gap-2 col-span-12   flex flex-col items-start   border-t border-b p-6 bg-white">
+                                  <FormItem className="gap-2 col-span-12   flex flex-col items-start   border-b p-6 bg-white">
                                     <FormLabel className="text-lg font-semibold">
                                       그룹 인원
                                     </FormLabel>
@@ -785,7 +753,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                             </>
                           )
                         ) : (
-                          <div className="gap-3 col-span-12  grid grid-cols-12  border-t border-b p-6 bg-white">
+                          <div className="gap-3 col-span-12  grid grid-cols-12  border-b p-6 bg-white">
                             <div className="flex flex-col items-start col-span-12 gap-1">
                               <FormLabel className="flex flex-row items-start font-semibold text-lg">
                                 방문인원
@@ -861,7 +829,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                           control={form.control}
                           name="visitor"
                           render={({ field }) => (
-                            <FormItem className="gap-2 col-span-12  grid grid-cols-12  border-t border-b p-6 bg-white">
+                            <FormItem className="gap-2 col-span-12  grid grid-cols-12   border-b p-6 bg-white">
                               <FormLabel className="col-span-4 space-y-0">
                                 방문자대표
                               </FormLabel>
@@ -884,7 +852,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                           control={form.control}
                           name="visitorPhone"
                           render={({ field }) => (
-                            <FormItem className="gap-2 col-span-12  grid grid-cols-12  border-t border-b p-6 bg-white">
+                            <FormItem className="gap-2 col-span-12  grid grid-cols-12 border-b p-6 bg-white">
                               <FormLabel className="col-span-4">
                                 연락처
                               </FormLabel>

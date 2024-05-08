@@ -30,8 +30,23 @@ export async function getSelectDate(productId: number) {
       id: productId,
     },
 
-    include: {
-      farm: true,
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      priceType: true,
+      groupPrice: true,
+      groupLimit: true,
+      farmId: true,
+      farm: {
+        select: {
+          initail: true,
+          id: true,
+          reservationMax: true,
+          reservationMin: true,
+          slot: true,
+        },
+      },
       subProduct: true,
     },
   });
@@ -266,7 +281,7 @@ export async function makeReservation(jsonData: string) {
         },
       });
       console.log("createReservation", createReservation);
-      return redirect(`/reservation/${createReservation.id}`);
+      return redirect(`/reservation/detail/${createReservation.id}`);
     }
   }
 }

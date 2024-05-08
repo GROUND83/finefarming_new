@@ -49,12 +49,11 @@ export default async function RootLayout({
             src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAO_MAP_KEY}&libraries=services&autoload=false`}
           />
           <AuthProvider>
-            <main className="w-screen  flex flex-row  items-stretch bg-neutral-100 relative">
+            <div className="w-screen  flex flex-col  items-stretch bg-white relative min-h-screen">
               {children}
-            </main>
+            </div>
           </AuthProvider>
           <Toaster />
-          {/* <NextScript /> */}
         </body>
       </html>
     </ReactQueryClientProvider>

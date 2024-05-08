@@ -8,8 +8,23 @@ export async function getReservationDetail(reservatonId: number) {
       id: reservatonId,
     },
     include: {
-      farm: true,
-      user: true,
+      farm: {
+        select: {
+          refundPolicy: true,
+          name: true,
+          id: true,
+          address: true,
+          reservationMin: true,
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          username: true,
+          phone: true,
+          email: true,
+        },
+      },
     },
   });
   const product = await db.product.findUnique({

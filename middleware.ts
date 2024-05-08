@@ -26,28 +26,36 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   console.log("pathname", pathname);
   const session = await getToken({ req, secret, raw: false });
-  // console.log("session", session);
-  // const exists = publicOnlyUrls[request.nextUrl.pathname];
-  if (pathname.startsWith("/admin")) {
-    if (session) {
-      if (session.id && session.role) {
-        if (session.role === "manager") {
-          console.log("session", session);
-          return NextResponse.next();
-        } else if (session.role === "superAdmin") {
-          return NextResponse.next();
-        } else {
-          return NextResponse.redirect(new URL("/mangerAuth", req.url));
-        }
-        //
-      } else {
-        // console.log("session", session);
-        return NextResponse.redirect(new URL("/mangerAuth", req.url));
-      }
+  if (pathname.startsWith("/profile")) {
+    console.log("session", session);
+    if (session?.role === "user") {
+      return NextResponse.next();
     } else {
-      return NextResponse.redirect(new URL("/mangerAuth", req.url));
+      return NextResponse.redirect(new URL("/auth/login", req.url));
     }
   }
+  // console.log("session", session);
+  // const exists = publicOnlyUrls[request.nextUrl.pathname];
+  // if (pathname.startsWith("/admin")) {
+  //   if (session) {
+  //     if (session.id && session.role) {
+  //       if (session.role === "manager") {
+  //         console.log("session", session);
+  //         return NextResponse.next();
+  //       } else if (session.role === "superAdmin") {
+  //         return NextResponse.next();
+  //       } else {
+  //         return NextResponse.redirect(new URL("/mangerAuth", req.url));
+  //       }
+  //       //
+  //     } else {
+  //       // console.log("session", session);
+  //       return NextResponse.redirect(new URL("/mangerAuth", req.url));
+  //     }
+  //   } else {
+  //     return NextResponse.redirect(new URL("/mangerAuth", req.url));
+  //   }
+  // }
   if (pathname.startsWith("/dashbordWriter")) {
     if (session) {
       console.log("session writer", session, session.role, session.id);
@@ -100,9 +108,10 @@ export async function middleware(req: NextRequest) {
 export const config = {
   //   matcher: ["/", "/profile", "auth/:path*"], // 미들웨어 실행할 path
   matcher: [
-    "/dashbordWriter/:path*",
-    "/admin/:path*",
-    "/writer/:path*",
+    "/reservaton/:path*",
+    // "/dashbordWriter/:path*",
+    // "/admin/:path*",
+    // "/writer/:path*",
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.svg$).*)", //제외
   ], // 미들웨어 실행할 path
 };

@@ -1,9 +1,7 @@
-import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/solid";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 
-export default function SocialLogin() {
+export default function SocialLogin({ redirect }: { redirect: string }) {
   return (
     <div className="w-full flex flex-col items-center gap-6">
       <div className="w-full h-px bg-neutral-300" />
@@ -13,7 +11,7 @@ export default function SocialLogin() {
           onClick={() =>
             signIn("kakao", {
               redirect: true,
-              callbackUrl: "/",
+              callbackUrl: redirect ? redirect : "/",
             })
           }
           className="bg-[#FFE500] text-[#181600] text-md hover:bg-opacity-80 hover:bg-[#FFE500] flex flex-row items-center gap-12 rounded-md px-6 py-3 justify-between w-full"
@@ -27,7 +25,7 @@ export default function SocialLogin() {
           onClick={() =>
             signIn("naver", {
               redirect: true,
-              callbackUrl: "/",
+              callbackUrl: redirect ? redirect : "/",
             })
           }
           className="bg-[#03C75A] text-white text-md hover:bg-opacity-80 hover:bg-[#03C75A] flex flex-row items-center justify-between gap-12 rounded-md px-6 py-3 w-full "

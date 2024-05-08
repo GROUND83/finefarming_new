@@ -29,149 +29,141 @@ export function MobileUserComponet() {
     console.log("session", session);
   }, [session]);
   return (
-    <div className="flex flex-row items-center gap-3">
-      {session?.user ? (
-        <Drawer.Root direction="right" open={open}>
-          <Drawer.Trigger asChild>
-            <Button
-              onClick={() => setOpen(true)}
-              variant={"ghost"}
-              className=" focus:outline-none outline-none"
-            >
-              <Bars3Icon className="size-6" />
-            </Button>
-          </Drawer.Trigger>
-          <Drawer.Portal>
-            <Drawer.Overlay
-              className="fixed inset-0 bg-black/40 z-40"
-              onClick={() => setOpen(false)}
-            />
-            <Drawer.Content className="bg-white flex flex-col rounded-t-[10px] h-full w-[60vw] mt-24 fixed bottom-0 right-0 z-50">
-              <div className=" bg-white flex-1 h-full">
-                <div className="max-w-md mx-auto">
-                  {session?.user ? (
-                    <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b p-3">
-                      <Avatar>
-                        <AvatarImage
-                          src={
-                            session?.user.avatar
-                              ? session?.user.avatar
-                              : empty_avatar_url
-                          }
-                        />
-                      </Avatar>
-                      <div>
-                        <p className=" text-md">{session?.user.username}</p>
-                        <p className="text-neutral-500 text-sm">
-                          {session?.user.email}
-                        </p>
-                      </div>
-                    </Drawer.Title>
-                  ) : (
-                    <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b p-3">
+    <div className="flex flex-row items-center gap-3 ">
+      <Drawer.Root direction="right" open={open}>
+        <Drawer.Trigger asChild>
+          <Button
+            onClick={() => setOpen(true)}
+            variant={"ghost"}
+            className=" focus:outline-none outline-none"
+          >
+            <Bars3Icon className="size-6" />
+          </Button>
+        </Drawer.Trigger>
+        <Drawer.Portal>
+          <Drawer.Overlay
+            className="fixed inset-0 bg-black/40 z-40"
+            onClick={() => setOpen(false)}
+          />
+          <Drawer.Content className="bg-white flex flex-col rounded-t-[10px] h-full w-[80vw] mt-24 fixed bottom-0 right-0 z-50">
+            <div className=" bg-white flex-1 h-full">
+              <div className="max-w-md mx-auto">
+                {session?.user ? (
+                  <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b p-3">
+                    <Avatar>
+                      <AvatarImage
+                        src={
+                          session?.user.avatar
+                            ? session?.user.avatar
+                            : empty_avatar_url
+                        }
+                      />
+                    </Avatar>
+                    <div>
+                      <p className=" text-md">{session?.user.username}</p>
+                      <p className="text-neutral-500 text-xs">
+                        {session?.user.email}
+                      </p>
+                    </div>
+                  </Drawer.Title>
+                ) : (
+                  <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b p-3">
+                    <Button
+                      asChild
+                      variant={"outline"}
+                      onClick={() => {
+                        router.push("/auth/login");
+                        setOpen(false);
+                      }}
+                    >
+                      <p>시작하기</p>
+                    </Button>
+                  </Drawer.Title>
+                )}
+                <div className="flex flex-col items-start p-3 gap-3">
+                  {session?.user && (
+                    <div className="w-full">
                       <Button
-                        asChild
-                        variant={"outline"}
                         onClick={() => {
-                          router.push("/auth/login");
+                          router.push("/profile");
                           setOpen(false);
                         }}
+                        variant={"outline"}
+                        className="w-full"
                       >
-                        <p>시작하기</p>
+                        <div className="flex flex-row items-center gap-2">
+                          <UserCircleIcon className="size-4" />
+                          <span>나의 페이지</span>
+                        </div>
                       </Button>
-                    </Drawer.Title>
+                    </div>
                   )}
-                  <div className="flex flex-col items-start p-3 gap-3">
-                    {session?.user && (
-                      <div className="w-full">
-                        <Button
-                          onClick={() => {
-                            router.push("/profile");
-                            setOpen(false);
-                          }}
-                          variant={"outline"}
-                          className="w-full"
-                        >
-                          <div className="flex flex-row items-center gap-2">
-                            <UserCircleIcon className="size-4" />
-                            <span>나의 페이지</span>
-                          </div>
-                        </Button>
+                  <div className="w-full">
+                    <Button
+                      onClick={() => {
+                        router.push("/product");
+                        setOpen(false);
+                      }}
+                      variant={"outline"}
+                      className="w-full"
+                    >
+                      <div className="flex flex-row items-center gap-2">
+                        <MagnifyingGlassIcon className="size-4" />
+                        <span>농장체험 상품</span>
                       </div>
-                    )}
-                    <div className="w-full">
-                      <Button
-                        onClick={() => {
-                          router.push("/product");
-                          setOpen(false);
-                        }}
-                        variant={"outline"}
-                        className="w-full"
-                      >
-                        <div className="flex flex-row items-center gap-2">
-                          <MagnifyingGlassIcon className="size-4" />
-                          <span>농장체험 상품</span>
-                        </div>
-                      </Button>
-                    </div>
-                    <div className="w-full">
-                      <Button
-                        onClick={() => {
-                          router.push("/magazine");
-                          setOpen(false);
-                        }}
-                        variant={"outline"}
-                        className="w-full"
-                      >
-                        <div className="flex flex-row items-center gap-2">
-                          <BookOpenIcon className="size-4" />
-                          <span>매거진</span>
-                        </div>
-                      </Button>
-                    </div>
-                    <div className="w-full">
-                      <Button
-                        onClick={() => {
-                          router.push("/community");
-                          setOpen(false);
-                        }}
-                        variant={"outline"}
-                        className="w-full"
-                      >
-                        <div className="flex flex-row items-center gap-2">
-                          <ChatBubbleLeftEllipsisIcon className="size-4" />
-                          <span>커뮤니티</span>
-                        </div>
-                      </Button>
-                    </div>
-                    <div className="w-full">
-                      <Button
-                        onClick={() => {
-                          router.push("/reservation");
-                          setOpen(false);
-                        }}
-                        className="w-full"
-                        variant={"outline"}
-                      >
-                        <div className="flex flex-row items-center gap-2">
-                          <ReceiptPercentIcon className="size-4" />
-                          <span>예약하기</span>
-                        </div>
-                      </Button>
-                    </div>
+                    </Button>
                   </div>
+                  <div className="w-full">
+                    <Button
+                      onClick={() => {
+                        router.push("/magazine");
+                        setOpen(false);
+                      }}
+                      variant={"outline"}
+                      className="w-full"
+                    >
+                      <div className="flex flex-row items-center gap-2">
+                        <BookOpenIcon className="size-4" />
+                        <span>매거진</span>
+                      </div>
+                    </Button>
+                  </div>
+                  <div className="w-full">
+                    <Button
+                      onClick={() => {
+                        router.push("/community");
+                        setOpen(false);
+                      }}
+                      variant={"outline"}
+                      className="w-full"
+                    >
+                      <div className="flex flex-row items-center gap-2">
+                        <ChatBubbleLeftEllipsisIcon className="size-4" />
+                        <span>커뮤니티</span>
+                      </div>
+                    </Button>
+                  </div>
+                  {/* <div className="w-full">
+                    <Button
+                      onClick={() => {
+                        router.push("/reservation");
+                        setOpen(false);
+                      }}
+                      className="w-full"
+                      variant={"outline"}
+                    >
+                      <div className="flex flex-row items-center gap-2">
+                        <ReceiptPercentIcon className="size-4" />
+                        <span>예약하기</span>
+                      </div>
+                    </Button>
+                  </div> */}
                 </div>
               </div>
-            </Drawer.Content>
-          </Drawer.Portal>
-        </Drawer.Root>
-      ) : (
-        <div className="  flex flex-row items-center gap-3 ">
-          <Button asChild variant={"outline"}>
-            <Link href={"/auth/login"}>시작하기</Link>
-          </Button>
-        </div>
-      )}
+            </div>
+          </Drawer.Content>
+        </Drawer.Portal>
+      </Drawer.Root>
     </div>
   );
 }
@@ -184,7 +176,7 @@ export function UserComponet() {
     console.log("session", session);
   }, [session]);
   return (
-    <div className="flex flex-row items-center gap-3 mt-3">
+    <div className="flex flex-row items-center gap-3 mt-3 ">
       {session?.user ? (
         <Link
           href={

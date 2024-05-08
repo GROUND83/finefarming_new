@@ -11,9 +11,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="w-[100vw]  overflow-x-hidden ">
-      <div className="w-full border-b-[1px] fixed top-0 left-0 h-[85px] bg-white z-50 sm:hidden">
-        <div className=" flex flex-row items-center gap-12 justify-between h-full w-full px-12">
+    <div className="w-full  overflow-x-hidden ">
+      <header className="w-full border-b-[1px] fixed top-0 left-0 h-[85px] bg-white z-50 sm:hidden md:hidden xs:hidden">
+        <nav className=" flex flex-row items-center gap-12 justify-between h-full w-full container mx-auto">
           <div className="flex flex-row items-center gap-12 ">
             <Link href={"/"}>
               <div className="flex flex-row items-center gap-12 relative w-[60px] h-[50px] ">
@@ -44,22 +44,22 @@ export default function RootLayout({
           <div>
             <UserComponet />
           </div>
-        </div>
-      </div>
+        </nav>
+      </header>
       {/* 모바일 */}
-      <div className="w-full  border-b-[1px]   fixed top-0 left-0 h-[85px] bg-white z-20  md:hidden px-3 ">
-        <div className=" flex flex-row items-center gap-12 justify-between h-full px-3">
+      <header className="w-full  border-b-[1px]   fixed top-0 left-0 h-[85px] bg-white z-20  lg:hidden  ">
+        <nav className=" flex flex-row items-center  justify-between h-full  px-6 bg-red-200">
           <Link href={"/"}>
-            <div className="flex flex-row items-center gap-12 relative w-[80px] h-[50px] ">
+            <div className="flex flex-row items-center gap-12 relative w-[80px] h-[40px] ">
               <Image src="/logocolor.svg" alt="logo" fill priority />
             </div>
           </Link>
-          <div className="mt-3 flex flex-row items-center gap-3">
+          <div className=" flex flex-row items-center gap-3">
             <MobileUserComponet />
           </div>
-        </div>
-      </div>
-      <div className="mt-[85px] w-full  bg-white ">{children}</div>
+        </nav>
+      </header>
+      <main className="pt-[85px] w-full bg-white h-full  ">{children}</main>
     </div>
   );
 }

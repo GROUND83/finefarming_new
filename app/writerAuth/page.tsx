@@ -42,10 +42,10 @@ export default function Page() {
       email: data.email,
       password: data.password,
       type: "writer",
-      callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+      callbackUrl: "/",
       redirect: true,
     });
-    console.log("result", result);
+    if (result) console.log("result", result);
   }
 
   return (

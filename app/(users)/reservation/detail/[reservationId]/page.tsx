@@ -8,6 +8,8 @@ import Image from "next/image";
 import moment from "moment";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { getSession } from "next-auth/react";
+import { Badge } from "@/components/ui/badge";
 
 // async function getIsOwner(authorId: number) {
 //   const session = await getSession();
@@ -26,6 +28,7 @@ export default function Page({
   const [product, setProduct] = React.useState<any>();
   const [isBefore, setIsBefore] = React.useState(false);
   const router = useRouter();
+
   const getProductsDetailData = async () => {
     //
     const reservationId = Number(params.reservationId);
@@ -35,6 +38,13 @@ export default function Page({
     let result: any = await getReservationDetail(reservationId);
     let newDate = JSON.parse(result);
     console.log("result", newDate);
+    let userSession = await getSession();
+    console.log("userSession", userSession);
+    if (newDate && userSession) {
+      if (newDate?.reservation.userId !== userSession?.user.id) {
+        return router.push("/");
+      }
+    }
     setReservationDetail(newDate.reservation);
     setProduct(newDate.product);
     let min = newDate.product.farm.reservationMin;
@@ -60,42 +70,22 @@ export default function Page({
       getProductsDetailData();
     }
   }, [params.reservationId]);
-  // const journal = await getJournal(id);
-  // if (!journal) {
-  //   return notFound();
-  // }
-  // console.log(journal);
+
   return (
     <div className="w-full bg-neutral-100 h-full">
       {reservationDetail && (
-        <div className="w-full   relative  grid grid-cols-12 gap-6 ">
-          {/* <div className=" col-span-12">
-            <p>예약 결과</p>
-          </div> */}
+        <div className="w-full     grid grid-cols-12 pb-24 relative ">
+          <div className=" col-span-12 bg-primary p-3">
+            <p className="text-lg text-white font-semibold">예약 내용</p>
+          </div>
           <div className=" col-span-12">
-            <div className="w-full relative aspect-video">
+            {/* <div className="w-full relative aspect-video">
               <Image src={product.mainImage} fill alt={product.title} />
-            </div>
+            </div> */}
             <div className="p-6 flex flex-col items-start gap-3 w-full bg-white border-b">
               <div>
                 <p className=" font-semibold text-lg">{product.title}</p>
                 <p className="text-neutral-500">{product.description}</p>
-              </div>
-              <div className="bg-primary/10 border border-primary p-3 rounded-md text-sm">
-                <p>{product.educationTitle}</p>
-              </div>
-
-              <div className="flex flex-row items-center w-full gap-2">
-                {product.educationSubject.map((item: any, index: any) => {
-                  return (
-                    <div
-                      key={index}
-                      className="bg-primary/10 border border-primary px-3 py-1 rounded-md text-sm text-primary"
-                    >
-                      <p>{item.tag}</p>
-                    </div>
-                  );
-                })}
               </div>
             </div>
             <div className="p-6 grid grid-cols-12  gap-2 w-full bg-white border-b mt-1">
@@ -145,18 +135,25 @@ export default function Page({
               <div className=" col-span-9">
                 {reservationDetail.status === "waiting" && (
                   <div className="flex flex-col items-start gap-2">
-                    <p className="px-3 py-1 bg-primary/10 border rounded-full text-xs">
-                      확정대기
-                    </p>
-                    <p className="text-xs">
-                      예약확정 시 카카오톡 또는 네이버톡톡으로 알림 발송합니다.
+                    <Badge className="text-sm">확정대기</Badge>
+
+                    <p className="text-sm">
+                      예약확정 시 등록된 이메일로 알림 발송합니다.
                     </p>
                   </div>
                 )}
-                {reservationDetail.status === "complete" && <p>예약확정</p>}
-                {reservationDetail.status === "cancle" && <p>취소</p>}
-                {reservationDetail.status === "done" && <p>방문완료</p>}
-                {reservationDetail.status === "noshow" && <p>노쇼 </p>}
+                {reservationDetail.status === "complete" && (
+                  <Badge className="text-sm">예약확정</Badge>
+                )}
+                {reservationDetail.status === "cancle" && (
+                  <Badge className="text-sm">취소</Badge>
+                )}
+                {reservationDetail.status === "done" && (
+                  <Badge className="text-sm">방문완료</Badge>
+                )}
+                {reservationDetail.status === "noshow" && (
+                  <Badge className="text-sm">취소</Badge>
+                )}
               </div>
             </div>
             <div className="p-6 grid grid-cols-12  gap-1 w-full bg-white border-b mt-1">
@@ -204,9 +201,9 @@ export default function Page({
                 <p className="font-semibold">결제 예정 금액</p>
               </div>
               {reservationDetail.priceType === "PERSONAL" ? (
-                <>
+                <div className=" col-span-12 grid grid-cols-12  gap-3">
                   <div className=" col-span-3">
-                    <p>기본</p>
+                    <p>개인</p>
                   </div>
                   <div className=" col-span-9">
                     {reservationDetail.personalPrice.map(
@@ -233,59 +230,71 @@ export default function Page({
                   <div className=" col-span-9">
                     <p>{reservationDetail.totalprice.toLocaleString()}원</p>
                   </div>
-                </>
+                </div>
               ) : (
-                <>
+                <div className=" col-span-12 grid grid-cols-12  gap-3">
+                  <div className=" col-span-3">
+                    <p>그룹</p>
+                  </div>
+                  <div className=" col-span-9 flex flex-row items-center gap-3">
+                    <p>그룹 인원</p>
+                    <p>{reservationDetail.groupNumber}명</p>
+                  </div>
+                  <div className=" col-span-3">
+                    <p>결제 예정 금액</p>
+                  </div>
                   <div className=" col-span-9">
                     <p>{reservationDetail.totalprice.toLocaleString()}원</p>
                   </div>
-                </>
+                </div>
               )}
             </div>
-            <div className="p-6 grid grid-cols-12  gap-1 w-full bg-white border-b mt-1">
+            <div className="p-6 grid grid-cols-12  gap-1 w-full bg-neutral-800  mt-1">
               <div className=" col-span-12">
-                <p className="font-semibold">취소 환불 정책</p>
+                <p className="font-semibold text-white">취소 환불 정책</p>
               </div>
               <div className=" col-span-12">
-                <p className=" whitespace-pre text-pretty text-sm">
+                <p className=" whitespace-pre text-pretty text-sm text-neutral-500">
                   {reservationDetail.farm.refundPolicy}
                 </p>
               </div>
             </div>
-            <div className="p-6 grid grid-cols-12  gap-2 w-full bg-white border-b mt-1 pb-24">
-              {(reservationDetail.status === "complete" ||
-                reservationDetail.status === "waiting") && (
-                <div className=" col-span-12">
-                  <div className=" col-span-12 flex flex-row items-center  justify-between">
-                    <p>최소 가능 예약일자</p>
-                    <p>예약일 {product.farm.reservationMin} 일전</p>
+          </div>
+          <div className="p-6 grid grid-cols-12  gap-2 w-full bg-neutral-900 border-b  fixed bottom-0 left-0">
+            {(reservationDetail.status === "complete" ||
+              reservationDetail.status === "waiting") && (
+              <div className=" col-span-12 flex flex-row items-center justify-between gap-6 ">
+                <div className=" flex flex-col items-start  justify-between w-[200px] ">
+                  <p className="text-white">최소 가능 예약일자</p>
+                  <p className="text-white">
+                    방문일 {product.farm.reservationMin} 일전
+                  </p>
+                </div>
+                {isBefore ? (
+                  <div className="  flex flex-col items-end w-full">
+                    <Button variant={"destructive"}>예약 취소</Button>
                   </div>
-                  {isBefore ? (
-                    <div className=" col-span-12 flex flex-col items-end w-full">
-                      <Button variant={"destructive"}>예약 취소</Button>
-                    </div>
-                  ) : (
-                    <div className=" col-span-12 flex flex-col items-center  w-full bg-neutral-100 p-3 broder rounded-md">
-                      <p className="text-red-400 text-sm">
-                        취소 가능일이 촤과하여 예약 취소가 불가합니다.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
+                ) : (
+                  <div className="  flex flex-col items-center  w-full bg-neutral-800 p-3 broder rounded-md flex-1">
+                    <p className="text-red-400 text-sm">
+                      취소 가능일이 촤과하여 예약 취소가 불가합니다.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
 
-              {reservationDetail.status === "done" && (
-                <div className="flex flex-row items-center justify-between col-span-12 mt-3">
-                  <Button asChild className="w-full " size={"sm"}>
-                    <Link
-                      href={`/review/${reservationDetail.id}/${reservationDetail.productId}`}
-                    >
-                      체험 후기 작성
-                    </Link>
-                  </Button>
-                </div>
-              )}
-            </div>
+            {reservationDetail.status === "done" && (
+              <div className="flex flex-row items-center justify-between col-span-12 mt-3">
+                <Button asChild className="w-full " size={"sm"}>
+                  <Link
+                    href={`/review/${reservationDetail.id}/${reservationDetail.productId}`}
+                  >
+                    체험 후기 작성
+                  </Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}

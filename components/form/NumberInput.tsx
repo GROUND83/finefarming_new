@@ -6,32 +6,33 @@ import { UseFormSetValue } from "react-hook-form";
 
 interface InputProps {
   name: string;
-
   setvalue: UseFormSetValue<any>;
+  min: number;
+  max: number;
 }
 export const NumberInput = ({
   name,
   min,
+  max,
   setvalue,
   ...rest
 }: InputProps & InputHTMLAttributes<HTMLInputElement>) => {
+  //
   const clickPlus = () => {
     //
-    console.log(rest.value);
-    if (rest) {
-      if (rest.value) {
-        let result = Number(rest.value) + 1;
-        setvalue(name, result);
-      }
+
+    if (Number(rest.value) >= min && Number(rest.value) < max) {
+      let result = Number(rest.value) + 1;
+      // console.log(result);
+      setvalue(name, result);
     }
   };
   const clickMinus = () => {
-    console.log(rest.value);
+    // console.log(rest.value);
     if (rest) {
       if (rest.value) {
-        if (Number(rest.value) > 0) {
+        if (Number(rest.value) > min) {
           let result = Number(rest.value) - 1;
-
           setvalue(name, result);
         }
       }
@@ -51,7 +52,7 @@ export const NumberInput = ({
       </div>
       <Input
         type="text"
-        disabled
+        readOnly
         name={name}
         className="w-[50px] text-center text-black"
         value={rest.value}
