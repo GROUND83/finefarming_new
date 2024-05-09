@@ -330,7 +330,7 @@ export async function makeReservation(jsonData: string) {
         let subject = `${username} 예약 확인 메일입니다.`;
         let farmerEmail = createReservation.farm.owner.email;
         console.log("farmerEmail", farmerEmail);
-        let to = `"${farmerEmail}, newfarmingplatform@gmail.com,"`;
+        let to = `${farmerEmail}, newfarmingplatform@gmail.com`;
         console.log("to", to);
         const transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",
@@ -479,15 +479,25 @@ export async function makeReservation(jsonData: string) {
         </html>
         
         `,
-          //	attachments 옵션으로 첨부파일도 전송 가능함
-          //	attachments : [첨부파일]
         };
-        try {
-          let seondmail = await transporter.sendMail(mailData);
-          console.log(seondmail);
-        } catch (e) {
-          console.log(e);
-        }
+
+        await new Promise((resolve, reject) => {
+          transporter.sendMail(mailData, (error: any, info: any) => {
+            if (error) {
+              console.error(error);
+              reject(error);
+            }
+            console.log("Email sent: ", info);
+            resolve("success");
+          });
+
+          // try {
+          //   let seondmail = await transporter.sendMail(mailData);
+          //   console.log(seondmail);
+          // } catch (e) {
+          //   console.log(e);
+          // }
+        });
       }
 
       console.log("createReservation", createReservation);
