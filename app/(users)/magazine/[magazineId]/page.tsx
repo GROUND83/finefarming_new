@@ -225,8 +225,8 @@ export default async function Page({
           asChild
           className="w-[100px] h-[100px] flex flex-col items-center justify-center text-center"
         >
-          <Link href={`/product/${magazine.productId}/reservation`}>
-            체험상품 <br /> 예약하기
+          <Link href={`/product/${magazine.productId}`}>
+            체험상품 <br /> 자세히보기
           </Link>
         </Button>
       </div>

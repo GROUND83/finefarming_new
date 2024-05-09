@@ -45,7 +45,7 @@ function Login() {
     // console.log("result", result);
   }
   return (
-    <main className=" w-full grid grid-cols-2 gap-1 h-screen">
+    <main className=" container mx-auto grid grid-cols-2 gap-1 h-screen pb-24">
       <div className="flex flex-col items-center gap-6 col-span-2 p-6 justify-center w-full">
         <div className="flex flex-col items-center gap-3">
           <Image src="/logocolor.svg" alt="logo" width={90} height={100} />

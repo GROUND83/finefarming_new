@@ -127,6 +127,7 @@ export async function getReservationDate({
         gte: koreanSelectDay,
         lt: plusDay,
       },
+      OR: [{ status: "waiting" }, { status: "complete" }],
     },
     _count: true,
   });

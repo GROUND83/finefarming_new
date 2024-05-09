@@ -19,6 +19,7 @@ import { toast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import { login } from "./actions";
 import { FormSchema } from "./mangerAuthShema";
+import { signIn } from "next-auth/react";
 
 export default function Page() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -30,12 +31,14 @@ export default function Page() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    let newData = JSON.stringify(data);
-    let formdata = new FormData();
-    formdata.append("email", data.email);
-    formdata.append("password", data.password);
-    let result = await login(formdata);
-    console.log(result);
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      type: "superAdmin",
+      callbackUrl: "/admin/farm",
+      redirect: true,
+    });
+    if (result) console.log("result", result);
   }
 
   return (

@@ -144,7 +144,7 @@ export default function Page() {
                                 {reservation.status === "done" && (
                                   <Badge variant={"done"}>방문완료</Badge>
                                 )}
-                                {reservation.status === "cancel" && (
+                                {reservation.status === "cancle" && (
                                   <Badge variant={"cancel"}>예약취소</Badge>
                                 )}
                                 {reservation.status === "noshow" && (

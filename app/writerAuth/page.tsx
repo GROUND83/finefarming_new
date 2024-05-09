@@ -42,15 +42,15 @@ export default function Page() {
       email: data.email,
       password: data.password,
       type: "writer",
-      callbackUrl: "/",
+      callbackUrl: "/dashbordWriter/magazine",
       redirect: true,
     });
     if (result) console.log("result", result);
   }
 
   return (
-    <div className="bg-white p-12 w-full h-full flex flex-col items-center justify-center">
-      <div className="w-full bg-white border rounded-md p-12 flex flex-col items-center gap-3">
+    <div className="bg-white  w-full min-h-screen flex flex-col items-center justify-center p-6">
+      <div className=" w-full lg:w-1/2 bg-white border rounded-md p-12 flex flex-col items-center gap-12">
         <div className="flex flex-col items-center gap-3 relative">
           <Image src="/logocolor.svg" alt="logo" width={90} height={100} />
           <p>파인파밍에 어서오세요!</p>

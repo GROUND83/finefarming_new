@@ -3,7 +3,7 @@
 // import getSession from "@/lib/session";
 import { notFound, useRouter } from "next/navigation";
 import React from "react";
-import { getReservationDetail } from "./_components/actions";
+import { getReservationDetail, makeCancle } from "./_components/actions";
 import Image from "next/image";
 import moment from "moment";
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,8 @@ export default function Page({
     console.log("result", newDate);
     let userSession = await getSession();
     console.log("userSession", userSession);
+
+    //
     if (newDate && userSession) {
       if (newDate?.reservation.userId !== userSession?.user.id) {
         return router.push("/");
@@ -70,7 +72,11 @@ export default function Page({
       getProductsDetailData();
     }
   }, [params.reservationId]);
-
+  const clickCancle = async () => {
+    console.log(reservationDetail);
+    let resoponse = await makeCancle(reservationDetail.id);
+    console.log("resoponse", resoponse);
+  };
   return (
     <div className="w-full bg-white h-full">
       {reservationDetail && (
@@ -146,7 +152,9 @@ export default function Page({
               <div className=" col-span-8">
                 {reservationDetail.status === "waiting" && (
                   <div className="flex flex-col items-start gap-2">
-                    <Badge className="text-sm">확정대기</Badge>
+                    <Badge className="text-sm" variant={"waiting"}>
+                      확정대기
+                    </Badge>
 
                     <p className="text-sm">
                       예약확정 시 등록된 이메일로 알림 발송합니다.
@@ -154,16 +162,25 @@ export default function Page({
                   </div>
                 )}
                 {reservationDetail.status === "complete" && (
-                  <Badge className="text-sm">예약확정</Badge>
+                  <Badge className="text-sm" variant={"complete"}>
+                    예약확정
+                  </Badge>
                 )}
-                {reservationDetail.status === "cancle" && (
-                  <Badge className="text-sm">취소</Badge>
+                {(reservationDetail.status === "cancle" ||
+                  reservationDetail.status === "managercancle") && (
+                  <Badge className="text-sm" variant={"cancel"}>
+                    취소
+                  </Badge>
                 )}
                 {reservationDetail.status === "done" && (
-                  <Badge className="text-sm">방문완료</Badge>
+                  <Badge className="text-sm" variant={"done"}>
+                    방문완료
+                  </Badge>
                 )}
                 {reservationDetail.status === "noshow" && (
-                  <Badge className="text-sm">취소</Badge>
+                  <Badge className="text-sm" variant={"noshow"}>
+                    취소
+                  </Badge>
                 )}
               </div>
             </div>
@@ -272,7 +289,12 @@ export default function Page({
                   </div>
                   {isBefore ? (
                     <div className="  flex flex-col items-end w-full">
-                      <Button variant={"destructive"}>예약 취소</Button>
+                      <Button
+                        variant={"destructive"}
+                        onClick={() => clickCancle()}
+                      >
+                        예약 취소
+                      </Button>
                     </div>
                   ) : (
                     <div className="  flex flex-col items-center  w-full  p-3 broder rounded-md flex-1">
@@ -283,7 +305,14 @@ export default function Page({
                   )}
                 </div>
               )}
-
+              {(reservationDetail.status === "cancle" ||
+                reservationDetail.status === "managercancle") && (
+                <div className=" col-span-12 flex flex-row items-center justify-between gap-6 ">
+                  <div className=" flex flex-col items-start  justify-between ">
+                    <p className="text-red-500">예약이 취소 되었습니다.</p>
+                  </div>
+                </div>
+              )}
               {reservationDetail.status === "done" && (
                 <div className="flex flex-row items-center justify-between col-span-12 mt-3">
                   <Button asChild className="w-full " size={"sm"}>

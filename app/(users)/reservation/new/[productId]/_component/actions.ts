@@ -6,6 +6,8 @@ import { Prisma } from "@prisma/client";
 import dayjs from "dayjs";
 import moment from "moment";
 import { redirect } from "next/navigation";
+import sendMail from "@/lib/sendMail/sendMail";
+import getDateTime from "@/lib/getDateTime";
 
 export async function getProductDetail(productId: number) {
   const products = await db.product.findUnique({
@@ -130,6 +132,7 @@ export async function getReservationDate({
         gte: newKoreanDate,
         lt: plusDay,
       },
+      OR: [{ status: "waiting" }, { status: "complete" }],
     },
     _count: true,
   });
@@ -258,6 +261,8 @@ export async function makeReservation(jsonData: string) {
         groupPrice,
         farm: { initail, id },
       } = product;
+
+      //
       let createReservation = await db.reservation.create({
         data: {
           reservationNumber: `${initail}-${new Date().getTime()}`,
@@ -269,6 +274,7 @@ export async function makeReservation(jsonData: string) {
           user: {
             connect: { id: result.userId },
           },
+          subProduct: result.subProduct,
           productId: productId,
           visitor: result.visitor,
           visitorPhone: result.visitorPhone,
@@ -279,6 +285,8 @@ export async function makeReservation(jsonData: string) {
           checkInDate: new Date(result.checkInDate),
           checkInTime: result.checkInTime,
           totalprice: result.totalPrice,
+          created_at: getDateTime(),
+          updated_at: getDateTime(),
         },
         include: {
           user: {
@@ -290,7 +298,7 @@ export async function makeReservation(jsonData: string) {
           },
           farm: {
             select: {
-              mainPhone: true,
+              resevationPhone: true,
               name: true,
               address: true,
               owner: {
@@ -309,6 +317,8 @@ export async function makeReservation(jsonData: string) {
         let userPhone = createReservation.user.phone;
         let farmName = createReservation.farm.name;
         let farmAddress = createReservation.farm.address;
+        let visitor = createReservation.visitor;
+        let visitorPhone = createReservation.visitorPhone;
         let checkIndate = `${moment(createReservation.checkInDate).format(
           "YYYY년 MM월 DD일"
         )} ${createReservation.checkInTime}`;
@@ -324,31 +334,21 @@ export async function makeReservation(jsonData: string) {
             howmany += createReservation.groupNumber;
           }
         }
-        let totalPrice = createReservation.totalprice;
-        let mainPhone = createReservation.farm.mainPhone;
+        let totalPrice = `${Number(result.totalprice).toLocaleString()}원`;
+        let resevationPhone = createReservation.farm.resevationPhone;
+
         let from = "info@finefarming.co.kr";
         let subject = `${username} 예약 확인 메일입니다.`;
         let farmerEmail = createReservation.farm.owner.email;
+
         console.log("farmerEmail", farmerEmail);
         let to = `${farmerEmail}, newfarmingplatform@gmail.com`;
         console.log("to", to);
-        const transporter = nodemailer.createTransport({
-          host: "smtp.gmail.com",
-          // 아래 secure 옵션을 사용하려면 465 포트를 사용해야함
-          port: 465,
-          secure: true, // true for 465, false for other ports
-          auth: {
-            // 초기에 설정해둔 env 데이터
-            user: process.env.AUTH_USER,
-            pass: process.env.AUTH_PASS,
-          },
-        });
 
         const mailData: any = {
           to: to,
           subject: subject,
           from: from,
-
           html: `<!doctype html>
           <html>
           <body style="width:500px;">
@@ -373,20 +373,26 @@ export async function makeReservation(jsonData: string) {
           >
             <div
               style="
-               
-               
                 width: 100%;
                 padding-bottom: 10px;
                 border-bottom: 1px solid #e5e7eb;
               "
             >
-              <span>고객연락처</span>
-              <span style="margin-left: 10px">${userPhone}</span>
+              <span>방문자대표 </span>
+              <span style="margin-left: 10px">${visitor}</span>
             </div>
             <div
               style="
-               
-               
+                width: 100%;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #e5e7eb;
+              "
+            >
+              <span>방문자대표 연락처</span>
+              <span style="margin-left: 10px">${visitorPhone}</span>
+            </div>
+            <div
+              style="
                 width: 100%;
                 margin-top: 10px;
                 padding-bottom: 10px;
@@ -430,7 +436,7 @@ export async function makeReservation(jsonData: string) {
               "
             >
               <span>방문인원</span>
-              <span style="margin-left: 10px">${howmany}</span>
+              <span style="margin-left: 10px">${howmany}명</span>
             </div>
             <div
               style="
@@ -454,7 +460,7 @@ export async function makeReservation(jsonData: string) {
               "
             >
               <span>농장 예약 문의</span>
-              <span style="margin-left: 10px">${mainPhone}</span>
+              <span style="margin-left: 10px">${resevationPhone}</span>
             </div>
           </div>
           <div style="margin-top: 50px">
@@ -481,23 +487,8 @@ export async function makeReservation(jsonData: string) {
         `,
         };
 
-        await new Promise((resolve, reject) => {
-          transporter.sendMail(mailData, (error: any, info: any) => {
-            if (error) {
-              console.error(error);
-              reject(error);
-            }
-            console.log("Email sent: ", info);
-            resolve("success");
-          });
-
-          // try {
-          //   let seondmail = await transporter.sendMail(mailData);
-          //   console.log(seondmail);
-          // } catch (e) {
-          //   console.log(e);
-          // }
-        });
+        let sendResult = await sendMail(mailData);
+        console.log("sendResult", sendResult);
       }
 
       console.log("createReservation", createReservation);

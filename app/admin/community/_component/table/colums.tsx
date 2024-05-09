@@ -45,28 +45,33 @@ const deletFarm = async (farmId: number) => {
 
 export const columns: ColumnDef<any>[] = [
   {
-    accessorKey: "visible",
-    header: "공지사항",
+    accessorKey: "id",
+    header: ({ column }) => {
+      return (
+        <div className="flex flex-col items-start justify-center text-left ">
+          <Button variant="ghost" className="  p-0">
+            순번
+          </Button>
+        </div>
+      );
+    },
     cell: ({ row }) => {
       return (
         <div className=" text-left">
-          {row.getValue("visible") ? (
-            <div>
-              <Badge>공지사항</Badge>
-            </div>
-          ) : (
-            <div></div>
-          )}
+          <p>{row.getValue("id")}</p>
         </div>
       );
     },
   },
+
   {
     accessorKey: "title",
     header: "제목",
     cell: ({ row }) => {
+      let isNotice = row.original.isNotice;
       return (
-        <div className=" flex flex-row items-center gap-2 justify-start">
+        <div className=" flex flex-row items-center gap-2 justify-start flex-1 ">
+          {isNotice && <Badge variant={"complete"}>공지</Badge>}
           <p>{row.getValue("title")}</p>
         </div>
       );

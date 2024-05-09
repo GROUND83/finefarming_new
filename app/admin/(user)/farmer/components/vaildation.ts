@@ -12,17 +12,7 @@ export async function cheackEmail(email: string) {
   });
   return emaildata;
 }
-export async function checkPhone(phone: string) {
-  const phonedata = await db.farmer.findUnique({
-    where: {
-      phone,
-    },
-    select: {
-      id: true,
-    },
-  });
-  return phonedata;
-}
+
 export const checkPassword = ({
   password,
   confirmPassword,

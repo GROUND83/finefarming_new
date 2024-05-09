@@ -19,17 +19,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-let dummyData = {
-  id: 1,
-  reservationNumber: "GX29319501",
-  farmName: "피코니크 농장",
-  user: "백지민",
-  checkInData: new Date(),
-  howMany: 3,
-  totalPrice: 36000,
-  status: "확정대기",
-  created_at: new Date(),
-};
 
 export default function Page({
   params,
@@ -73,7 +62,7 @@ export default function Page({
   const clickCancle = async () => {
     let result = await changeStatus({
       reservationId: Number(params.reservationId),
-      status: "cancle",
+      status: "managercancle",
     });
     console.log(result);
     getData();
@@ -101,9 +90,14 @@ export default function Page({
                   방문완료
                 </Badge>
               )}
-              {detail.status === "cancel" && (
+              {detail.status === "cancle" && (
                 <Badge variant={"cancel"} className="text-xs">
                   취소
+                </Badge>
+              )}
+              {detail.status === "managercancle" && (
+                <Badge variant={"cancel"} className="text-xs">
+                  매니저 취소
                 </Badge>
               )}
               {detail.status === "noshow" && (
@@ -113,8 +107,8 @@ export default function Page({
               )}
             </div>
             <div className="flex flex-row items-center gap-3">
-              {detail.start !== "done" ||
-                (detail.start !== "noShow" && (
+              {detail.status === "waiting" && (
+                <>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="deleteOutline" size={"sm"}>
@@ -138,32 +132,31 @@ export default function Page({
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
-                ))}
-              {detail.status === "waiting" && (
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="default" size={"sm"}>
-                      예약 확정
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className=" rounded-md">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        예약상태를 예약확정으로 변경하겠습니까?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        예약상태를 예약확정으로 변경합니다.
-                        <br /> 고객, 농장주에게 알림 메세지가 발송됩니다.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>닫기</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => clickComplete()}>
-                        확정
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="default" size={"sm"}>
+                        예약 확정
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className=" rounded-md">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          예약상태를 예약확정으로 변경하겠습니까?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          예약상태를 예약확정으로 변경합니다.
+                          <br /> 고객, 농장주에게 알림 메세지가 발송됩니다.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>닫기</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => clickComplete()}>
+                          확정
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </>
               )}
               {detail.status === "complete" && (
                 <>
@@ -311,7 +304,8 @@ export default function Page({
                   <div className=" col-span-6 flex flex-col gap-1">
                     <p className=" font-semibold">일정</p>
                     <p className="text-neutral-500">
-                      {moment(detail.checkInDate).format("YYYY년 MM월 DD일")}
+                      {moment(detail.checkInDate).format("YYYY년 MM월 DD일")} /{" "}
+                      {detail.checkInTime}시
                     </p>
                   </div>
                   <div className=" col-span-6 flex flex-col gap-1">
@@ -331,10 +325,6 @@ export default function Page({
                         );
                       })}
                     </div>
-                  </div>
-                  <div className=" col-span-6 flex flex-col gap-1">
-                    <p className=" font-semibold">옵션</p>
-                    <p className="text-neutral-500">{}</p>
                   </div>
                 </div>
               </div>
@@ -368,7 +358,9 @@ export default function Page({
                 <div className=" col-span-9 grid grid-cols-12 gap-3 text-sm">
                   <div className=" col-span-12 flex flex-col gap-1">
                     <p className=" font-semibold">결제 예정 총액</p>
-                    <p className="text-neutral-500">{detail.totalPrice}원</p>
+                    <p className="text-neutral-500">
+                      {detail.totalprice.toLocaleString()}원
+                    </p>
                   </div>
                   {detail.priceType === "PERSONAL" && (
                     <div className=" col-span-6 flex flex-col gap-2 items-start">
@@ -394,10 +386,69 @@ export default function Page({
                       })}
                     </div>
                   )}
-                  <div className=" col-span-6 flex flex-col gap-1">
-                    <p className=" font-semibold">옵션</p>
-                    <p className="text-neutral-500">{}</p>
-                  </div>
+                  {detail.subProduct.length > 0 && (
+                    <div className=" col-span-6 flex flex-col gap-1">
+                      <p className=" font-semibold">옵션</p>
+                      <div>
+                        {detail.subProduct.map(
+                          (subProduct: any, subProductIndex: any) => {
+                            return (
+                              <div
+                                key={subProductIndex}
+                                className="flex flex-col items-start border px-3 py-2 gap-2"
+                              >
+                                <div className="flex flex-col items-start w-full gap-2  ">
+                                  <div className="flex-1 flex flex-row  items-center gap-2">
+                                    <p>필수</p>
+                                    <p className="text-neutral-500">
+                                      {subProduct.title}
+                                    </p>
+                                    <p className="text-neutral-500">
+                                      {subProduct.price.toLocaleString()}원
+                                    </p>
+                                  </div>
+                                  {subProduct.selectProducts.length > 0 && (
+                                    <div className="flex-1 flex flex-row items-center gap-2">
+                                      <p>추가</p>
+                                      <div className="flex flex-row items-center gap-2">
+                                        {subProduct.selectProducts.map(
+                                          (
+                                            selectProducts: any,
+                                            selectProductsIndex: any
+                                          ) => {
+                                            return (
+                                              <div
+                                                key={selectProductsIndex}
+                                                className="flex flex-row items-center gap-2 "
+                                              >
+                                                <p className="text-neutral-500">
+                                                  {selectProducts.title}
+                                                </p>
+                                                <p className="text-neutral-500">
+                                                  {selectProducts.amount}개
+                                                </p>
+                                                <p className="text-neutral-500">
+                                                  {Number(
+                                                    selectProducts.amount *
+                                                      selectProducts.price
+                                                  ).toLocaleString()}
+                                                  원
+                                                </p>
+                                              </div>
+                                            );
+                                          }
+                                        )}
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          }
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className=" grid grid-cols-12  gap-2 w-full   py-6 ">

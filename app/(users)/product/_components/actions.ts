@@ -4,12 +4,28 @@ import db from "@/lib/db";
 
 export async function getProducts() {
   const products = await db.product.findMany({
+    select: {
+      id: true,
+      mainImage: true,
+      title: true,
+      description: true,
+      visible: true,
+      subProduct: true,
+      farm: {
+        select: {
+          name: true,
+          sido: true,
+          sigungu: true,
+          visible: true,
+        },
+      },
+      educationSubject: true,
+    },
     where: {
       visible: true,
-    },
-    include: {
-      subProduct: true,
-      farm: true,
+      farm: {
+        visible: true,
+      },
     },
   });
   return products;

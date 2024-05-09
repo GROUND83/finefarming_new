@@ -26,6 +26,7 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   console.log("pathname", pathname);
   const session = await getToken({ req, secret, raw: false });
+  //
   if (pathname.startsWith("/profile")) {
     console.log("session", session);
     if (session?.role === "user") {
@@ -36,27 +37,28 @@ export async function middleware(req: NextRequest) {
   }
   // console.log("session", session);
   // const exists = publicOnlyUrls[request.nextUrl.pathname];
-  // if (pathname.startsWith("/admin")) {
-  //   if (session) {
-  //     if (session.id && session.role) {
-  //       if (session.role === "manager") {
-  //         console.log("session", session);
-  //         return NextResponse.next();
-  //       } else if (session.role === "superAdmin") {
-  //         return NextResponse.next();
-  //       } else {
-  //         return NextResponse.redirect(new URL("/mangerAuth", req.url));
-  //       }
-  //       //
-  //     } else {
-  //       // console.log("session", session);
-  //       return NextResponse.redirect(new URL("/mangerAuth", req.url));
-  //     }
-  //   } else {
-  //     return NextResponse.redirect(new URL("/mangerAuth", req.url));
-  //   }
-  // }
-  if (pathname.startsWith("/dashbordWriter")) {
+  if (pathname.startsWith("/admin")) {
+    console.log("session", session);
+    if (session) {
+      if (session.id && session.role) {
+        if (session.role === "manager") {
+          console.log("session", session);
+          return NextResponse.next();
+        } else if (session.role === "superAdmin") {
+          return NextResponse.next();
+        } else {
+          return NextResponse.redirect(new URL("/mangerAuth", req.url));
+        }
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.redirect(new URL("/mangerAuth", req.url));
+      }
+    } else {
+      return NextResponse.redirect(new URL("/mangerAuth", req.url));
+    }
+  }
+  if (pathname.startsWith("/dashWriter")) {
     if (session) {
       console.log("session writer", session, session.role, session.id);
       if (session.id && session.role) {
@@ -76,6 +78,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
+
   // if (!session.id) {
   //   //   유저가 없으면 퍼블릭 URL로 이동 못한다.
   //   if (!exists) {

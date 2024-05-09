@@ -12,6 +12,7 @@ import NewFarm from "@/app/admin/farm/new/newData";
 import NewReservation from "@/app/admin/reservation/_components/new/newData";
 import NewCommunity from "@/app/admin/community/_component/newModal";
 import NewMagazineModal from "@/app/admin/magazine/_commponent/new/newMagazineModal";
+import NewCommunityUser from "@/app/admin/community/_component/newModal";
 
 export default function SubTop({
   title,
@@ -57,6 +58,7 @@ export default function SubTop({
           {pathname === "/admin/customer" && <NewCustomer />}
           {pathname === "/admin/manager" && <NewManager />}
           {pathname === "/admin/community" && <NewCommunity />}
+
           {/* {pathname === "/admin/magazine" && <NewMagazineModal />} */}
           {/* {newbutton && (
             <div>

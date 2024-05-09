@@ -6,6 +6,8 @@ import KakaoProvider from "next-auth/providers/kakao";
 import bcrypt from "bcrypt";
 
 import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
+import getDateTime from "@/lib/getDateTime";
 function exclude(user: any, keys: any) {
   for (let key of keys) {
     delete user[key];
@@ -47,6 +49,7 @@ const handler = NextAuth({
                   password: true,
                   avatar: true,
                   role: true,
+                  phone: true,
                 },
               });
               const ok = await bcrypt.compare(
@@ -56,7 +59,7 @@ const handler = NextAuth({
               if (ok) {
                 let userdata = exclude(user, ["password"]);
                 if (userdata) {
-                  return userdata;
+                  return { ...userdata, type: "email" };
                 } else {
                   return null;
                 }
@@ -88,7 +91,7 @@ const handler = NextAuth({
               if (ok) {
                 let userdata = exclude(user, ["password"]);
                 if (userdata) {
-                  return userdata;
+                  return { ...userdata, type: "email" };
                 } else {
                   return null;
                 }
@@ -97,7 +100,7 @@ const handler = NextAuth({
               console.log(e);
               throw new Error(e);
             }
-          } else if (type === "superManager") {
+          } else if (type === "superAdmin") {
             if (!credentials?.email || !credentials?.password) {
               return false;
             }
@@ -120,7 +123,7 @@ const handler = NextAuth({
               if (ok) {
                 let userdata = exclude(user, ["password"]);
                 if (userdata) {
-                  return userdata;
+                  return { ...userdata, type: "email" };
                 } else {
                   return null;
                 }
@@ -152,7 +155,7 @@ const handler = NextAuth({
               if (ok) {
                 let userdata = exclude(user, ["password"]);
                 if (userdata) {
-                  return userdata;
+                  return { ...userdata, type: "email" };
                 } else {
                   return null;
                 }
@@ -184,7 +187,7 @@ const handler = NextAuth({
               if (ok) {
                 let userdata = exclude(user, ["password"]);
                 if (userdata) {
-                  return userdata;
+                  return { ...userdata, type: "email" };
                 } else {
                   return null;
                 }
@@ -214,7 +217,7 @@ const handler = NextAuth({
           avatar,
           type: "kakao",
           role: "user",
-        } as any;
+        };
       },
     }),
     NaverProvider({
@@ -225,8 +228,6 @@ const handler = NextAuth({
         const email = profile.response.email;
         const phone = profile.response.mobile;
         const avatar = profile.response.profile_image;
-        // kakaoid가 있으면
-
         return {
           id: profile.response.id,
           username,
@@ -235,72 +236,199 @@ const handler = NextAuth({
           avatar,
           type: "naver",
           role: "user",
-        } as any;
+        };
       },
     }),
   ],
   callbacks: {
     async signIn({ user, profile, credentials }) {
-      console.log(" user, profile ", user, profile, credentials);
-      if (profile) {
-        user.name = profile?.name || user.name;
-        user.email = profile?.email || user.email;
-      }
+      console.log(
+        " user",
+        user,
+        "profile",
+        profile,
+        "credentials",
+        credentials
+      );
+      if (user) {
+        try {
+          // 데이터베이스에 유저가 있는지 확인
+          let db_user: any = {};
+          if (user.role === "writer") {
+            let userdata = await db.writer.findUnique({
+              where: { email: user.email! },
+              select: {
+                username: true,
+                email: true,
+                phone: true,
+                avatar: true,
+                role: true,
+                id: true,
+              },
+            });
+            if (userdata) {
+              db_user = { ...userdata };
+            } else {
+              let userdata = await db.writer.create({
+                data: {
+                  username: user.username,
+                  email: user.email,
+                  phone: user.phone,
+                  avatar: user.avatar,
+                  role: user.role,
+                  created_at: getDateTime(),
+                  updated_at: getDateTime(),
+                },
+                select: {
+                  username: true,
+                  email: true,
+                  phone: true,
+                  avatar: true,
+                  role: true,
+                  id: true,
+                },
+              });
+              db_user = { ...userdata };
+            }
+          }
+          if (user.role === "user") {
+            let userdata = await db.user.findUnique({
+              where: {
+                email: user.email!,
+                provider: user.type as Prisma.EnumProviderTypeFilter,
+              },
+            });
+            if (userdata) {
+              db_user = { ...userdata };
+            } else {
+              let userdata = await db.user.create({
+                data: {
+                  username: user.username,
+                  email: user.email,
+                  phone: user.phone,
+                  avatar: user.avatar,
+                  role: user.role,
+                  provider: user.type,
+                  created_at: getDateTime(),
+                  updated_at: getDateTime(),
+                } as Prisma.UserCreateInput,
+                select: {
+                  username: true,
+                  email: true,
+                  phone: true,
+                  avatar: true,
+                  role: true,
+                  id: true,
+                },
+              });
+              db_user = { ...userdata };
+            }
+          }
+          if (user.role === "manager") {
+            let userdata = await db.manager.findUnique({
+              where: { email: user.email! },
+            });
+            if (userdata) {
+              db_user = { ...userdata };
+            } else {
+              let userdata = await db.manager.create({
+                data: {
+                  username: user.username,
+                  email: user.email,
+                  phone: user.phone,
+                  avatar: user.avatar,
+                  role: user.role,
+                  created_at: getDateTime(),
+                  updated_at: getDateTime(),
+                } as Prisma.ManagerCreateInput,
+                select: {
+                  username: true,
+                  email: true,
+                  phone: true,
+                  avatar: true,
+                  role: true,
+                  id: true,
+                },
+              });
+              db_user = { ...userdata };
+            }
+          }
+          if (user.role === "farmer") {
+            let userdata = await db.farmer.findUnique({
+              where: { email: user.email! },
+            });
+            if (userdata) {
+              db_user = { ...userdata };
+            } else {
+              let userdata = await db.farmer.create({
+                data: {
+                  username: user.username,
+                  email: user.email,
+                  phone: user.phone,
+                  avatar: user.avatar,
+                  role: user.role,
+                  provider: user.type,
+                  created_at: getDateTime(),
+                  updated_at: getDateTime(),
+                } as Prisma.FarmerCreateInput,
+                select: {
+                  username: true,
+                  email: true,
+                  phone: true,
+                  avatar: true,
+                  role: true,
+                  id: true,
+                },
+              });
+              db_user = { ...userdata };
+            }
+          }
+          if (user.role === "superAdmin") {
+            let userdata = await db.superManager.findUnique({
+              where: { email: user.email! },
+            });
+            if (userdata) {
+              db_user = { ...userdata };
+            } else {
+              let userdata = await db.superManager.create({
+                data: {
+                  username: user.username,
+                  email: user.email,
+                  phone: user.phone,
+                  avatar: user.avatar,
+                  role: user.role,
+                  provider: user.type,
+                  created_at: getDateTime(),
+                  updated_at: getDateTime(),
+                } as Prisma.SuperManagerCreateInput,
+                select: {
+                  username: true,
+                  email: true,
+                  phone: true,
+                  avatar: true,
+                  role: true,
+                  id: true,
+                },
+              });
+              db_user = { ...userdata };
+            }
+          }
+          console.log("db_user", db_user);
+          // // 없으면 데이터베이스에 유저 추가
 
-      try {
-        // 데이터베이스에 유저가 있는지 확인
-        let db_user: any = {};
-        if (user.role === "writer") {
-          db_user = await db.writer.findUnique({
-            where: { email: user.email! },
-          });
-        }
-        if (user.role === "user") {
-          db_user = await db.user.findUnique({
-            where: { email: user.email! },
-          });
-        }
-        if (user.role === "manager") {
-          db_user = await db.manager.findUnique({
-            where: { email: user.email! },
-          });
-        }
-        if (user.role === "farmer") {
-          db_user = await db.farmer.findUnique({
-            where: { email: user.email! },
-          });
-        }
-        if (user.role === "superAdmin") {
-          db_user = await db.superManager.findUnique({
-            where: { email: user.email! },
-          });
-        }
-        console.log("db_user", db_user);
-        // // 없으면 데이터베이스에 유저 추가
-        if (!db_user) {
-          db_user = await db.user.create({
-            data: {
-              username: user.name!,
-              email: user.email!,
-              phone: user.phone,
-              avatar: user.avatar,
-              provider:
-                user.type === "kakao"
-                  ? "kakao"
-                  : user.type === "naver"
-                  ? "naver"
-                  : "email",
-            },
-          });
-        }
+          if (!db_user) {
+            return false;
+          }
+          // 유저 정보에 데이터베이스 아이디, 역할 연결
+          user.id = db_user.id;
+          user.role = db_user.role;
 
-        // 유저 정보에 데이터베이스 아이디, 역할 연결
-        user.id = db_user.id;
-        user.role = db_user.role;
-
-        return true;
-      } catch (error) {
-        console.log("로그인 도중 에러가 발생했습니다. " + error);
+          return true;
+        } catch (error) {
+          // console.log("로그인 도중 에러가 발생했습니다. " + error);
+          return false;
+        }
+      } else {
         return false;
       }
     },
@@ -321,6 +449,7 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/auth/login",
+    error: "/auth/error",
     // signOut: "/signin",
     // error: "/signin",
   },

@@ -33,7 +33,8 @@ export const columns: ColumnDef<TableDataType>[] = [
     },
   },
   {
-    accessorKey: "farm",
+    accessorKey: "farm.name",
+    id: "farm",
     header: ({ column }) => {
       return (
         <div className="text-left">
@@ -49,17 +50,16 @@ export const columns: ColumnDef<TableDataType>[] = [
       );
     },
     cell: ({ row }) => {
-      console.log("row", row);
-      let farm = row.original as any;
       return (
         <div className="text-left ">
-          <p>{farm.name}</p>
+          <p>{row.getValue("farm")}</p>
         </div>
       );
     },
   },
   {
-    accessorKey: "user",
+    id: "user",
+    accessorKey: "user.username",
     header: ({ column }) => {
       return (
         <div className="text-center">
@@ -75,10 +75,9 @@ export const columns: ColumnDef<TableDataType>[] = [
       );
     },
     cell: ({ row }) => {
-      let user = row.original as any;
       return (
         <div className=" text-center">
-          <p>{user.username}</p>
+          <p>{row.getValue("user")}</p>
         </div>
       );
     },
@@ -164,9 +163,14 @@ export const columns: ColumnDef<TableDataType>[] = [
               방문완료
             </Badge>
           )}
-          {row.getValue("status") === "cancel" && (
+          {row.getValue("status") === "cancle" && (
             <Badge variant={"cancel"} className="">
               취소
+            </Badge>
+          )}
+          {row.getValue("status") === "managercancle" && (
+            <Badge variant={"cancel"} className="">
+              매니저 취소
             </Badge>
           )}
           {row.getValue("status") === "noshow" && (

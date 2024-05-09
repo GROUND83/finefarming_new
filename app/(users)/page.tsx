@@ -47,6 +47,7 @@ export default function Page() {
             fill
             className="object-cover"
             priority={true}
+            sizes="100%"
           />
         </div>
       </article>
@@ -63,9 +64,10 @@ export default function Page() {
                 "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/5eb67a29-229d-4ff4-8b60-ec5a2cc75c00/public"
               }
               alt="section1"
-              className=" object-cover"
+              className="object-cover"
               fill
               priority={true}
+              sizes="100%"
             />
           </ImageWrap>
           <ArticleDescription>
@@ -115,6 +117,7 @@ export default function Page() {
               className="  object-cover"
               fill
               priority={true}
+              sizes="100%"
             />
           </ImageWrap>
           <ArticleDescription>
@@ -174,6 +177,7 @@ export default function Page() {
               className="  object-cover"
               fill
               priority={true}
+              sizes="100%"
             />
           </ImageWrap>
           <ArticleDescription>
@@ -233,6 +237,7 @@ export default function Page() {
               className="object-cover"
               fill
               priority={true}
+              sizes="100%"
             />
           </ImageWrap>
           <ArticleDescription>
@@ -292,6 +297,7 @@ export default function Page() {
               className="object-cover"
               fill
               priority={true}
+              sizes="100%"
             />
           </ImageWrap>
           <ArticleDescription>
@@ -362,6 +368,7 @@ export default function Page() {
                 alt="value image7"
                 className="object-cover"
                 fill
+                sizes="100%"
               />
             </div>
             <div className="flex flex-col gap-1 p-3 lg:p-0 lg:py-3">
@@ -383,6 +390,7 @@ export default function Page() {
                 alt="value image8"
                 className=" object-cover"
                 fill
+                sizes="100%"
               />
             </div>
             <div className="flex flex-col gap-1 p-3 lg:p-0 lg:py-3">
@@ -404,6 +412,7 @@ export default function Page() {
                 alt="value image9"
                 className=" object-cover"
                 fill
+                sizes="100%"
               />
             </div>
             <div className="flex flex-col gap-1 p-3 lg:p-0 lg:py-3">
@@ -477,7 +486,7 @@ export default function Page() {
           </div>
         </div>
         <div className="col-span-2 lg:col-span-1 flex flex-col ">
-          <div className="w-full aspect-[2/3]  bg-cover relative">
+          <div className="w-full aspect-[2/3]   relative bg-red-200">
             <Image
               src={
                 "https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/5d83aee8-1609-4a25-7ad4-d1fb4dcd5000/public"
@@ -485,7 +494,8 @@ export default function Page() {
               alt="section10"
               fill
               priority={true}
-              style={{ objectFit: "cover" }}
+              className=" object-cover"
+              sizes="100%"
             />
           </div>
         </div>

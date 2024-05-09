@@ -1,22 +1,24 @@
 "use client";
 import getManager, { logOut } from "@/app/admin/actions";
-import getSession from "@/lib/session";
+
 import { notFound, redirect } from "next/navigation";
 import { Button } from "./ui/button";
 import React from "react";
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { Badge } from "./ui/badge";
+import { getSession, signOut } from "next-auth/react";
 
 export function ManagerAuth() {
   const [user, setUser] = React.useState<any>();
   //await new Promise((resolve) => setTimeout(resolve, 10000));
   const getUer = async () => {
-    let manager = await getManager();
-    console.log("manager", manager);
-    setUser(manager);
+    let session = await getSession();
+    if (session) {
+      setUser(session.user);
+    }
   };
   const logOutClick = async () => {
-    await logOut();
+    await signOut();
   };
   React.useEffect(() => {
     getUer();

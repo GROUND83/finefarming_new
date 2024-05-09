@@ -407,6 +407,8 @@ export default function Page({ params }: { params: { id: string } }) {
                               <ExclamationCircleIcon className="size-4" />
                               비공개시 관련된 체험상품,매거진,리뷰 모두 비공개
                               됩니다.
+                              <br />
+                              농장 비공개 상태에서는 상품이 공개되지 않습니다.
                             </FormDescription>
                           </FormItem>
                         )}

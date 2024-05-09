@@ -28,19 +28,21 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { createCommunity } from "./actions";
+import { useSession } from "next-auth/react";
 const FormSchema = z.object({
-  visible: z.boolean().default(false),
+  isNotice: z.boolean().default(false),
   title: z.string(),
   content: z.string(),
 });
-export default function NewCommunity() {
+export default function NewCommunityUser() {
   const [open, setOpen] = React.useState(false);
+  const { data: session } = useSession();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      visible: true,
       title: "",
       content: "",
+      isNotice: true,
     },
   });
   async function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -48,8 +50,8 @@ export default function NewCommunity() {
 
     let newData = JSON.stringify({
       ...data,
-      authorName: "관리자",
-      autherId: 1,
+      authorName: "매니저",
+      autherId: session?.user.id,
       authorType: "manager",
     });
     let result = await createCommunity(newData);
@@ -99,7 +101,7 @@ export default function NewCommunity() {
                 <div className="space-y-4">
                   <FormField
                     control={form.control}
-                    name="visible"
+                    name="isNotice"
                     render={({ field }) => (
                       <FormItem className="flex flex-row items-center  space-y-0 gap-2 ">
                         <FormLabel className="text-base">공지사항</FormLabel>

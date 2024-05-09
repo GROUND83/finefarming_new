@@ -1,3 +1,4 @@
+"use client";
 import {
   BookOpenIcon,
   BuildingStorefrontIcon,
@@ -12,7 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { ManagerAuth } from "@/components/userName";
-import getSession from "@/lib/session";
+import { getSession } from "next-auth/react";
 
 export const superAdminMenu = [
   {
@@ -224,34 +225,42 @@ export const adminMenu = [
     disable: false,
   },
 ];
-export default async function AdminLayOut({
+export default function AdminLayOut({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  let user = await getSession();
-  console.log("user", user);
+  const [user, setUser] = React.useState<any>();
+  const getUserdata = async () => {
+    let session = await getSession();
+    if (session) {
+      setUser(session.user);
+    }
+    console.log("user", session);
+  };
+  React.useEffect(() => {
+    getUserdata();
+  }, []);
+
   return (
     <div className="w-full flex flex-row  items-stretch relative">
       <div className="py-6 border-r-[1px]  bg-white  w-[220px] h-screen  relative">
         <div className="fixed top-0 left-0 h-full w-[220px]">
           <div className=" flex flex-col items-start gap-6 w-full px-6  ">
-            <Link href={"/"} className="p-3 w-full">
-              <div className=" relative  w-[80px] aspect-[5/3]">
-                <Image src="/logo.svg" alt="logo" fill priority />
-              </div>
+            <Link href={"/"} className=" relative  w-[80px] aspect-[5/3]">
+              <Image src="/logo.svg" alt="logo" fill priority />
             </Link>
-            {user.role === "manager" ? (
+            {user?.role === "manager" ? (
               <div className="flex flex-col items-start gap-2  text-black  font-light text-sm w-full">
                 {adminMenu.map((item, index) => {
                   return (
                     <div className="w-full" key={index}>
                       {item.subMenu ? (
                         <div className="w-full">
-                          <div className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
+                          <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
                             {item.icon}
                             {item.title}
-                          </div>
+                          </p>
                           <div className="ml-3">
                             {item.subMenu.map((sub, subIndex) => {
                               return (
@@ -271,10 +280,10 @@ export default async function AdminLayOut({
                       ) : (
                         <div>
                           {item.disable ? (
-                            <div className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors">
+                            <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors">
                               {item.icon}
                               {item.title}
-                            </div>
+                            </p>
                           ) : (
                             <Link
                               href={`/admin/${item.link}`}
@@ -297,10 +306,10 @@ export default async function AdminLayOut({
                     <div className="w-full" key={index}>
                       {item.subMenu ? (
                         <div className="w-full">
-                          <div className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
+                          <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
                             {item.icon}
                             {item.title}
-                          </div>
+                          </p>
                           <div className="ml-3">
                             {item.subMenu.map((sub, subIndex) => {
                               return (
@@ -320,10 +329,10 @@ export default async function AdminLayOut({
                       ) : (
                         <div>
                           {item.disable ? (
-                            <div className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors">
+                            <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors">
                               {item.icon}
                               {item.title}
-                            </div>
+                            </p>
                           ) : (
                             <Link
                               href={`/admin/${item.link}`}

@@ -24,14 +24,14 @@ export default function WriterLayOut({
           </div>
           <div className="flex flex-col items-start gap-2  text-black  font-light text-sm w-full">
             <Link
-              href={"/dashbordWriter/magazine"}
+              href={"/dashWriter/magazine"}
               className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
             >
               <BuildingStorefrontIcon className="size-4" />
               매거진 관리
             </Link>
             <Link
-              href={"/dashbordWriter/profile"}
+              href={"/dashWriter/profile"}
               className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
             >
               <UserIcon className="size-4" />

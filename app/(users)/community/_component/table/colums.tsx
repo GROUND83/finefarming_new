@@ -35,6 +35,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import {
+  MagnifyingGlassCircleIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
+import ActionCommunityModal from "./actionModal";
+import { tree } from "next/dist/build/templates/app-page";
 //
 
 const deletFarm = async (farmId: number) => {
@@ -44,52 +50,44 @@ const deletFarm = async (farmId: number) => {
 
 export const columns: ColumnDef<any>[] = [
   {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <div className="flex flex-col items-start justify-center text-left ">
-          <Button variant="ghost" className="  p-0">
-            순번
-          </Button>
-        </div>
-      );
-    },
+    accessorKey: "id",
+    header: "순번",
+    enableResizing: true, //disable resizing for just this column
+    size: 20, //starting column size
     cell: ({ row }) => {
       return (
-        <div className=" text-left">
-          <p>{row.getValue("name")}</p>
+        <div className=" text-left lg:text-sm text-xs ">
+          <p>{row.getValue("id")}</p>
         </div>
       );
     },
   },
   {
-    accessorKey: "owner",
+    accessorKey: "title",
     header: ({ column }) => {
       return (
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-start ">
           <Button variant="ghost" className=" p-0">
             제목
           </Button>
         </div>
       );
     },
+    enableResizing: true, //disable resizing for just this column
+    size: 400, //starting column size
     cell: ({ row }) => {
-      let onwer: any = row.getValue("owner");
+      console.log("row", row.original.isNotice);
+      let isNotice = row.original.isNotice;
       return (
-        <div className=" flex flex-row items-center gap-2 justify-start">
-          <Avatar>
-            <AvatarImage src={onwer?.avatar} alt="@shadcn" sizes="sm" />
-          </Avatar>
-          <div className="flex flex-col items-start gap-1">
-            <p>{onwer?.username}</p>
-            <p className="text-neutral-500 text-light">{onwer?.phone}</p>
-          </div>
+        <div className=" flex flex-row items-center gap-2 justify-start lg:text-sm text-xs">
+          {isNotice && <Badge variant={"complete"}>공지</Badge>}
+          <p>{row.getValue("title")}</p>
         </div>
       );
     },
   },
   {
-    accessorKey: "owner",
+    accessorKey: "authorName",
     header: ({ column }) => {
       return (
         <div>
@@ -99,11 +97,12 @@ export const columns: ColumnDef<any>[] = [
         </div>
       );
     },
+    enableResizing: true, //disable resizing for just this column
+    size: 50, //starting column size
     cell: ({ row }) => {
-      let onwer: any = row.getValue("owner");
       return (
-        <div className="flex flex-col items-start gap-1">
-          <p>{onwer?.username}</p>
+        <div className="flex flex-col items-start gap-1  lg:text-sm text-xs">
+          <p>{row.getValue("authorName")}</p>
         </div>
       );
     },
@@ -119,10 +118,29 @@ export const columns: ColumnDef<any>[] = [
         </div>
       );
     },
+    enableResizing: true, //disable resizing for just this column
+    size: 50, //starting column size
     cell: ({ row }) => {
       return (
-        <div className="   text-center">
+        <div className="   text-center lg:text-sm text-xs">
           <p>{moment(row.getValue("created_at")).format("YYYY/MM/DD")}</p>
+        </div>
+      );
+    },
+  },
+  {
+    id: "actions",
+    enableResizing: true, //disable resizing for just this column
+    size: 50, //starting column size
+    cell: ({ row }) => {
+      console.log(row);
+      return (
+        <div className=" text-right">
+          <Link href={`/community/${row.original.id}`}>
+            <Button variant="outline" size="icon">
+              <MagnifyingGlassIcon className="size-4" />
+            </Button>
+          </Link>
         </div>
       );
     },

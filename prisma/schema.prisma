@@ -18,7 +18,7 @@ model SuperManager {
   password String?
   username String @unique
   email String? @unique
-  phone String? @unique
+  phone String? 
   avatar String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt 
@@ -32,7 +32,7 @@ model Manager {
   password String?
   username String @unique
   email String? @unique
-  phone String? @unique
+  phone String? 
   avatar String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt 
@@ -46,7 +46,7 @@ model User {
   password String?
   username String?
   email String? @unique
-  phone String? @unique
+  phone String? 
   avatar String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -64,7 +64,7 @@ model Writer {
   password String?
   username String?
   email String? @unique
-  phone String? @unique
+  phone String? 
   avatar String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -74,6 +74,7 @@ model Writer {
   link String?
   role String @default("writer")
   approve Boolean @default(false)
+  provider ProviderType @default(email)
 }
 enum ProviderType {
   email
@@ -86,7 +87,7 @@ model Farmer {
   password String?
   username String // 이름
   email String? @unique // 이메일
-  phone String? @unique // 전화번호
+  phone String?
   avatar String? //아바타
   farm Farm[] // 농장
   created_at DateTime @default(now())
@@ -289,6 +290,7 @@ model Reservation {
   groupPrice Int?
   groupNumber Int?
   personalPrice Json[]
+  subProduct Json[]
   totalprice Int
   priceType String
   status ReservationStatus @default(waiting)
@@ -308,6 +310,7 @@ model Reservation {
 enum ReservationStatus {
   waiting
   complete
+  managercancle
   cancle
   done
   noshow

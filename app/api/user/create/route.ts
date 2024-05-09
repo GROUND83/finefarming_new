@@ -33,10 +33,12 @@ export async function POST(req: any, res: any) {
         { status: 400 }
       );
     }
+
     const user = await db.user.create({
       data: {
         username,
         email,
+        phone,
         password: hashedPasswrod,
         provider: "email",
         created_at: getDateTime(),

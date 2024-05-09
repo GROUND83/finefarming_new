@@ -26,6 +26,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import { formSchema } from "./registerSchema";
+import { useToast } from "@/components/ui/use-toast";
 const checkPassword = ({
   password,
   confirmPassword,
@@ -35,7 +36,7 @@ const checkPassword = ({
 }) => password === confirmPassword;
 
 export default function Page() {
-  const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -68,23 +69,23 @@ export default function Page() {
       if (res.status == 200) {
         const result = await signIn("credentials", {
           email: data.email,
+          type: "user",
           password: data.password,
           callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           redirect: true,
         });
-        // console.log("result", result);
-        // router.push("/");
-        // registration success
       } else {
         const data = await res.json();
         console.log(data.message);
-
-        //registration faled
       }
+    } else {
+      const data = await res.json();
+      console.log(data.message);
+      toast({ variant: "destructive", title: data.message });
     }
   }
   return (
-    <main className=" w-full grid grid-cols-2 gap-1 h-screen">
+    <main className=" container mx-auto grid grid-cols-2 gap-1 h-screen pb-24">
       <div className="flex flex-col items-center gap-6 col-span-2 p-6 justify-center">
         <div className="flex flex-col items-center gap-3">
           <Image src="/logocolor.svg" alt="logo" width={90} height={100} />

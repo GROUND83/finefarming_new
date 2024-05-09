@@ -276,6 +276,7 @@ export default function Page({ params }: { params: { productId: string } }) {
           checkInDate: new Date(data.checkInDate).setHours(
             new Date(data.checkInDate).getHours() + 9
           ),
+          subProduct: data.subProduct,
           checkInTime: data.checkInTime,
           visitor: data.visitor,
           visitorPhone: data.visitorPhone,
@@ -486,6 +487,7 @@ export default function Page({ params }: { params: { productId: string } }) {
 
     return false;
   };
+
   const getUser = async () => {
     let sessiondata = await getSession();
     console.log("sessiondata", sessiondata);
@@ -619,7 +621,11 @@ export default function Page({ params }: { params: { productId: string } }) {
                                               <div className="flex flex-row items-center justify-between w-full">
                                                 <p>{item.startTime}</p>
                                                 <div className="flex flex-row items-center text-sm text-neutral-500">
-                                                  <p>{item.count}/</p>
+                                                  <p>
+                                                    {Number(item.amount) -
+                                                      Number(item.count)}
+                                                    /
+                                                  </p>
                                                   <p>{item.amount}</p>
                                                 </div>
                                               </div>

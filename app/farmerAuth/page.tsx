@@ -19,7 +19,7 @@ import { toast } from "@/components/ui/use-toast";
 import Image from "next/image";
 
 import { FormSchema } from "./mangerAuthShema";
-import { login } from "./actions";
+import { signIn } from "next-auth/react";
 
 export default function Page() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -31,22 +31,31 @@ export default function Page() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    let newData = JSON.stringify(data);
-    let formdata = new FormData();
-    formdata.append("email", data.email);
-    formdata.append("password", data.password);
-    let result = await login(formdata);
-    console.log(result);
+    // let newData = JSON.stringify(data);
+    // let formdata = new FormData();
+    // formdata.append("email", data.email);
+    // formdata.append("password", data.password);
+    // let result = await login(formdata);
+    // console.log(result);
+
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      type: "farmer",
+      callbackUrl: "/farmerDash",
+      redirect: true,
+    });
+    if (result) console.log("result", result);
   }
 
   return (
-    <div className="bg-white p-12 w-full h-full flex flex-col items-center justify-center">
-      <div className="w-1/2 bg-white border rounded-md p-12 flex flex-col items-center gap-12">
+    <div className="bg-white  w-full min-h-screen flex flex-col items-center justify-center p-6">
+      <div className=" w-full lg:w-1/2 bg-white border rounded-md p-12 flex flex-col items-center gap-12">
         <div className="flex flex-col items-center gap-3 relative">
           <Image src="/logocolor.svg" alt="logo" width={90} height={100} />
           <p>파인파밍에 어서오세요!</p>
         </div>
-        <p className=" font-semibold">슈퍼어디민 생성</p>
+        <p className=" font-semibold">농장주 로그인</p>
         <div className="w-full mx-auto ">
           <Form {...form}>
             <form
@@ -90,7 +99,7 @@ export default function Page() {
                 )}
               />
               <div className="w-full flex flex-col items-end">
-                <Button type="submit">생성</Button>
+                <Button type="submit">로그인</Button>
               </div>
             </form>
           </Form>

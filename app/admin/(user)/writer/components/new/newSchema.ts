@@ -6,7 +6,7 @@ import {
   PASSWORD_REGEX_ERROR,
 } from "@/lib/constants";
 
-import { cheackEmail, checkPassword, checkPhone } from "../vaildation";
+import { cheackEmail, checkPassword } from "../vaildation";
 
 export const newSchema = z
   .object({
@@ -30,18 +30,6 @@ export const newSchema = z
         code: "custom",
         message: "이미 사용중인 이메일입니다.",
         path: ["email"],
-        fatal: true,
-      });
-      return z.NEVER;
-    }
-  })
-  .superRefine(async ({ phone }, ctx) => {
-    const phoneData = await checkPhone(phone);
-    if (phoneData) {
-      ctx.addIssue({
-        code: "custom",
-        message: "이미 사용중인 전화번호입니다.",
-        path: ["phone"],
         fatal: true,
       });
       return z.NEVER;
