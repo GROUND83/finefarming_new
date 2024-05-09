@@ -330,13 +330,13 @@ export async function makeReservation(jsonData: string) {
         let subject = `${username} 예약 확인 메일입니다.`;
         let farmerEmail = createReservation.farm.owner.email;
         console.log("farmerEmail", farmerEmail);
-        let to = `"${farmerEmail},newfarmingplatform@gmail.com,"`;
+        let to = `"${farmerEmail}, newfarmingplatform@gmail.com,"`;
         console.log("to", to);
         const transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",
           // 아래 secure 옵션을 사용하려면 465 포트를 사용해야함
           port: 465,
-          secure: false, // true for 465, false for other ports
+          secure: true, // true for 465, false for other ports
           auth: {
             // 초기에 설정해둔 env 데이터
             user: process.env.AUTH_USER,
