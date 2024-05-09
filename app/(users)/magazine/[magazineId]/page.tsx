@@ -69,20 +69,22 @@ export default async function Page({
   }
   console.log("magazine", magazine);
   return (
-    <div className="w-full  ">
-      <div className=" relative w-full  aspect-video lg:aspect-[16/4] flex flex-col items-center justify-center ">
-        <Image
-          src={magazine.image}
-          alt={magazine.title}
-          fill
-          priority
-          className="object-cover   brightness-50"
-        />
+    <div className="w-full  relative ">
+      <div className=" relative  flex flex-col lg:items-center items-start justify-center ">
+        <div className="w-full  aspect-video lg:aspect-[16/4] relative">
+          <Image
+            src={magazine.image}
+            alt={magazine.title}
+            fill
+            priority
+            className="object-cover   brightness-50"
+          />
+        </div>
 
-        <p className="text-xl lg:text-3xl font-semibold lg:text-white lg:absolute ">
+        <p className="text-xl lg:text-3xl font-semibold lg:text-white lg:absolute  relative px-6  pt-6 ">
           {magazine.title}
         </p>
-        <div className="flex flex-row items-center gap-3 h-4 text-neutral-500 lg:text-white text-sm absolute  bottom-6 ">
+        <div className="flex flex-row items-center gap-3 h-4 text-neutral-500 lg:text-white text-sm lg:absolute  relative  lg:bottom-6 px-6 ">
           <div>
             <p>{magazine.author.username}</p>
           </div>
@@ -94,22 +96,24 @@ export default async function Page({
       </div>
       <div className="bg-white py-6 px-3 flex flex-col items-start gap-2">
         <div className="w-full  container mx-auto">
-          <div className="bg-white py-6 px-3 flex flex-col items-start gap-2 border-b mt-3 ">
+          <div className="bg-white  px-3 flex flex-col items-start gap-2 border-b mt-3 ">
             {magazine.sections.length > 0 &&
               magazine.sections.map((section: any, sectionIndex) => {
                 return (
                   <div key={sectionIndex}>
                     {section && (
-                      <div>
-                        <p className=" font-semibold text-lg">
+                      <div className="mt-6">
+                        <p className=" font-semibold text-lg lg:text-2xl">
                           {section?.title}
                         </p>
                         {section.subtitle && (
-                          <p className=" font-semibold text-md text-primary underline-offset-[-5px]    underline  decoration-[10px] decoration-primary/20 mt-6 ">
+                          <p className=" font-semibold text-md lg:text-lg text-primary underline-offset-[-5px]    underline  decoration-[10px] decoration-primary/20 mt-6 ">
                             {section?.subtitle}
                           </p>
                         )}
-                        <p className="text-sm mt-6 ">{section.description}</p>
+                        <p className="text-sm mt-6 lg:text-base">
+                          {section.description}
+                        </p>
                         {section.images.length > 0 && (
                           <div
                             className={`w-full grid grid-cols-2 gap-3 mt-6 `}
@@ -177,8 +181,8 @@ export default async function Page({
           </div>
         </div>
       </div>
-      <div className="bg-white flex flex-col items-start gap-2 mt-3 w-full">
-        <div className=" relative w-full   aspect-square lg:aspect-[16/4] flex flex-col items-center justify-center ">
+      <div className=" flex flex-col items-start gap-2 mt-3 w-full pb-24">
+        <div className=" relative w-full aspect-square lg:aspect-[16/4] flex flex-col items-center justify-center ">
           <Image
             src={magazine.image}
             alt={magazine.title}
@@ -187,38 +191,42 @@ export default async function Page({
             className="object-cover brightness-50  "
           />
           {magazine.author && (
-            <div className="bg-white container mx-auto h-[80%] absolute  rounded-md flex flex-col items-center justify-center p-3">
-              <div className="flex flex-col items-center gap-2">
-                <Avatar>
-                  <AvatarImage src={magazine?.author?.avatar || undefined} />
-                </Avatar>
-                <p className=" font-semibold  text-sm">
-                  {magazine.author.username}
-                </p>
-                <div className="flex flex-row items-center justify-center h-4 gap-2 text-neutral-500 text-xs">
-                  <p className=" text-md">{magazine.author.intruduceTitle}</p>
-                  <Separator orientation="vertical" />
-                  <p className=" text-md">{magazine.author.link}</p>
+            <div className="  absolute  rounded-md flex flex-col items-center justify-center h-full">
+              <div className="flex flex-col lg:flex-row items-center gap-2 bg-white h-[90%] w-[90%]  lg:h-[80%] lg:w-[90%] p-6">
+                <div className="flex flex-col items-center gap-1 flex-1  justify-center">
+                  <Avatar>
+                    <AvatarImage src={magazine?.author?.avatar || undefined} />
+                  </Avatar>
+                  <p className=" font-semibold  text-sm">
+                    {magazine.author.username}
+                  </p>
+                  <div className="flex flex-row  lg:flex-col items-center justify-center  gap-2 text-neutral-500 text-xs">
+                    <p className=" text-md">{magazine.author.intruduceTitle}</p>
+                    <Separator orientation="vertical" className="lg:hidden" />
+                    <p className=" text-md">{magazine.author.link}</p>
+                  </div>
                 </div>
-                <Separator orientation="horizontal" className="my-3" />
-
-                <p className="text-xs text-center w-full text-pretty px-3 ">
-                  {magazine.author.intruduce}
-                </p>
+                <Separator
+                  orientation="horizontal"
+                  className="my-3 lg:hidden"
+                />
+                <div className="flex-1 ">
+                  <p className="text-xs text-center text-pretty px-3 flex-1 lg:p-12 ">
+                    {magazine.author.intruduce}
+                  </p>
+                </div>
               </div>
             </div>
           )}
         </div>
       </div>
-      <div className="bg-white flex flex-row items-center justify-end gap-2 mt-3 w-full p-3 border mb-24">
-        {/* <Button asChild>
+      <div className="flex flex-col items-center fixed bottom-6 right-6 w-[100px] h-[100px]">
+        <Button
+          asChild
+          className="w-[100px] h-[100px] flex flex-col items-center justify-center text-center"
+        >
           <Link href={`/product/${magazine.productId}/reservation`}>
-            예약하기
-          </Link>
-        </Button> */}
-        <Button asChild>
-          <Link href={`/product/${magazine.productId}/reservation`}>
-            예약하기
+            체험상품 <br /> 예약하기
           </Link>
         </Button>
       </div>

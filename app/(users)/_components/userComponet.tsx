@@ -47,9 +47,9 @@ export function MobileUserComponet() {
           />
           <Drawer.Content className="bg-white flex flex-col rounded-t-[10px] h-full w-[80vw] mt-24 fixed bottom-0 right-0 z-50">
             <div className=" bg-white flex-1 h-full">
-              <div className="max-w-md mx-auto">
+              <div className="w-full  flex flex-col items-start gap-3">
                 {session?.user ? (
-                  <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b p-3">
+                  <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b px-6 py-6 w-full">
                     <Avatar>
                       <AvatarImage
                         src={
@@ -67,10 +67,10 @@ export function MobileUserComponet() {
                     </div>
                   </Drawer.Title>
                 ) : (
-                  <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b p-3">
+                  <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b px-6 py-6 w-full">
                     <Button
                       asChild
-                      variant={"outline"}
+                      className="w-full"
                       onClick={() => {
                         router.push("/auth/login");
                         setOpen(false);
@@ -80,84 +80,61 @@ export function MobileUserComponet() {
                     </Button>
                   </Drawer.Title>
                 )}
-                <div className="flex flex-col items-start p-3 gap-3">
+                <div className="w-full flex flex-col items-start gap-3 p-6">
                   {session?.user && (
-                    <div className="w-full">
+                    <div className="w-full flex flex-col items-start ">
                       <Button
                         onClick={() => {
                           router.push("/profile");
                           setOpen(false);
                         }}
                         variant={"outline"}
-                        className="w-full"
+                        className="w-full flex flex-row items-center justify-start gap-2"
                       >
-                        <div className="flex flex-row items-center gap-2">
-                          <UserCircleIcon className="size-4" />
-                          <span>나의 페이지</span>
-                        </div>
+                        <UserCircleIcon className="size-4" />
+                        <span>나의 페이지</span>
                       </Button>
                     </div>
                   )}
-                  <div className="w-full">
+                  <div className="w-full flex flex-col items-start ">
                     <Button
                       onClick={() => {
                         router.push("/product");
                         setOpen(false);
                       }}
                       variant={"outline"}
-                      className="w-full"
+                      className="w-full flex flex-row items-center justify-start gap-2"
                     >
-                      <div className="flex flex-row items-center gap-2">
-                        <MagnifyingGlassIcon className="size-4" />
-                        <span>농장체험 상품</span>
-                      </div>
+                      <MagnifyingGlassIcon className="size-4" />
+                      <span>농장체험 </span>
                     </Button>
                   </div>
-                  <div className="w-full">
+                  <div className="w-full flex flex-col items-start ">
                     <Button
                       onClick={() => {
                         router.push("/magazine");
                         setOpen(false);
                       }}
                       variant={"outline"}
-                      className="w-full"
+                      className="w-full flex flex-row items-center justify-start gap-2"
                     >
-                      <div className="flex flex-row items-center gap-2">
-                        <BookOpenIcon className="size-4" />
-                        <span>매거진</span>
-                      </div>
+                      <BookOpenIcon className="size-4" />
+                      <span>매거진</span>
                     </Button>
                   </div>
-                  <div className="w-full">
+                  <div className="w-full flex flex-col items-start ">
                     <Button
                       onClick={() => {
                         router.push("/community");
                         setOpen(false);
                       }}
                       variant={"outline"}
-                      className="w-full"
+                      className="w-full flex flex-row items-center justify-start gap-2"
                     >
-                      <div className="flex flex-row items-center gap-2">
-                        <ChatBubbleLeftEllipsisIcon className="size-4" />
-                        <span>커뮤니티</span>
-                      </div>
+                      <ChatBubbleLeftEllipsisIcon className="size-4" />
+                      <span>커뮤니티</span>
                     </Button>
                   </div>
-                  {/* <div className="w-full">
-                    <Button
-                      onClick={() => {
-                        router.push("/reservation");
-                        setOpen(false);
-                      }}
-                      className="w-full"
-                      variant={"outline"}
-                    >
-                      <div className="flex flex-row items-center gap-2">
-                        <ReceiptPercentIcon className="size-4" />
-                        <span>예약하기</span>
-                      </div>
-                    </Button>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -176,7 +153,7 @@ export function UserComponet() {
     console.log("session", session);
   }, [session]);
   return (
-    <div className="flex flex-row items-center gap-3 mt-3 ">
+    <div className="flex flex-row items-center gap-3  ">
       {session?.user ? (
         <Link
           href={

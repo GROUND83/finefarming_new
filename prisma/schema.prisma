@@ -182,7 +182,7 @@ model Product {
   priceType PriceType @default(GROUP)
   groupLimit Int @default(5)// 그룹제한
   groupPrice Int @default(10000)// 그룹요금
-  personalPrice Json[] @default(["{ \"isFree\": true ,\"startAge\": \"0\" ,\"endAge\": \"1\", \"price\": \"0\",\"message\": \"\"}"])// 인원요금
+  personalPrice Json[] @default(["{ \"isFree\": false ,\"startAge\": \"0\" ,\"endAge\": \"1\", \"price\": \"0\",\"message\": \"\"}"])// 인원요금
   farmInsideType Boolean @default(true) // 체험공간 실내 
   tools Json[] //도구 및 복장
   cloth String? // 도구 및 복장 안내문구

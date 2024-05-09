@@ -638,7 +638,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                                                         newIndex + 1 >
                                                         item.count
                                                           ? "bg-primary/80"
-                                                          : "bg-neural-100"
+                                                          : "bg-neutral-300"
                                                       }`}
                                                     ></div>
                                                   );

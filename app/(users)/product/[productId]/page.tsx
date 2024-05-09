@@ -8,10 +8,9 @@ import { notFound } from "next/navigation";
 import React from "react";
 import { getProductDetail } from "./_component/actions";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+
 import { ExclamationCircleIcon, PhoneIcon } from "@heroicons/react/24/outline";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -22,20 +21,8 @@ import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
 import { ProductTitleWrap } from "../_components/ProductTitleWrap";
 import Map from "@/components/map";
-import Script from "next/script";
-import { ImageIcon } from "lucide-react";
-
-async function getIsOwner(authorId: number) {
-  const session = await getSession();
-  if (session.id) {
-    return session.id === authorId;
-  }
-  return false;
-}
 
 export default function Page({ params }: { params: { productId: string } }) {
-  const navigationRef = React.useRef<HTMLDivElement>(null);
-
   const [detail, setDetail] = React.useState<any>();
   const [images, setImages] = React.useState<string[]>([]);
   const getProductsDetailData = async () => {
@@ -47,15 +34,20 @@ export default function Page({ params }: { params: { productId: string } }) {
     console.log("result", result);
     setDetail(result);
     let newImage = [...result.images];
-    let images = [result.mainImage, ...newImage];
-    console.log("images", images);
-    setImages(images);
+    if (result.mainImage) {
+      let images = [result.mainImage, ...newImage];
+      console.log("images", images);
+      setImages(images);
+    } else {
+      setImages(newImage);
+    }
   };
   React.useEffect(() => {
     if (params.productId) {
       getProductsDetailData();
     }
   }, [params.productId]);
+
   const handleCopyClipBoard = (text: string) => {
     try {
       copy(text);
@@ -67,9 +59,9 @@ export default function Page({ params }: { params: { productId: string } }) {
   };
 
   return (
-    <div className="w-full bg-white container mx-auto ">
+    <div className="w-full bg-white  ">
       {detail && (
-        <div className="w-full flex-col items-start grid grid-cols-12 gap-3">
+        <div className="container mx-auto flex-col items-start grid grid-cols-12 gap-3">
           <div className=" col-span-12 bg-white">
             {images.length > 0 && (
               <Swiper
@@ -83,12 +75,13 @@ export default function Page({ params }: { params: { productId: string } }) {
                 {images.map((image, index) => {
                   return (
                     <SwiperSlide key={index}>
-                      <div className=" relative w-full bg-red-200  aspect-[4/3]">
+                      <div className=" relative w-full bg-neutral-100  aspect-[4/3] lg:aspect-video">
                         <Image
                           src={image}
                           alt={`${detail.name}-${index}`}
                           fill
                           priority
+                          className="  object-cover"
                         />
                       </div>
                     </SwiperSlide>
@@ -109,36 +102,21 @@ export default function Page({ params }: { params: { productId: string } }) {
 
           <div className="w-full relative pb-24 col-span-12 ">
             <Tabs defaultValue="detail" className="w-full">
-              <TabsList className="w-full flex flex-row items-center justify-start rounded-none text-lg border  ">
-                <TabsTrigger value="detail">상세 정보</TabsTrigger>
-                <TabsTrigger value="product" className="">
+              <TabsList className="w-full flex flex-row items-center justify-start  px-3   ">
+                <TabsTrigger value="detail" className="text-sm lg:text-lg">
+                  상세 정보
+                </TabsTrigger>
+                <TabsTrigger value="product" className="text-sm lg:text-lg">
                   추가 정보
                 </TabsTrigger>
-                <TabsTrigger value="farm">농장 정보</TabsTrigger>
+                <TabsTrigger value="farm" className="text-sm lg:text-lg">
+                  농장 정보
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="product">
                 <div className="p-3  flex flex-col items-start gap-3">
-                  <div className="px-2">
-                    <h1 className=" font-semibold">기본 체험상품</h1>
-                  </div>
                   <div className=" p-3 w-full flex flex-col items-start gap-3 text-sm">
                     <div className="flex flex-col gap-4 w-full">
-                      <div className="flex flex-col items-start w-full gap-2">
-                        <p className="  text-pretty whitespace-pre-wrap text-sm indent-2">
-                          {detail.title}
-                        </p>
-                      </div>
-                      <div className="flex flex-col items-start w-full gap-2">
-                        <p className="  text-pretty whitespace-pre-wrap text-sm indent-2">
-                          {detail.description}
-                        </p>
-                      </div>
-                      <div className="flex flex-col items-start w-full gap-2">
-                        <h2 className="font-semibold">체험 진행 과정</h2>
-                        <p className="  text-pretty whitespace-pre-wrap text-sm indent-2">
-                          {detail.howto}
-                        </p>
-                      </div>
                       {detail.farmInsideType && (
                         <div className="flex flex-col items-start w-full gap-2">
                           <p className="  text-pretty whitespace-pre-wrap text-sm indent-2">
@@ -158,8 +136,8 @@ export default function Page({ params }: { params: { productId: string } }) {
                               );
                             })}
                           </div>
-                          <div className="w-full rounded-md border px-3 py-1 bg-neutral-100 ">
-                            <p className="  text-pretty whitespace-pre-wrap text-sm flex flex-row items-center gap-2">
+                          <div className="w-full rounded-md border  bg-neutral-100 p-3">
+                            <p className="  text-pretty whitespace-pre-wrap text-sm flex flex-row items-start gap-2">
                               <ExclamationCircleIcon className="size-4" />
                               {detail.cloth}
                             </p>
@@ -194,7 +172,6 @@ export default function Page({ params }: { params: { productId: string } }) {
                           )}
                         </div>
                       </div>
-                      <div className="flex flex-row items-center gap-3"></div>
                     </div>
                   </div>
                 </div>
@@ -307,10 +284,10 @@ export default function Page({ params }: { params: { productId: string } }) {
                         />
                         <div className="absolute z-20 bottom-0 left-0 p-6 text-white w-full">
                           <div className="flex flex-col items-start gap-1 w-full">
-                            <p className="text-md w-full bg-transparent border-none text-white placeholder:text-white  p-0 outline-none m-0 space-y-0">
+                            <p className="text-md lg:text-lg w-full bg-transparent border-none text-white placeholder:text-white  p-0 outline-none m-0 space-y-0">
                               {detail.detail.titleDescription}
                             </p>
-                            <p className="resize-none text-xl  whitespace-pre-wrap font-semibold w-full bg-transparent border-none text-white placeholder:text-white  p-0 outline-none m-0 space-y-0">
+                            <p className="resize-none text-xl lg:text-3xl  whitespace-pre-wrap font-semibold w-full bg-transparent border-none text-white placeholder:text-white  p-0 outline-none m-0 space-y-0">
                               {detail.detail.title}
                             </p>
                           </div>
@@ -323,25 +300,25 @@ export default function Page({ params }: { params: { productId: string } }) {
                             return (
                               <div
                                 key={sessionIndex}
-                                className="w-full flex flex-col items-start gap-3 mb-6"
+                                className="w-full flex flex-col items-start gap-3 lg:gap-6 mb-6"
                               >
                                 {session.subtitle && (
                                   <div className="bg-primary px-3 py-1 rounded-[3px] flex flex-col items-start">
-                                    <p className="text-sm  text-white ">
+                                    <p className="text-sm lg:text-base  text-white ">
                                       {session.subtitle}
                                     </p>
                                   </div>
                                 )}
                                 {session.title && (
                                   <div className="flex flex-col items-start w-full">
-                                    <p className="text-xl  whitespace-pre-wrap w-full font-semibold text-pretty">
+                                    <p className="text-xl lg:text-4xl  whitespace-pre-wrap w-full font-semibold text-pretty">
                                       {session.title}
                                     </p>
                                   </div>
                                 )}
                                 {session.titleDescription && (
                                   <div className="flex flex-col items-start w-full">
-                                    <p className="text-sm  whitespace-pre-wrap w-full text-pretty">
+                                    <p className="text-sm lg:text-lg  whitespace-pre-wrap w-full text-pretty">
                                       {session.titleDescription}
                                     </p>
                                   </div>
@@ -395,6 +372,36 @@ export default function Page({ params }: { params: { productId: string } }) {
                           }
                         )}
                       </div>
+                      <div className="w-full bg-white flex flex-col items-start px-3 gap-3 mt-9 ">
+                        {detail.process.length > 0 && (
+                          <div className="w-full flex flex-col items-start gap-2">
+                            <p className="text-lg font-semibold">
+                              체험 진행 순서
+                            </p>
+                            {detail.process.map(
+                              (suggest: any, suggestIndex: any) => {
+                                return (
+                                  <div
+                                    key={suggestIndex}
+                                    className="bg-neutral-100 w-full p-3 flex flex-row items-center gap-2"
+                                  >
+                                    <div className="w-[30px] h-[30px] bg-primary  flex flex-col items-center justify-center rounded-full text-white">
+                                      <p>{suggestIndex + 1}</p>
+                                    </div>
+                                    <p className="text-sm">{suggest.title}</p>
+                                  </div>
+                                );
+                              }
+                            )}
+                          </div>
+                        )}
+                        <div className="w-full flex flex-col items-start gap-2">
+                          <div className="bg-neutral-100 w-full p-3 flex flex-row items-center gap-2">
+                            <ExclamationCircleIcon className="size-4" />
+                            <p className="text-sm">{detail.processNotice}</p>
+                          </div>
+                        </div>
+                      </div>
                     </>
                   )}
                 </div>
@@ -404,18 +411,18 @@ export default function Page({ params }: { params: { productId: string } }) {
                   <div className=" p-3 w-full flex flex-col items-start gap-3 text-sm">
                     <div className="flex flex-col gap-4 w-full">
                       <div className="flex flex-col items-start w-full ">
-                        <h1 className="text-pretty whitespace-pre-wrap text-lg font-semibold">
+                        <h1 className="text-pretty whitespace-pre-wrap text-lg lg:text-2xl font-semibold">
                           {detail.farm.name}
                         </h1>
                       </div>
                       {detail.farm.introduction && (
                         <div className="flex flex-col items-start w-full gap-2">
-                          <p className=" text-pretty whitespace-pre-wrap text-sm ">
+                          <p className=" text-pretty whitespace-pre-wrap text-sm  lg:text-lg">
                             {detail.farm.introduction}
                           </p>
                         </div>
                       )}
-                      <div className="flex flex-col items-start gap-1">
+                      <div className="flex flex-col items-start gap-1 text-sm lg:text-base">
                         <div className="flex flex-row items-center w-full gap-2 border p-3 justify-between ">
                           <div className="flex flex-row items-center gap-1">
                             {/* <PhoneIcon className="size-3" /> */}
@@ -462,83 +469,82 @@ export default function Page({ params }: { params: { productId: string } }) {
                             )}
                           </div>
                         </div>
+                        <div className="flex flex-row items-center w-full gap-2 border p-3 justify-between ">
+                          <h2 className=" lg:text-base text-sm">주차 시설</h2>
+                          {detail.farm.parking === "free" ? (
+                            <p>무료</p>
+                          ) : detail.farm.parking === "paid" ? (
+                            <div className="flex flex-col items-start gap-2">
+                              <Badge>유료</Badge>
+                              <p>{detail.farm.parkinngFee}</p>
+                            </div>
+                          ) : null}
+                        </div>
                       </div>
 
-                      <div className="flex flex-col items-start w-full gap-2">
-                        <h2 className="font-semibold">주차 시설</h2>
-                        {detail.farm.parking === "free" ? (
-                          <p>무료</p>
-                        ) : detail.farm.parking === "paid" ? (
-                          <div className="flex flex-col items-start gap-2">
-                            <Badge>유료</Badge>
-                            <p>{detail.farm.parkinngFee}</p>
-                          </div>
-                        ) : (
-                          <p>주차불가</p>
-                        )}
-                      </div>
-                      <div className="flex flex-col items-start w-full gap-2">
-                        <h2 className="font-semibold">애완동물 출입</h2>
-                        {detail.farm.pet ? (
+                      {detail.farm.pet && (
+                        <div className="flex flex-col items-start w-full gap-2">
+                          <h2 className="text-sm lg:text-base">
+                            애완동물 출입
+                          </h2>
+
                           <Badge>출입가능</Badge>
-                        ) : (
-                          <Badge>출입불가</Badge>
-                        )}
-                      </div>
+                        </div>
+                      )}
                       <div className="flex flex-col items-start w-full gap-2">
                         <h2 className="font-semibold">운영시간</h2>
                         {detail.farm.mondayOpen && (
-                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2">
-                            <p>월요일 오픈</p>
+                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2 border">
+                            <p>월요일 </p>
                             <p>{detail.farm.mondayStart}부터</p>
                             <p>{detail.farm.mondayEnd}까지</p>
                           </div>
                         )}
                         {detail.farm.tuesdayOpen && (
-                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2">
-                            <p>화요일 오픈</p>
+                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2 border">
+                            <p>화요일 </p>
                             <p>{detail.farm.tuesdayStart}부터</p>
                             <p>{detail.farm.tuesdayEnd}까지</p>
                           </div>
                         )}
                         {detail.farm.wednesdayOpen && (
-                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2">
-                            <p>수요일 오픈</p>
+                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2 border">
+                            <p>수요일 </p>
                             <p>{detail.farm.wednesdayStart}부터</p>
                             <p>{detail.farm.wednesdayEnd}까지</p>
                           </div>
                         )}
                         {detail.farm.thursdayOpen && (
-                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2">
-                            <p>목요일 오픈</p>
+                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2 border">
+                            <p>목요일 </p>
                             <p>{detail.farm.thursdayStart}부터</p>
                             <p>{detail.farm.thursdayEnd}까지</p>
                           </div>
                         )}
                         {detail.farm.fridayOpen && (
-                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2">
-                            <p>금요일 오픈</p>
+                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2 border">
+                            <p>금요일 </p>
                             <p>{detail.farm.fridayStart}부터</p>
                             <p>{detail.farm.fridayEnd}까지</p>
                           </div>
                         )}
                         {detail.farm.saturdayOpen && (
-                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2">
-                            <p>토요일 오픈</p>
+                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2 border">
+                            <p>토요일 </p>
                             <p>{detail.farm.saturdayStart}부터</p>
                             <p>{detail.farm.saturdayEnd}까지</p>
                           </div>
                         )}
                         {detail.farm.sundayOpen && (
-                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2">
-                            <p>일요일 오픈</p>
+                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2 border">
+                            <p>일요일 </p>
                             <p>{detail.farm.sundayStart}부터</p>
                             <p>{detail.farm.sundayEnd}까지</p>
                           </div>
                         )}
                         {detail.farm.holidayOpen && (
-                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2">
-                            <p>공휴일 오픈</p>
+                          <div className="flex flex-row items-center gap-2 bg-neutral-100 w-full p-2 border">
+                            <p>공휴일 </p>
                             <p>{detail.farm.holidayStart}부터</p>
                             <p>{detail.farm.holidayEnd}까지</p>
                           </div>
@@ -596,7 +602,7 @@ export default function Page({ params }: { params: { productId: string } }) {
               </TabsContent>
             </Tabs>
           </div>
-          <div className=" fixed bottom-0 left-0 w-full bg-white border-t col-span-12 px-6 z-50">
+          <div className=" fixed bottom-0 container mx-auto bg-white border col-span-12 px-6 z-50">
             <div className="w-full p-3 flex flex-row items-center  justify-between">
               <div>
                 <p>{detail.title}</p>

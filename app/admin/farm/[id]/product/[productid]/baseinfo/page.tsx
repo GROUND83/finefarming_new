@@ -889,21 +889,39 @@ export default function Page({
                                                 <div className="flex flex-col items-start gap-3  col-span-6">
                                                   <FormLabel>요금</FormLabel>
                                                   <div className="flex flex-row items-center gap-3 w-full">
-                                                    <div className="flex flex-row items-center gap-3">
-                                                      <Checkbox
-                                                        id={`personalPrice.${index}.isFree`}
-                                                        className="z-4 rounded-none"
-                                                        {...form.register(
-                                                          `personalPrice.${index}.isFree`
-                                                        )}
-                                                      />
-                                                      <label
-                                                        htmlFor={`personalPrice.${index}.isFree`}
-                                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                      >
-                                                        무료
-                                                      </label>
-                                                    </div>
+                                                    <Controller
+                                                      control={form.control}
+                                                      name={`personalPrice.${index}.isFree`}
+                                                      render={({
+                                                        field: {
+                                                          value,
+                                                          onChange,
+                                                        },
+                                                      }) => {
+                                                        return (
+                                                          <div className="flex flex-row items-center gap-3">
+                                                            <Checkbox
+                                                              checked={value}
+                                                              onCheckedChange={(
+                                                                checked
+                                                              ) =>
+                                                                onChange(
+                                                                  checked
+                                                                )
+                                                              }
+                                                              id={`personalPrice.${index}.isFree`}
+                                                              className="z-4 rounded-none"
+                                                            />
+                                                            <label
+                                                              htmlFor={`personalPrice.${index}.isFree`}
+                                                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                            >
+                                                              무료
+                                                            </label>
+                                                          </div>
+                                                        );
+                                                      }}
+                                                    />
                                                     <div className="flex flex-row items-center gap-1">
                                                       <div className="flex flex-row items-center gap-2 border rounded-md flex-1 ">
                                                         <Input

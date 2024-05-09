@@ -16,16 +16,16 @@ export default function RootLayout({
         <nav className=" flex flex-row items-center gap-12 justify-between h-full w-full container mx-auto">
           <div className="flex flex-row items-center gap-12 ">
             <Link href={"/"}>
-              <div className="flex flex-row items-center gap-12 relative w-[60px] h-[50px] ">
+              <div className="flex flex-row items-center gap-12 relative w-[60px] h-[30px] ">
                 <Image src="/logocolor.svg" alt="logo" fill priority />
               </div>
             </Link>
-            <div className="flex flex-row items-center gap-12 mt-3">
+            <div className="flex flex-row items-center gap-12">
               <Link
                 href={"/product"}
                 className="text-black hover:text-primary transition-colors delay-75"
               >
-                농장체험 찾기
+                농장체험
               </Link>
               <Link
                 href={"/magazine"}
@@ -47,10 +47,10 @@ export default function RootLayout({
         </nav>
       </header>
       {/* 모바일 */}
-      <header className="w-full  border-b-[1px]   fixed top-0 left-0 h-[85px] bg-white z-20  lg:hidden  ">
-        <nav className=" flex flex-row items-center  justify-between h-full  px-6 bg-red-200">
+      <header className="w-full  border-b-[1px]   fixed top-0 left-0 h-[70px] bg-white z-20  lg:hidden  ">
+        <nav className=" flex flex-row items-center  justify-between h-full  px-6 ">
           <Link href={"/"}>
-            <div className="flex flex-row items-center gap-12 relative w-[80px] h-[40px] ">
+            <div className="flex flex-row items-center gap-12 relative w-[60px] h-[30px] ">
               <Image src="/logocolor.svg" alt="logo" fill priority />
             </div>
           </Link>
@@ -59,7 +59,9 @@ export default function RootLayout({
           </div>
         </nav>
       </header>
-      <main className="pt-[85px] w-full bg-white h-full  ">{children}</main>
+      <main className="pt-[70px] lg:pt-[85px] w-full bg-white h-full  ">
+        {children}
+      </main>
     </div>
   );
 }
