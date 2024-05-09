@@ -330,7 +330,7 @@ export async function makeReservation(jsonData: string) {
         let subject = `${username} 예약 확인 메일입니다.`;
         let farmerEmail = createReservation.farm.owner.email;
         console.log("farmerEmail", farmerEmail);
-        let to = `"newfarmingplatform@gmail.com, ${farmerEmail}"`;
+        let to = `"${farmerEmail},newfarmingplatform@gmail.com,"`;
         console.log("to", to);
         const transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",
@@ -341,9 +341,6 @@ export async function makeReservation(jsonData: string) {
             // 초기에 설정해둔 env 데이터
             user: process.env.AUTH_USER,
             pass: process.env.AUTH_PASS,
-          },
-          tls: {
-            rejectUnauthorized: false,
           },
         });
 
