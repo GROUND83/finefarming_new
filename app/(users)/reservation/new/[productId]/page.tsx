@@ -223,6 +223,11 @@ export default function Page({ params }: { params: { productId: string } }) {
       if (detail) {
         if (totalPrice <= 0) {
           //
+          toast({
+            variant: "destructive",
+            title: "예약이 불가합니다.",
+            description: "결제 예정금액이 0원 이상이여야 합니다.",
+          });
           return;
         }
         if (!data.checkInDate) {
@@ -231,6 +236,7 @@ export default function Page({ params }: { params: { productId: string } }) {
             variant: "destructive",
             title: "방문일자를 선택하세요.",
           });
+          return;
         }
         let priceType = detail.priceType;
         if (priceType === "GROUP") {
@@ -659,49 +665,51 @@ export default function Page({ params }: { params: { productId: string } }) {
                             </FormItem>
                           )}
                         />
-                        <div className=" col-span-12   border-b p-6 bg-white">
-                          <div className="mb-4">
-                            <FormLabel className="text-lg font-semibold">
-                              옵션 상품
-                            </FormLabel>
-                            <FormDescription>
-                              선택 옵션의 수량을 선택하세요.
-                            </FormDescription>
-                          </div>
-                          <FormField
-                            control={form.control}
-                            name="subProduct"
-                            render={() => (
-                              <FormItem>
-                                {subProduct.map((item, index) => (
-                                  <div
-                                    key={index}
-                                    className="flex flex-row items-center justify-between w-full"
-                                  >
-                                    <FormLabel className="flex flex-col items-start gap-2 w-full">
-                                      <div className="flex flex-row items-center gap-2  border px-3 py-4 rounded-md w-full justify-between">
-                                        <div className="flex flex-row items-center gap-2">
-                                          <Badge>필수</Badge>
-                                          <p>{item.title}</p>
+                        {subProduct.length > 0 && (
+                          <div className=" col-span-12   border-b p-6 bg-white">
+                            <div className="mb-4">
+                              <FormLabel className="text-lg font-semibold">
+                                옵션 상품
+                              </FormLabel>
+                              <FormDescription>
+                                선택 옵션의 수량을 선택하세요.
+                              </FormDescription>
+                            </div>
+                            <FormField
+                              control={form.control}
+                              name="subProduct"
+                              render={() => (
+                                <FormItem>
+                                  {subProduct.map((item, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex flex-row items-center justify-between w-full"
+                                    >
+                                      <FormLabel className="flex flex-col items-start gap-2 w-full">
+                                        <div className="flex flex-row items-center gap-2  border px-3 py-4 rounded-md w-full justify-between">
+                                          <div className="flex flex-row items-center gap-2">
+                                            <Badge>필수</Badge>
+                                            <p>{item.title}</p>
+                                          </div>
+                                          <p>{item.price.toLocaleString()}원</p>
                                         </div>
-                                        <p>{item.price.toLocaleString()}원</p>
-                                      </div>
-                                      <div className="flex flex-row items-center gap-2 w-full mt-3">
-                                        <SelectProductField
-                                          form={form}
-                                          nestIndex={index}
-                                          control={form.control}
-                                          setvalue={form.setValue}
-                                        />
-                                      </div>
-                                    </FormLabel>
-                                  </div>
-                                ))}
-                                {/* <FormMessage /> */}
-                              </FormItem>
-                            )}
-                          />
-                        </div>
+                                        <div className="flex flex-row items-center gap-2 w-full mt-3">
+                                          <SelectProductField
+                                            form={form}
+                                            nestIndex={index}
+                                            control={form.control}
+                                            setvalue={form.setValue}
+                                          />
+                                        </div>
+                                      </FormLabel>
+                                    </div>
+                                  ))}
+                                  {/* <FormMessage /> */}
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                        )}
                         {detail.priceType === "GROUP" ? (
                           detail.groupPrice && (
                             <>

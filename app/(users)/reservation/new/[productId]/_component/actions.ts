@@ -329,7 +329,9 @@ export async function makeReservation(jsonData: string) {
         let from = "info@finefarming.co.kr";
         let subject = `${username} 예약 확인 메일입니다.`;
         let farmerEmail = createReservation.farm.owner.email;
-        let to = ["wonchang.k@gmail.com", farmerEmail];
+        console.log("farmerEmail", farmerEmail);
+        let to = `"newfarmingplatform@gmail.com, ${farmerEmail}"`;
+        console.log("to", to);
         const transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",
           // 아래 secure 옵션을 사용하려면 465 포트를 사용해야함
@@ -346,20 +348,14 @@ export async function makeReservation(jsonData: string) {
           to: to,
           subject: subject,
           from: from,
-          attachments: [
-            {
-              filename: "logocolor.png",
-              path: process.cwd() + "/public/logo.png",
-              cid: "logoCID", // Referenced in the HTML template
-            },
-          ],
+
           html: `<!doctype html>
           <html>
           <body style="width:500px;">
           <div style="border: 1px;width: 400px;background-color: #f5f5f5;border: 1px solid #e5e7eb;padding: 70px;border-radius: 20px;">
      
             <img
-              src="cid:logoCID"
+              src="https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/bdab6fb3-d498-49e5-3a5b-d03c601c8d00/public"
               alt="finefarminglogo"
               title="Logo"
               style="display:block;width:100px;height:50px;"
