@@ -342,6 +342,9 @@ export async function makeReservation(jsonData: string) {
             user: process.env.AUTH_USER,
             pass: process.env.AUTH_PASS,
           },
+          tls: {
+            rejectUnauthorized: false,
+          },
         });
 
         const mailData: any = {
