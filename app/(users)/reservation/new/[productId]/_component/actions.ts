@@ -482,8 +482,12 @@ export async function makeReservation(jsonData: string) {
           //	attachments 옵션으로 첨부파일도 전송 가능함
           //	attachments : [첨부파일]
         };
-        let seondmail = await transporter.sendMail(mailData);
-        console.log(seondmail);
+        try {
+          let seondmail = await transporter.sendMail(mailData);
+          console.log(seondmail);
+        } catch (e) {
+          console.log(e);
+        }
       }
 
       console.log("createReservation", createReservation);
