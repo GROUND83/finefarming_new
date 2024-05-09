@@ -336,7 +336,7 @@ export async function makeReservation(jsonData: string) {
           host: "smtp.gmail.com",
           // 아래 secure 옵션을 사용하려면 465 포트를 사용해야함
           port: 465,
-          secure: true, // true for 465, false for other ports
+          secure: false, // true for 465, false for other ports
           auth: {
             // 초기에 설정해둔 env 데이터
             user: process.env.AUTH_USER,
