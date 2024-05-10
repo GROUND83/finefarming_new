@@ -1,8 +1,7 @@
 "use server";
-import nodemailer from "nodemailer";
 
 import db from "@/lib/db";
-import { Prisma } from "@prisma/client";
+
 import dayjs from "dayjs";
 import moment from "moment";
 import { redirect } from "next/navigation";
