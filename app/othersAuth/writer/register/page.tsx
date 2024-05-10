@@ -59,7 +59,6 @@ export default function Page() {
         role: "writer",
         type: "email",
         password: data.password,
-
         redirect: false,
       });
       if (result?.ok) {
