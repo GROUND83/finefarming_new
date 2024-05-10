@@ -23,162 +23,129 @@ const publicOnlyUrls: Routes = {
 const secret = process.env.NEXTAUTH_SECRET;
 
 export async function middleware(req: NextRequest) {
-  const pathname = req.nextUrl.pathname;
-  // console.log("pathname", pathname);
-  const session = await getToken({ req, secret, raw: false });
-  //
-  if (pathname.startsWith("/auth/login")) {
-    if (session) {
-      console.log("session writer", session, session.role, session.id);
-      if (session) {
-        console.log("check");
-
-        return NextResponse.redirect(new URL("/", req.url));
-
-        //
-      } else {
-        // console.log("session", session);
-        return NextResponse.next();
-      }
-    } else {
-      return NextResponse.next();
-    }
-  }
-  //
-  if (pathname.startsWith("/othersAuth")) {
-    if (session) {
-      console.log("session writer", session, session.role, session.id);
-      if (session) {
-        console.log("check");
-
-        return NextResponse.redirect(new URL("/", req.url));
-
-        //
-      } else {
-        // console.log("session", session);
-        return NextResponse.next();
-      }
-    } else {
-      return NextResponse.next();
-    }
-  }
-  if (pathname.startsWith("/profile")) {
-    console.log("session", session);
-    if (session?.role === "user") {
-      return NextResponse.next();
-    } else {
-      return NextResponse.redirect(new URL("/auth/login", req.url));
-    }
-  }
-  // console.log("session", session);
-  // const exists = publicOnlyUrls[request.nextUrl.pathname];
-  if (pathname.startsWith("/admin")) {
-    console.log("session", session);
-    if (session) {
-      if (session.id && session.role) {
-        if (session.role === "manager") {
-          console.log("session", session);
-          return NextResponse.next();
-        } else if (session.role === "superAdmin") {
-          return NextResponse.next();
-        } else {
-          return NextResponse.redirect(
-            new URL("/othersAuth/manager/login", req.url)
-          );
-        }
-        //
-      } else {
-        // console.log("session", session);
-        return NextResponse.redirect(
-          new URL("/othersAuth/manager/login", req.url)
-        );
-      }
-    } else {
-      return NextResponse.redirect(
-        new URL("/othersAuth/manager/login", req.url)
-      );
-    }
-  }
-  if (pathname.startsWith("/dashwriter")) {
-    if (session) {
-      console.log("session writer", session, session.role, session.id);
-      if (session.id && session.role) {
-        console.log("check");
-        if (session.role === "writer") {
-          console.log("check");
-          return NextResponse.next();
-        } else {
-          return NextResponse.redirect(
-            new URL("/othersAuth/writer/login", req.url)
-          );
-        }
-        //
-      } else {
-        // console.log("session", session);
-        return NextResponse.redirect(
-          new URL("/othersAuth/writer/login", req.url)
-        );
-      }
-    } else {
-      return NextResponse.redirect(
-        new URL("/othersAuth/writer/login", req.url)
-      );
-    }
-  }
-  if (pathname.startsWith("/dashfarmer")) {
-    if (session) {
-      console.log("session writer", session, session.role, session.id);
-      if (session.id && session.role) {
-        console.log("check");
-        if (session.role === "farmer") {
-          console.log("check");
-          return NextResponse.next();
-        } else {
-          return NextResponse.redirect(
-            new URL("/othersAuth/farmer/login", req.url)
-          );
-        }
-        //
-      } else {
-        // console.log("session", session);
-        return NextResponse.redirect(
-          new URL("/othersAuth/farmer/login", req.url)
-        );
-      }
-    } else {
-      return NextResponse.redirect(
-        new URL("/othersAuth/farmer/login", req.url)
-      );
-    }
-  }
-  // if (!session.id) {
-  //   //   유저가 없으면 퍼블릭 URL로 이동 못한다.
-  //   if (!exists) {
-  //     // 퍼블릭 URL이 아니면 다이렉트
-  //     return NextResponse.redirect(new URL("/", request.url));
-  //   }
-  // } else {
-  //   //유저가 로그안 하면
-  //   if (exists) {
-  //     // 퍼블릭 접근하면
-  //     return NextResponse.redirect(new URL("/", request.url));
+  // const pathname = req.nextUrl.pathname;
+  // // console.log("pathname", pathname);
+  // const session = await getToken({ req, secret, raw: false });
+  // //
+  // if (pathname.startsWith("/auth/login")) {
+  //   if (session) {
+  //     console.log("session writer", session, session.role, session.id);
+  //     if (session) {
+  //       console.log("check");
+  //       return NextResponse.redirect(new URL("/", req.url));
+  //       //
+  //     } else {
+  //       // console.log("session", session);
+  //       return NextResponse.next();
+  //     }
+  //   } else {
+  //     return NextResponse.next();
   //   }
   // }
-  // //   console.log(session);
-  //   if (pathname === "/") {
-  //     //
-  //     const response = NextResponse.next();
-  //     response.cookies.set("middle-finefarming", "hello");
-  //     return response;
+  // //
+  // if (pathname.startsWith("/othersAuth")) {
+  //   if (session) {
+  //     console.log("session writer", session, session.role, session.id);
+  //     if (session) {
+  //       console.log("check");
+  //       return NextResponse.redirect(new URL("/", req.url));
+  //       //
+  //     } else {
+  //       // console.log("session", session);
+  //       return NextResponse.next();
+  //     }
+  //   } else {
+  //     return NextResponse.next();
   //   }
-  //   if (pathname === "/profile") {
-  //     //   Response.redirect(new URL("/",request.url))
-  //     return Response.json({
-  //       error: "you are not allowed here!",
-  //     });
+  // }
+  // if (pathname.startsWith("/profile")) {
+  //   console.log("session", session);
+  //   if (session?.role === "user") {
+  //     return NextResponse.next();
+  //   } else {
+  //     return NextResponse.redirect(new URL("/auth/login", req.url));
   //   }
-  //
-  return NextResponse.next();
+  // }
+  // if (pathname.startsWith("/admin")) {
+  //   console.log("session", session);
+  //   if (session) {
+  //     if (session.id && session.role) {
+  //       if (session.role === "manager") {
+  //         console.log("session", session);
+  //         return NextResponse.next();
+  //       } else if (session.role === "superAdmin") {
+  //         return NextResponse.next();
+  //       } else {
+  //         return NextResponse.redirect(
+  //           new URL("/othersAuth/manager/login", req.url)
+  //         );
+  //       }
+  //       //
+  //     } else {
+  //       // console.log("session", session);
+  //       return NextResponse.redirect(
+  //         new URL("/othersAuth/manager/login", req.url)
+  //       );
+  //     }
+  //   } else {
+  //     return NextResponse.redirect(
+  //       new URL("/othersAuth/manager/login", req.url)
+  //     );
+  //   }
+  // }
+  // if (pathname.startsWith("/dashwriter")) {
+  //   if (session) {
+  //     console.log("session writer", session, session.role, session.id);
+  //     if (session.id && session.role) {
+  //       console.log("check");
+  //       if (session.role === "writer") {
+  //         console.log("check");
+  //         return NextResponse.next();
+  //       } else {
+  //         return NextResponse.redirect(
+  //           new URL("/othersAuth/writer/login", req.url)
+  //         );
+  //       }
+  //       //
+  //     } else {
+  //       // console.log("session", session);
+  //       return NextResponse.redirect(
+  //         new URL("/othersAuth/writer/login", req.url)
+  //       );
+  //     }
+  //   } else {
+  //     return NextResponse.redirect(
+  //       new URL("/othersAuth/writer/login", req.url)
+  //     );
+  //   }
+  // }
+  // if (pathname.startsWith("/dashfarmer")) {
+  //   if (session) {
+  //     console.log("session writer", session, session.role, session.id);
+  //     if (session.id && session.role) {
+  //       console.log("check");
+  //       if (session.role === "farmer") {
+  //         console.log("check");
+  //         return NextResponse.next();
+  //       } else {
+  //         return NextResponse.redirect(
+  //           new URL("/othersAuth/farmer/login", req.url)
+  //         );
+  //       }
+  //       //
+  //     } else {
+  //       // console.log("session", session);
+  //       return NextResponse.redirect(
+  //         new URL("/othersAuth/farmer/login", req.url)
+  //       );
+  //     }
+  //   } else {
+  //     return NextResponse.redirect(
+  //       new URL("/othersAuth/farmer/login", req.url)
+  //     );
+  //   }
+  // }
+  // return NextResponse.next();
 }
 
 export const config = {
