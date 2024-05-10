@@ -24,7 +24,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
-  console.log("pathname", pathname);
+  // console.log("pathname", pathname);
   const session = await getToken({ req, secret, raw: false });
   //
   if (pathname.startsWith("/auth/login")) {
@@ -178,6 +178,7 @@ export async function middleware(req: NextRequest) {
   //     });
   //   }
   //
+  return NextResponse.next();
 }
 
 export const config = {
