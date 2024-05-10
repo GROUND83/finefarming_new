@@ -119,7 +119,7 @@ export async function getReservationDate({
 
   console.log("reserVationDate", reserVationDate, slot, typeof slot);
 
-  // 예약
+  // 예약 groupNumber personalPrice[]  amount
   let reservation = await db.reservation.groupBy({
     by: ["checkInTime"],
     where: {

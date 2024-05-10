@@ -89,6 +89,14 @@ export default function Page({
     name: "educationSubject",
   });
   const {
+    fields: groupMemberFields,
+    append: groupMemberAppend,
+    remove: groupMemberRemove,
+  } = useFieldArray({
+    control: form.control,
+    name: "groupMember",
+  });
+  const {
     fields: personalPriceFields,
     append: personalPriceAppend,
     remove: personalPriceRemove,
@@ -722,7 +730,7 @@ export default function Page({
                                           field: { value, onChange },
                                         }) => (
                                           <FormItem className="flex flex-col items-start w-full ">
-                                            <FormLabel>그룹 인원</FormLabel>
+                                            <FormLabel>그룹 최대인원</FormLabel>
                                             <FormControl className=" flex-1 w-full">
                                               <div className="flex flex-row items-center gap-2 border rounded-md flex-1 ">
                                                 <div className="px-3 w-[80px] border-r flex flex-col items-center justify-center">
@@ -777,6 +785,155 @@ export default function Page({
                                           </FormItem>
                                         )}
                                       />
+                                    </div>
+                                  </div>
+
+                                  <div className="col-span-2  w-full">
+                                    <div className="flex flex-row items-center gap-3 relative  col-span-2">
+                                      <FormLabel>연령대별 최대인원</FormLabel>
+                                      <Button
+                                        type="button"
+                                        variant={"outline"}
+                                        size={"sm"}
+                                        onClick={() => {
+                                          console.log(
+                                            form.getValues("groupMember").length
+                                          );
+                                          let limitLength =
+                                            form.getValues(
+                                              "groupMember"
+                                            ).length;
+                                          if (limitLength >= 5) {
+                                            toast({
+                                              variant: "destructive",
+                                              title: "최대 허용개수 초과",
+                                              description:
+                                                "5개 까지 업로드 가능합니다.",
+                                            });
+                                          } else {
+                                            groupMemberAppend({
+                                              message: "",
+                                              startAge: "1",
+                                              endAge: "2",
+                                              isFree: false,
+                                            });
+                                          }
+                                        }}
+                                      >
+                                        <PlusIcon className="size-3" />
+                                      </Button>
+                                    </div>
+                                    <div className="text-xs flex flex-row items-center gap-1 mt-3">
+                                      <ExclamationCircleIcon className="size-4" />
+                                      <p>
+                                        연령별로 구분하여 요금 설정, 최대 5개
+                                        입력
+                                      </p>
+                                    </div>
+                                    <div className="grid grid-cols-5 gap-3 col-span-2 w-full mt-3">
+                                      {groupMemberFields.map((item, index) => {
+                                        return (
+                                          <div
+                                            className=" grid grid-cols-12 gap-6 relative  col-span-5  border p-6 rounded-md"
+                                            key={index}
+                                          >
+                                            <div className=" gap-6  grid grid-cols-12 col-span-12">
+                                              <div className="flex flex-col items-start gap-3  col-span-6">
+                                                <FormLabel>연령대</FormLabel>
+                                                <div className="flex flex-row items-center gap-3">
+                                                  <div className="flex flex-row items-center gap-2 border rounded-md flex-1 ">
+                                                    <Input
+                                                      {...form.register(
+                                                        `groupMember.${index}.startAge`
+                                                      )}
+                                                      className="border-none"
+                                                    />
+                                                    <div className="px-3 w-[40px] border-l flex flex-col items-center justify-center">
+                                                      <p>세</p>
+                                                    </div>
+                                                  </div>
+
+                                                  <p>~</p>
+                                                  <div className="flex flex-row items-center gap-2 border rounded-md flex-1 ">
+                                                    <Input
+                                                      {...form.register(
+                                                        `groupMember.${index}.endAge`
+                                                      )}
+                                                      className="border-none"
+                                                    />
+                                                    <div className="px-3 w-[40px] border-l flex flex-col items-center justify-center">
+                                                      <p>세</p>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <button
+                                                  type="button"
+                                                  className="text-red-500 underline"
+                                                  onClick={() =>
+                                                    groupMemberRemove(index)
+                                                  }
+                                                >
+                                                  삭제
+                                                </button>
+                                              </div>
+                                              <div className="flex flex-col items-start gap-3  col-span-6">
+                                                <FormLabel>
+                                                  인원수 포함여부
+                                                </FormLabel>
+                                                <div className="flex flex-row items-center gap-3 w-full">
+                                                  <Controller
+                                                    control={form.control}
+                                                    name={`groupMember.${index}.isFree`}
+                                                    render={({
+                                                      field: {
+                                                        value,
+                                                        onChange,
+                                                      },
+                                                    }) => {
+                                                      return (
+                                                        <div className="flex flex-row items-center gap-3">
+                                                          <Checkbox
+                                                            checked={value}
+                                                            onCheckedChange={(
+                                                              checked
+                                                            ) =>
+                                                              onChange(checked)
+                                                            }
+                                                            id={`groupMember.${index}.isFree`}
+                                                            className="z-4 rounded-none"
+                                                          />
+                                                          <label
+                                                            htmlFor={`groupMember.${index}.isFree`}
+                                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                          >
+                                                            무료
+                                                          </label>
+                                                        </div>
+                                                      );
+                                                    }}
+                                                  />
+                                                </div>
+                                                <div className="w-full flex-1 flex flex-col items-start gap-3">
+                                                  <FormLabel>
+                                                    안내 메세지
+                                                  </FormLabel>
+                                                  <Input
+                                                    // name={`groupPrices[${index}].message`}
+                                                    {...form.register(
+                                                      `groupMember.${index}.message`
+                                                    )}
+                                                  />
+                                                  <FormDescription className="text-xs flex flex-row items-center gap-1">
+                                                    <ExclamationCircleIcon className="size-4" />
+                                                    요금 하단에 표시되는 안내
+                                                    문구입니다.
+                                                  </FormDescription>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
                                     </div>
                                   </div>
                                 </FormItem>

@@ -111,7 +111,70 @@ export const AlertButton = ({
       <Button
         type="button"
         onClick={() => setDeleteAlert(true)}
-        variant="outline"
+        variant="destructive"
+        size={"sm"}
+      >
+        {buttonTitle}
+      </Button>
+      <div className="">
+        <AlertDialog open={deleteAlert}>
+          <AlertDialogContent className=" rounded-md">
+            <AlertDialogHeader>
+              <AlertDialogTitle>{title}</AlertDialogTitle>
+              <AlertDialogDescription>{description}</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <div className="flex flex-row items-center justify-end gap-3">
+                <div>
+                  <Button
+                    variant={"outline"}
+                    onClick={() => setDeleteAlert(false)}
+                  >
+                    취소
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    disabled={deleteLoading}
+                    className="px-12"
+                    variant="destructive"
+                    onClick={() => onDelete()}
+                  >
+                    {deleteLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      buttonTitle
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </div>
+  );
+};
+export const ConfirmButton = ({
+  onDelete,
+  buttonTitle,
+  title,
+  description,
+  deleteLoading,
+}: {
+  onDelete: () => void;
+  title: string;
+  description: string;
+  deleteLoading: boolean;
+  buttonTitle: string;
+}) => {
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  return (
+    <div>
+      <Button
+        type="button"
+        onClick={() => setDeleteAlert(true)}
+        variant="default"
         size={"sm"}
       >
         {buttonTitle}

@@ -24,6 +24,14 @@ export const baseInfoSchem = z.object({
   priceType: z.string(),
   groupPrice: z.number(),
   groupLimit: z.number().nullable(),
+  groupMember: z.array(
+    z.object({
+      isFree: z.boolean(),
+      startAge: z.string(),
+      endAge: z.string(),
+      message: z.string(),
+    })
+  ),
   personalPrice: z.array(
     z.object({
       isFree: z.boolean(),

@@ -8,11 +8,196 @@ import bcrypt from "bcrypt";
 import db from "@/lib/db";
 import { Prisma } from "@prisma/client";
 import getDateTime from "@/lib/getDateTime";
+
 function exclude(user: any, keys: any) {
   for (let key of keys) {
     delete user[key];
   }
   return user;
+}
+function checkCredential({
+  credentials,
+  type,
+  role,
+}: {
+  credentials: Record<"email" | "password", string>;
+  type: any;
+  role: any;
+}) {
+  return new Promise(async (resolve, reject) => {
+    let user: any = {};
+    try {
+      if (role === "user") {
+        let findUser = await db.user.findUnique({
+          where: { email: credentials?.email },
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            password: true,
+            avatar: true,
+            role: true,
+            phone: true,
+            provider: true,
+          },
+        });
+        if (findUser) {
+          if (findUser.provider === type) {
+            user = findUser;
+          } else {
+            let typeString =
+              findUser.provider === "email"
+                ? "이메일로 회원가입한 계정이 있습니다."
+                : findUser.provider === "kakao"
+                ? "카카오 시작히기로 가입한 계정이 있습니다. "
+                : "네이버 시작히기로 가입한 계정이 있습니다.";
+            reject(` 이미 ${typeString}`);
+          }
+        } else {
+          reject("계정이 없습니다.");
+        }
+      } else if (role === "farmer") {
+        let findUser = await db.farmer.findUnique({
+          where: { email: credentials?.email },
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            password: true,
+            avatar: true,
+            role: true,
+            phone: true,
+            provider: true,
+          },
+        });
+        if (findUser) {
+          if (findUser.provider === type) {
+            user = findUser;
+          } else {
+            let typeString =
+              findUser.provider === "email"
+                ? "이메일로 회원가입한 계정이 있습니다."
+                : findUser.provider === "kakao"
+                ? "카카오 시작히기로 가입한 계정이 있습니다. "
+                : "네이버 시작히기로 가입한 계정이 있습니다.";
+            reject(` 이미 ${typeString}`);
+          }
+        } else {
+          reject("계정이 없습니다.");
+        }
+      } else if (role === "writer") {
+        let findUser = await db.writer.findUnique({
+          where: { email: credentials?.email },
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            password: true,
+            avatar: true,
+            role: true,
+            phone: true,
+            provider: true,
+          },
+        });
+        if (findUser) {
+          if (findUser.provider === type) {
+            user = findUser;
+          } else {
+            let typeString =
+              findUser.provider === "email"
+                ? "이메일로 회원가입한 계정이 있습니다."
+                : findUser.provider === "kakao"
+                ? "카카오 시작히기로 가입한 계정이 있습니다. "
+                : "네이버 시작히기로 가입한 계정이 있습니다.";
+            reject(` 이미 ${typeString}`);
+          }
+        } else {
+          reject("계정이 없습니다.");
+        }
+      } else if (role === "manager") {
+        let findUser = await db.manager.findUnique({
+          where: { email: credentials?.email },
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            password: true,
+            avatar: true,
+            role: true,
+            phone: true,
+            provider: true,
+          },
+        });
+        if (findUser) {
+          if (findUser.provider === type) {
+            user = findUser;
+          } else {
+            let typeString =
+              findUser.provider === "email"
+                ? "이메일로 회원가입한 계정이 있습니다."
+                : findUser.provider === "kakao"
+                ? "카카오 시작히기로 가입한 계정이 있습니다. "
+                : "네이버 시작히기로 가입한 계정이 있습니다.";
+            reject(` 이미 ${typeString}`);
+          }
+        } else {
+          reject("계정이 없습니다.");
+        }
+      } else if (role === "superAdmin") {
+        let findUser = await db.superManager.findUnique({
+          where: { email: credentials?.email },
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            password: true,
+            avatar: true,
+            role: true,
+            phone: true,
+            provider: true,
+          },
+        });
+        if (findUser) {
+          if (findUser.provider === type) {
+            user = findUser;
+          } else {
+            let typeString =
+              findUser.provider === "email"
+                ? "이메일로 회원가입한 계정이 있습니다."
+                : findUser.provider === "kakao"
+                ? "카카오 시작히기로 가입한 계정이 있습니다. "
+                : "네이버 시작히기로 가입한 계정이 있습니다.";
+            reject(` 이미 ${typeString}`);
+          }
+        } else {
+          reject("계정이 없습니다.");
+        }
+      }
+      console.log("user", user);
+      if (Object.keys(user).length > 0) {
+        const ok = await bcrypt.compare(
+          credentials?.password,
+          user!.password ?? ""
+        );
+        console.log("ok", ok);
+        if (ok) {
+          let userdata = exclude(user, ["password"]);
+          if (userdata) {
+            resolve(userdata);
+          } else {
+            reject("비밀번호가 불일치 합니다.");
+          }
+        }
+      } else {
+        console.log("reejct");
+        reject("계정이 없습니다.");
+        // throw new Error("등록된 계정이 없습니다.");
+      }
+    } catch (e: any) {
+      console.log(e);
+      reject(e);
+    }
+  });
 }
 const handler = NextAuth({
   // Configure one or more authentication providers
@@ -29,174 +214,84 @@ const handler = NextAuth({
         },
         password: { label: "비밀번호", type: "password" },
       },
-
       async authorize(credentials, req) {
         console.log("credentials", credentials, req.body);
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
         if (req.body) {
-          let { type } = req.body;
-          console.log("type", type);
-          if (type === "user") {
-            if (!credentials?.email || !credentials?.password) {
-              return false;
-            }
+          let { role, type } = req.body;
+          console.log("role", role);
+          if (role === "user") {
             try {
-              const user = await db.user.findUnique({
-                where: { email: credentials?.email },
-                select: {
-                  id: true,
-                  username: true,
-                  email: true,
-                  password: true,
-                  avatar: true,
-                  role: true,
-                  phone: true,
-                },
+              let result: any = await checkCredential({
+                credentials,
+                type,
+                role,
               });
-              const ok = await bcrypt.compare(
-                credentials?.password,
-                user!.password ?? ""
-              );
-              if (ok) {
-                let userdata = exclude(user, ["password"]);
-                if (userdata) {
-                  return { ...userdata, type: "email" };
-                } else {
-                  return null;
-                }
-              }
+              return result;
             } catch (e: any) {
+              //
+              console.log("e", e);
+
+              throw new Error(e);
+            }
+          } else if (role === "manager") {
+            try {
+              let result: any = await checkCredential({
+                credentials,
+                type,
+                role,
+              });
+              return result;
+            } catch (e: any) {
+              //
+              console.log(e);
+
+              throw new Error(e);
+            }
+          } else if (role === "superAdmin") {
+            try {
+              let result: any = await checkCredential({
+                credentials,
+                type,
+                role,
+              });
+              return result;
+            } catch (e: any) {
+              //
               console.log(e);
               throw new Error(e);
             }
-          } else if (type === "manager") {
-            if (!credentials?.email || !credentials?.password) {
-              return false;
-            }
+          } else if (role === "writer") {
             try {
-              const user = await db.manager.findUnique({
-                where: { email: credentials?.email },
-                select: {
-                  id: true,
-                  username: true,
-                  email: true,
-                  password: true,
-                  avatar: true,
-                  role: true,
-                },
+              let result: any = await checkCredential({
+                credentials,
+                type,
+                role,
               });
-              const ok = await bcrypt.compare(
-                credentials?.password,
-                user!.password ?? ""
-              );
-              if (ok) {
-                let userdata = exclude(user, ["password"]);
-                if (userdata) {
-                  return { ...userdata, type: "email" };
-                } else {
-                  return null;
-                }
-              }
+              return result;
             } catch (e: any) {
+              //
               console.log(e);
               throw new Error(e);
             }
-          } else if (type === "superAdmin") {
-            if (!credentials?.email || !credentials?.password) {
-              return false;
-            }
+          } else if (role === "farmer") {
             try {
-              const user = await db.superManager.findUnique({
-                where: { email: credentials?.email },
-                select: {
-                  id: true,
-                  username: true,
-                  email: true,
-                  password: true,
-                  avatar: true,
-                  role: true,
-                },
+              let result: any = await checkCredential({
+                credentials,
+                type,
+                role,
               });
-              const ok = await bcrypt.compare(
-                credentials?.password,
-                user!.password ?? ""
-              );
-              if (ok) {
-                let userdata = exclude(user, ["password"]);
-                if (userdata) {
-                  return { ...userdata, type: "email" };
-                } else {
-                  return null;
-                }
-              }
+              return result;
             } catch (e: any) {
-              console.log(e);
-              throw new Error(e);
-            }
-          } else if (type === "writer") {
-            if (!credentials?.email || !credentials?.password) {
-              return false;
-            }
-            try {
-              const user = await db.writer.findUnique({
-                where: { email: credentials?.email },
-                select: {
-                  id: true,
-                  username: true,
-                  email: true,
-                  password: true,
-                  avatar: true,
-                  role: true,
-                },
-              });
-              const ok = await bcrypt.compare(
-                credentials?.password,
-                user!.password ?? ""
-              );
-              if (ok) {
-                let userdata = exclude(user, ["password"]);
-                if (userdata) {
-                  return { ...userdata, type: "email" };
-                } else {
-                  return null;
-                }
-              }
-            } catch (e: any) {
-              console.log(e);
-              throw new Error(e);
-            }
-          } else if (type === "farmer") {
-            if (!credentials?.email || !credentials?.password) {
-              return false;
-            }
-            try {
-              const user = await db.farmer.findUnique({
-                where: { email: credentials?.email },
-                select: {
-                  id: true,
-                  username: true,
-                  email: true,
-                  password: true,
-                  avatar: true,
-                  role: true,
-                },
-              });
-              const ok = await bcrypt.compare(
-                credentials?.password,
-                user!.password ?? ""
-              );
-              if (ok) {
-                let userdata = exclude(user, ["password"]);
-                if (userdata) {
-                  return { ...userdata, type: "email" };
-                } else {
-                  return null;
-                }
-              }
-            } catch (e: any) {
+              //
               console.log(e);
               throw new Error(e);
             }
           }
+        } else {
+          throw new Error("잘못된 접근입니다.");
         }
       },
     }),

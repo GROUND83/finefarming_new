@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getSession } from "next-auth/react";
 import { Badge } from "@/components/ui/badge";
+import { AlertButton } from "@/components/ButtonComponent";
 
 // async function getIsOwner(authorId: number) {
 //   const session = await getSession();
@@ -27,6 +28,7 @@ export default function Page({
   const [reservationDetail, setReservationDetail] = React.useState<any>();
   const [product, setProduct] = React.useState<any>();
   const [isBefore, setIsBefore] = React.useState(false);
+  const [deleteLoading, setDeleteLoading] = React.useState(false);
   const router = useRouter();
 
   const getProductsDetailData = async () => {
@@ -74,8 +76,16 @@ export default function Page({
   }, [params.reservationId]);
   const clickCancle = async () => {
     console.log(reservationDetail);
-    let resoponse = await makeCancle(reservationDetail.id);
-    console.log("resoponse", resoponse);
+    try {
+      setDeleteLoading(true);
+      let resoponse = await makeCancle(reservationDetail.id);
+      console.log("resoponse", resoponse);
+    } catch (e) {
+    } finally {
+      router.refresh();
+      window.location.reload();
+      setDeleteLoading(false);
+    }
   };
   return (
     <div className="w-full bg-white h-full">
@@ -146,6 +156,30 @@ export default function Page({
                   </div>
                 </>
               )}
+              {reservationDetail.priceType === "GROUP" && (
+                <>
+                  <div className=" col-span-4">
+                    <p>인원</p>
+                  </div>
+                  <div className=" col-span-8">
+                    {reservationDetail.groupMember.map(
+                      (item: any, index: any) => {
+                        return (
+                          <div
+                            key={index}
+                            className="flex flex-row items-center gap-2"
+                          >
+                            <p>{item.startAge}세</p>
+                            <p>~</p>
+                            <p>{item.endAge}세</p>
+                            <p>{item.amount}명</p>
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+                </>
+              )}
               <div className=" col-span-4">
                 <p>예약상태</p>
               </div>
@@ -157,7 +191,8 @@ export default function Page({
                     </Badge>
 
                     <p className="text-sm">
-                      예약확정 시 등록된 이메일로 알림 발송합니다.
+                      예약확정 후에는 고객님께서 등록하신 이메일로 확정 완료
+                      안내 이메일을 발송해 드립니다
                     </p>
                   </div>
                 )}
@@ -224,16 +259,61 @@ export default function Page({
                 <p>{reservationDetail.visitorPhone}</p>
               </div>
             </div>
-            <div className="p-6 grid grid-cols-12  gap-1 w-full bg-white border-b mt-1">
+            <div className="p-6 grid grid-cols-12  gap-2 w-full bg-white border-b mt-1">
               <div className=" col-span-12">
-                <p className="font-semibold">결제 예정 금액</p>
+                <p className="font-semibold"> 결제 예정 금액</p>
+              </div>
+              <div className=" col-span-12 grid grid-cols-12  gap-3">
+                <div className="col-span-4">
+                  <p className=""> 추가상품</p>
+                </div>
+                <div className="col-span-8">
+                  {reservationDetail.subProduct.map(
+                    (sub: any, subInex: any) => {
+                      return (
+                        <div
+                          key={subInex}
+                          className=" col-span-12 flex flex-col items-start gap-2"
+                        >
+                          <div className="flex flex-row items-center gap-2">
+                            <Badge>필수</Badge>
+                            <p>{sub.title}</p>
+                            <p>{sub.price.toLocaleString()}원</p>
+                          </div>
+                          <div>
+                            {sub.selectProducts.map(
+                              (select: any, selectIndex: any) => {
+                                return (
+                                  <div
+                                    key={selectIndex}
+                                    className="flex flex-row items-center gap-2"
+                                  >
+                                    <Badge variant={"outline"}>선택</Badge>
+                                    <p>{select.title}</p>
+                                    <p>{select.amount}</p>
+                                    <p>
+                                      {(
+                                        select.amount * select.price
+                                      ).toLocaleString()}
+                                      원
+                                    </p>
+                                  </div>
+                                );
+                              }
+                            )}
+                          </div>
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
               </div>
               {reservationDetail.priceType === "PERSONAL" ? (
                 <div className=" col-span-12 grid grid-cols-12  gap-3">
                   <div className=" col-span-4">
-                    <p>개인</p>
+                    <p>연령별</p>
                   </div>
-                  <div className=" col-span-8">
+                  <div className=" col-span-8 flex flex-col items-start gap-1">
                     {reservationDetail.personalPrice.map(
                       (item: any, index: any) => {
                         return (
@@ -245,8 +325,20 @@ export default function Page({
                             <p>~</p>
                             <p>{item.endAge} 세</p>
                             <p>{item.amount} 명</p>
-                            <p>{item.price} 원</p>
-                            <p>{Number(item.amount) * Number(item.price)} 원</p>
+                            {!item.isFree && (
+                              <p>{Number(item.price).toLocaleString()} 원</p>
+                            )}
+                            {!item.isFree && (
+                              <p>
+                                {(
+                                  Number(item.amount) * Number(item.price)
+                                ).toLocaleString()}{" "}
+                                원
+                              </p>
+                            )}
+                            {item.isFree && (
+                              <Badge variant={"outline"}>무료</Badge>
+                            )}
                           </div>
                         );
                       }
@@ -261,12 +353,11 @@ export default function Page({
                 </div>
               ) : (
                 <div className=" col-span-12 grid grid-cols-12  gap-3">
-                  <div className=" col-span-4">
+                  <div className=" col-span-4 flex flex-row items-center gap-3">
                     <p>그룹</p>
                   </div>
                   <div className=" col-span-8 flex flex-row items-center gap-3">
-                    <p>그룹 인원</p>
-                    <p>{reservationDetail.groupNumber}명</p>
+                    <p>{reservationDetail.groupPrice.toLocaleString()}원</p>
                   </div>
                   <div className=" col-span-4">
                     <p>결제 예정 금액</p>
@@ -288,13 +379,20 @@ export default function Page({
                     </p>
                   </div>
                   {isBefore ? (
-                    <div className="  flex flex-col items-end w-full">
-                      <Button
+                    <div className="  flex flex-col items-end ">
+                      {/* <Button
                         variant={"destructive"}
                         onClick={() => clickCancle()}
                       >
                         예약 취소
-                      </Button>
+                      </Button> */}
+                      <AlertButton
+                        buttonTitle="예약취소"
+                        title="예약취소"
+                        description="예약취소 시 예약은 복구되지 않습니다."
+                        deleteLoading={deleteLoading}
+                        onDelete={() => clickCancle()}
+                      />
                     </div>
                   ) : (
                     <div className="  flex flex-col items-center  w-full  p-3 broder rounded-md flex-1">

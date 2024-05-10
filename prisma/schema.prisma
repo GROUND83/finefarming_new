@@ -183,6 +183,7 @@ model Product {
   priceType PriceType @default(GROUP)
   groupLimit Int @default(5)// 그룹제한
   groupPrice Int @default(10000)// 그룹요금
+  groupMember Json[] @default(["{ \"isFree\": false ,\"startAge\": \"0\" ,\"endAge\": \"1\",\"message\": \"\"}"])// 인원요금
   personalPrice Json[] @default(["{ \"isFree\": false ,\"startAge\": \"0\" ,\"endAge\": \"1\", \"price\": \"0\",\"message\": \"\"}"])// 인원요금
   farmInsideType Boolean @default(true) // 체험공간 실내 
   tools Json[] //도구 및 복장
@@ -289,9 +290,11 @@ model Reservation {
   visitorPhone String?
   groupPrice Int?
   groupNumber Int?
+  groupMember Json[]
   personalPrice Json[]
   subProduct Json[]
   totalprice Int
+  totalAmount Int // 예약 총인원수 (무료 빼고)
   priceType String
   status ReservationStatus @default(waiting)
   checkInDate DateTime

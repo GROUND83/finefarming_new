@@ -27,6 +27,41 @@ export async function middleware(req: NextRequest) {
   console.log("pathname", pathname);
   const session = await getToken({ req, secret, raw: false });
   //
+  if (pathname.startsWith("/auth/login")) {
+    if (session) {
+      console.log("session writer", session, session.role, session.id);
+      if (session) {
+        console.log("check");
+
+        return NextResponse.redirect(new URL("/", req.url));
+
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.next();
+      }
+    } else {
+      return NextResponse.next();
+    }
+  }
+  //
+  if (pathname.startsWith("/othersAuth")) {
+    if (session) {
+      console.log("session writer", session, session.role, session.id);
+      if (session) {
+        console.log("check");
+
+        return NextResponse.redirect(new URL("/", req.url));
+
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.next();
+      }
+    } else {
+      return NextResponse.next();
+    }
+  }
   if (pathname.startsWith("/profile")) {
     console.log("session", session);
     if (session?.role === "user") {
@@ -47,15 +82,21 @@ export async function middleware(req: NextRequest) {
         } else if (session.role === "superAdmin") {
           return NextResponse.next();
         } else {
-          return NextResponse.redirect(new URL("/mangerAuth", req.url));
+          return NextResponse.redirect(
+            new URL("/othersAuth/manager/login", req.url)
+          );
         }
         //
       } else {
         // console.log("session", session);
-        return NextResponse.redirect(new URL("/mangerAuth", req.url));
+        return NextResponse.redirect(
+          new URL("/othersAuth/manager/login", req.url)
+        );
       }
     } else {
-      return NextResponse.redirect(new URL("/mangerAuth", req.url));
+      return NextResponse.redirect(
+        new URL("/othersAuth/manager/login", req.url)
+      );
     }
   }
   if (pathname.startsWith("/dashwriter")) {
@@ -67,18 +108,49 @@ export async function middleware(req: NextRequest) {
           console.log("check");
           return NextResponse.next();
         } else {
-          return NextResponse.redirect(new URL("/", req.url));
+          return NextResponse.redirect(
+            new URL("/othersAuth/writer/login", req.url)
+          );
         }
         //
       } else {
         // console.log("session", session);
-        return NextResponse.redirect(new URL("/", req.url));
+        return NextResponse.redirect(
+          new URL("/othersAuth/writer/login", req.url)
+        );
       }
     } else {
-      return NextResponse.redirect(new URL("/", req.url));
+      return NextResponse.redirect(
+        new URL("/othersAuth/writer/login", req.url)
+      );
     }
   }
-
+  if (pathname.startsWith("/dashfarmer")) {
+    if (session) {
+      console.log("session writer", session, session.role, session.id);
+      if (session.id && session.role) {
+        console.log("check");
+        if (session.role === "farmer") {
+          console.log("check");
+          return NextResponse.next();
+        } else {
+          return NextResponse.redirect(
+            new URL("/othersAuth/farmer/login", req.url)
+          );
+        }
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.redirect(
+          new URL("/othersAuth/farmer/login", req.url)
+        );
+      }
+    } else {
+      return NextResponse.redirect(
+        new URL("/othersAuth/farmer/login", req.url)
+      );
+    }
+  }
   // if (!session.id) {
   //   //   유저가 없으면 퍼블릭 URL로 이동 못한다.
   //   if (!exists) {

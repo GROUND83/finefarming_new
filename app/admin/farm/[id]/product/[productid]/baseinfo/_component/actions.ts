@@ -20,6 +20,7 @@ export async function getProductBase(id: number) {
       priceType: true,
       groupPrice: true,
       personalPrice: true,
+      groupMember: true,
       groupLimit: true,
       farmInsideType: true,
       tools: true,
@@ -31,6 +32,7 @@ export async function getProductBase(id: number) {
   });
   if (product) {
     product.personalPrice as Prisma.JsonArray;
+    product.groupMember as Prisma.JsonArray;
     return product;
   } else {
     redirect("/not-found");

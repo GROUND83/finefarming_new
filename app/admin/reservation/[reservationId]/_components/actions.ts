@@ -90,8 +90,10 @@ export async function changeComplete(reservationId: number) {
       });
     }
   } else {
-    if (result.groupNumber) {
-      howmany += result.groupNumber;
+    if (result.groupMember.length > 0) {
+      result.groupMember.map((item: any) => {
+        howmany += Number(item.amount);
+      });
     }
   }
   let totalPrice = `${Number(result.totalprice).toLocaleString()}원`;
@@ -315,8 +317,10 @@ export async function changeStatus({
             });
           }
         } else {
-          if (result.groupNumber) {
-            howmany += result.groupNumber;
+          if (result.groupMember.length > 0) {
+            result.groupMember.map((item: any) => {
+              howmany += Number(item.amount);
+            });
           }
         }
         let totalPrice = `${Number(result.totalprice).toLocaleString()}원`;
@@ -483,25 +487,10 @@ export async function changeStatus({
         let username = user.username;
         let farmName = result.farm.name;
         let farmAddress = result.farm.address;
-        let visitor = result.visitor;
-        let visitorPhone = result.visitorPhone;
+
         let checkIndate = `${moment(result.checkInDate).format(
           "YYYY년 MM월 DD일"
         )} ${result.checkInTime}시`;
-        let howmany = 0;
-        if (result.priceType === "PERSONAL") {
-          if (result.personalPrice.length > 0) {
-            result.personalPrice.map((item: any) => {
-              howmany += Number(item.amount);
-            });
-          }
-        } else {
-          if (result.groupNumber) {
-            howmany += result.groupNumber;
-          }
-        }
-        let totalPrice = `${Number(result.totalprice).toLocaleString()}원`;
-        let resevationPhone = result.farm.resevationPhone;
 
         let from = "info@finefarming.co.kr";
         let subject = `${username} 방문 완료 메일입니다.`;

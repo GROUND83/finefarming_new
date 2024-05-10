@@ -23,7 +23,7 @@ export async function getProductDetail(productId: number) {
   let farmInd = products?.farm.id;
   const slot = products?.farm.slot;
 
-  console.log("product", products, farmInd);
+  // console.log("product", products, farmInd);
   return JSON.stringify(products);
 }
 
@@ -128,15 +128,19 @@ export async function getReservationDate({
   const reservation = await db.reservation.groupBy({
     by: ["checkInTime"],
     where: {
+      farmId: farmId,
       checkInDate: {
         gte: newKoreanDate,
         lt: plusDay,
       },
       OR: [{ status: "waiting" }, { status: "complete" }],
     },
-    _count: true,
+    _sum: {
+      totalAmount: true,
+    },
   });
-  console.log("createReservation", reservation);
+  console.log("reservation", reservation);
+
   // console.log("reservation", totalReservationDate, reservation);
   // 슬롯에 예약 반영해서 슬롯 리턴 남은수량 계산
   if (reservationDate.length > 0) {
@@ -158,14 +162,16 @@ export async function getReservationDate({
     // 중복제거 예약 현황
     for (const mergedArrayData of mergedArray) {
       if (reservation.length > 0) {
+        console.log("reservation", reservation);
         let filetered = reservation.filter(
           (item) => item.checkInTime === mergedArrayData.startTime
         );
+        console.log("filetered", filetered);
         if (filetered.length > 0) {
           //
           let data = {
             ...mergedArrayData,
-            count: filetered[0]._count,
+            count: filetered[0]._sum.totalAmount,
           };
           newArray.push(data);
         } else {
@@ -205,7 +211,7 @@ export async function getReservationDate({
             //
             let data = {
               ...slotdata,
-              count: filetered[0]._count,
+              count: filetered[0]._sum.totalAmount,
             };
             newArray.push(data);
           } else {
@@ -247,6 +253,7 @@ export async function makeReservation(jsonData: string) {
       select: {
         priceType: true,
         groupPrice: true,
+        groupLimit: true,
         farm: {
           select: {
             id: true,
@@ -261,7 +268,19 @@ export async function makeReservation(jsonData: string) {
         groupPrice,
         farm: { initail, id },
       } = product;
+      let groupLimit = product.groupLimit;
+      let personalPrice = result.personalPrice;
 
+      // if (personalPrice.length > 0) {
+      //   for (const personal of personalPrice) {
+      //     if (!personal.isFree) {
+      //       totalAmount += personal.amount;
+      //     }
+      //   }
+      // }
+      // if (groupLimit) {
+      //   totalAmount += groupNumber;
+      // }
       //
       let createReservation = await db.reservation.create({
         data: {
@@ -279,14 +298,16 @@ export async function makeReservation(jsonData: string) {
           visitor: result.visitor,
           visitorPhone: result.visitorPhone,
           groupPrice: result.groupPrice ? result.groupPrice : null,
-          groupNumber: result.groupNumber ? result.groupNumber : null,
-          personalPrice: result.personalPrice,
+          groupMember: result.groupMember.length > 0 ? result.groupMember : [],
+          personalPrice:
+            result.personalPrice.length > 0 ? result.personalPrice : [],
           priceType: result.priceType,
           checkInDate: new Date(result.checkInDate),
           checkInTime: result.checkInTime,
           totalprice: result.totalPrice,
           created_at: getDateTime(),
           updated_at: getDateTime(),
+          totalAmount: result.totalAmount,
         },
         include: {
           user: {
@@ -314,7 +335,6 @@ export async function makeReservation(jsonData: string) {
       if (createReservation) {
         //
         let username = createReservation.user.username;
-        let userPhone = createReservation.user.phone;
         let farmName = createReservation.farm.name;
         let farmAddress = createReservation.farm.address;
         let visitor = createReservation.visitor;
@@ -330,11 +350,15 @@ export async function makeReservation(jsonData: string) {
             });
           }
         } else {
-          if (createReservation.groupNumber) {
-            howmany += createReservation.groupNumber;
+          if (createReservation.groupMember.length > 0) {
+            createReservation.groupMember.map((item: any) => {
+              howmany += Number(item.amount);
+            });
           }
         }
-        let totalPrice = `${Number(result.totalprice).toLocaleString()}원`;
+        let totalPrice = `${Number(
+          createReservation.totalprice
+        ).toLocaleString()}원`;
         let resevationPhone = createReservation.farm.resevationPhone;
 
         let from = "info@finefarming.co.kr";
@@ -353,20 +377,20 @@ export async function makeReservation(jsonData: string) {
           <html>
           <body style="width:500px;">
           <div style="border: 1px;width: 400px;background-color: #f5f5f5;border: 1px solid #e5e7eb;padding: 70px;border-radius: 20px;">
-     
+
             <img
               src="https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/bdab6fb3-d498-49e5-3a5b-d03c601c8d00/public"
               alt="finefarminglogo"
               title="Logo"
               style="display:block;width:100px;height:50px;"
-      
+
             />
-         
+
           <h1 style="font-size: 24px; margin-top: 20px">예약 확인</h1>
           <p style="font-size: 24px">${username} 고객님의 예약을 진행하였습니다.</p>
           <div
             style="
-             
+
               width: 100%;
               margin-top: 20px;
             "
@@ -404,7 +428,7 @@ export async function makeReservation(jsonData: string) {
             </div>
             <div
               style="
-               
+
                 width: 100%;
                 margin-top: 10px;
                 padding-bottom: 10px;
@@ -416,7 +440,7 @@ export async function makeReservation(jsonData: string) {
             </div>
             <div
               style="
-               
+
                 width: 100%;
                 padding-bottom: 10px;
                 border-bottom: 1px solid #e5e7eb;
@@ -428,7 +452,7 @@ export async function makeReservation(jsonData: string) {
             </div>
             <div
               style="
-               
+
                 width: 100%;
                 padding-bottom: 10px;
                 border-bottom: 1px solid #e5e7eb;
@@ -440,7 +464,7 @@ export async function makeReservation(jsonData: string) {
             </div>
             <div
               style="
-              
+
                 width: 100%;
                 padding-bottom: 10px;
                 border-bottom: 1px solid #e5e7eb;
@@ -452,7 +476,7 @@ export async function makeReservation(jsonData: string) {
             </div>
             <div
               style="
-              
+
                 width: 100%;
                 padding-bottom: 10px;
                 border-bottom: 1px solid #e5e7eb;
@@ -483,7 +507,7 @@ export async function makeReservation(jsonData: string) {
         </div>
         </body>
         </html>
-        
+
         `,
         };
 
