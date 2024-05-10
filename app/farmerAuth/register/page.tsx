@@ -57,7 +57,7 @@ export default function Page() {
       email: data.email,
       password: data.password,
     };
-    const res = await fetch("http://localhost:3000/api/farmer/create", {
+    const res = await fetch(`${process.env.SERVER_URL}/api/farmer/create`, {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {

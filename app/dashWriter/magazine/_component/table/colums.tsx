@@ -182,7 +182,7 @@ export const columns: ColumnDef<any>[] = [
       console.log(row);
       return (
         <div className=" text-right">
-          <Link href={`/dashbordWriter/magazine/${row.original.id}`}>
+          <Link href={`/dashwriter/magazine/${row.original.id}`}>
             <Button variant="outline" size="icon">
               <MagnifyingGlassIcon className="size-4" />
             </Button>

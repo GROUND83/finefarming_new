@@ -42,7 +42,7 @@ export default function Page() {
       email: data.email,
       password: data.password,
       type: "writer",
-      callbackUrl: "/dashbordWriter/magazine",
+      callbackUrl: "/dashwriter/magazine",
       redirect: true,
     });
     if (result) console.log("result", result);

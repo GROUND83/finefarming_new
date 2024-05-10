@@ -19,7 +19,7 @@ export default function LayOut({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex flex-row items-center gap-3">
               <Button asChild>
-                <Link href={"/dashbordWriter/magazine/new"}>매거진 작성</Link>
+                <Link href={"/dashwriter/magazine/new"}>매거진 작성</Link>
               </Button>
             </div>
           </div>

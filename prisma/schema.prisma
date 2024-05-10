@@ -279,10 +279,10 @@ model ReserVationDate {
 model Reservation {
   id Int @id @default(autoincrement())
   reservationNumber String  // 
-  farm Farm @relation(fields: [farmId], references: [id],onDelete:Cascade)
+  farm Farm @relation(fields: [farmId], references: [id], onDelete:Cascade)
   farmId Int
   farmName String?
-  user User @relation(fields: [userId], references: [id],onDelete:Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete:Cascade)
   userId Int
   productId Int
   visitor String?

@@ -58,7 +58,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/mangerAuth", req.url));
     }
   }
-  if (pathname.startsWith("/dashWriter")) {
+  if (pathname.startsWith("/dashwriter")) {
     if (session) {
       console.log("session writer", session, session.role, session.id);
       if (session.id && session.role) {
