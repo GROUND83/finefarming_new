@@ -24,7 +24,7 @@ export function ManagerAuth() {
     getUer();
   }, []);
   return (
-    <div className="flex flex-col  items-start gap-3 border-t border-b py-6">
+    <div className="flex flex-col  items-start gap-3py-6">
       {user && (
         <>
           <div className="flex flex-col items-start gap-2 w-full ">
@@ -42,7 +42,7 @@ export function ManagerAuth() {
             size={"sm"}
             variant={"outline"}
             onClick={() => logOutClick()}
-            className="flex gap-2"
+            className="flex gap-2 mt-3"
           >
             로그아웃
             <ArrowRightStartOnRectangleIcon className="size-4" />

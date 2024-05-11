@@ -9,11 +9,18 @@ import {
   LifebuoyIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { ManagerAuth } from "@/components/userName";
 import { getSession } from "next-auth/react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const superAdminMenu = [
   {
@@ -21,30 +28,35 @@ export const superAdminMenu = [
     icon: <BuildingStorefrontIcon className="size-4" />,
     link: "farm",
     disable: false,
+    subMenu: [],
   },
   {
     title: "예약 관리",
     icon: <CalendarIcon className="size-4" />,
     link: "reservation",
     disable: false,
+    subMenu: [],
   },
   {
     title: "주문 내역",
     icon: <CreditCardIcon className="size-4" />,
     link: "order",
     disable: true,
+    subMenu: [],
   },
   {
     title: "리뷰 관리",
     icon: <ChatBubbleLeftIcon className="size-4" />,
     link: "review",
     disable: false,
+    subMenu: [],
   },
   {
     title: "매거진 관리",
     icon: <BookOpenIcon className="size-4" />,
     link: "magazine",
     disable: false,
+    subMenu: [],
   },
   {
     title: "사용자 관리",
@@ -83,6 +95,7 @@ export const superAdminMenu = [
     icon: <LifebuoyIcon className="size-4" />,
     link: "community",
     disable: false,
+    subMenu: [],
   },
   {
     title: "사이트 관리",
@@ -129,30 +142,35 @@ export const adminMenu = [
     icon: <BuildingStorefrontIcon className="size-4" />,
     link: "farm",
     disable: false,
+    subMenu: [],
   },
   {
     title: "예약 관리",
     icon: <CalendarIcon className="size-4" />,
     link: "reservation",
     disable: false,
+    subMenu: [],
   },
   {
     title: "주문 내역",
     icon: <CreditCardIcon className="size-4" />,
     link: "order",
     disable: true,
+    subMenu: [],
   },
   {
     title: "리뷰 관리",
     icon: <ChatBubbleLeftIcon className="size-4" />,
     link: "review",
     disable: false,
+    subMenu: [],
   },
   {
     title: "매거진 관리",
     icon: <BookOpenIcon className="size-4" />,
     link: "magazine",
     disable: false,
+    subMenu: [],
   },
   {
     title: "사용자 관리",
@@ -185,6 +203,7 @@ export const adminMenu = [
     icon: <LifebuoyIcon className="size-4" />,
     link: "community",
     disable: false,
+    subMenu: [],
   },
   {
     title: "사이트 관리",
@@ -250,35 +269,47 @@ export default function AdminLayOut({
             <Link href={"/"} className=" relative  w-[80px] aspect-[5/3]">
               <Image src="/logo.svg" alt="logo" fill priority />
             </Link>
+          </div>
+          <div className="w-full flex-1 p-6">
+            <ManagerAuth />
+          </div>
+          <div className="w-full p-3   overflow-y-scroll">
             {user?.role === "manager" ? (
               <div className="flex flex-col items-start gap-2  text-black  font-light text-sm w-full">
                 {adminMenu.map((item, index) => {
                   return (
                     <div className="w-full" key={index}>
-                      {item.subMenu ? (
-                        <div className="w-full">
-                          <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
-                            {item.icon}
-                            {item.title}
-                          </p>
-                          <div className="ml-3">
-                            {item.subMenu.map((sub, subIndex) => {
-                              return (
-                                <div key={subIndex}>
-                                  <Link
-                                    href={`/admin/${sub.link}`}
-                                    className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
-                                  >
-                                    {sub.icon}
-                                    {sub.title}
-                                  </Link>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
+                      {item.subMenu?.length > 0 ? (
+                        <Accordion type="single" collapsible>
+                          <AccordionItem value="item-1">
+                            <AccordionTrigger>
+                              {" "}
+                              <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
+                                {item.icon}
+                                {item.title}
+                              </p>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <div className="ml-3">
+                                {item.subMenu.map((sub, subIndex) => {
+                                  return (
+                                    <div key={subIndex}>
+                                      <Link
+                                        href={`/admin/${sub.link}`}
+                                        className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
+                                      >
+                                        {sub.icon}
+                                        {sub.title}
+                                      </Link>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
                       ) : (
-                        <div>
+                        <div className="">
                           {item.disable ? (
                             <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors">
                               {item.icon}
@@ -349,9 +380,6 @@ export default function AdminLayOut({
                 })}
               </div>
             )}
-            <div className="w-full ">
-              <ManagerAuth />
-            </div>
           </div>
         </div>
       </div>
