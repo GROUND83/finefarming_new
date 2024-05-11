@@ -8,6 +8,7 @@ import { Drawer } from "vaul";
 
 import { Button } from "@/components/ui/button";
 import {
+  ArrowLeftStartOnRectangleIcon,
   Bars3Icon,
   BookOpenIcon,
   ChatBubbleLeftEllipsisIcon,
@@ -16,8 +17,9 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { empty_avatar_url } from "@/lib/constants";
+import Image from "next/image";
 
 export function MobileUserComponet() {
   const router = useRouter();
@@ -49,7 +51,7 @@ export function MobileUserComponet() {
             <div className=" bg-white flex-1 h-full">
               <div className="w-full  flex flex-col items-start gap-3">
                 {session?.user ? (
-                  <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b px-6 py-6 w-full">
+                  <Drawer.Title className=" mb-4 flex flex-col items-center gap-3 border-b px-6 py-6 w-full">
                     <Avatar>
                       <AvatarImage
                         src={
@@ -59,12 +61,35 @@ export function MobileUserComponet() {
                         }
                       />
                     </Avatar>
-                    <div>
+                    <div className="flex flex-col items-center">
                       <p className=" text-md">{session?.user.username}</p>
-                      <p className="text-neutral-500 text-xs">
-                        {session?.user.email}
-                      </p>
+                      <div className="flex flex-row items-center gap-2">
+                        {session?.user.type === "kakao" && (
+                          <div className="bg-[#FFE500] text-[#181600]  flex flex-row items-center  rounded-full  p-1 ">
+                            <Image
+                              alt="kakao"
+                              src={"/kakoLogo.svg"}
+                              width={10}
+                              height={10}
+                            />
+                          </div>
+                        )}
+                        <p className="text-neutral-500 text-sm">
+                          {session?.user.email}
+                        </p>
+                      </div>
                     </div>
+                    {session && (
+                      <Button
+                        onClick={async () => signOut()}
+                        variant={"outline"}
+                        size={"sm"}
+                        className="gap-2"
+                      >
+                        로그아웃
+                        <ArrowLeftStartOnRectangleIcon className="size-4" />
+                      </Button>
+                    )}
                   </Drawer.Title>
                 ) : (
                   <Drawer.Title className=" mb-4 flex flex-row items-center gap-3 border-b px-6 py-6 w-full">
@@ -80,7 +105,7 @@ export function MobileUserComponet() {
                     </Button>
                   </Drawer.Title>
                 )}
-                <div className="w-full flex flex-col items-start gap-3 p-6">
+                <div className="w-full flex flex-col items-start gap-3 px-6">
                   {session?.user && (
                     <div className="w-full flex flex-col items-start ">
                       <Button
@@ -164,7 +189,7 @@ export function UserComponet() {
               : session?.user.role === "superAdmin"
               ? "/admin/farm"
               : session?.user.role === "writer"
-              ? "/dashbordWriter"
+              ? "/dashwriter"
               : "/"
           }
           className="  flex flex-row items-center gap-3  "
@@ -176,9 +201,21 @@ export function UserComponet() {
               }
             />
           </Avatar>
-          <div>
+          <div className="flex flex-col items-start">
             <p className=" text-md">{session?.user.username}</p>
-            <p className="text-neutral-500 text-sm">{session?.user.email}</p>
+            <div className="flex flex-row items-center gap-2">
+              {session?.user.type === "kakao" && (
+                <div className="bg-[#FFE500] text-[#181600]  flex flex-row items-center  rounded-full  p-1 ">
+                  <Image
+                    alt="kakao"
+                    src={"/kakoLogo.svg"}
+                    width={10}
+                    height={10}
+                  />
+                </div>
+              )}
+              <p className="text-neutral-500 text-sm">{session?.user.email}</p>
+            </div>
           </div>
         </Link>
       ) : (

@@ -8,7 +8,8 @@ declare module "next-auth" {
       avatar: string | null | undefined;
       id: number;
       phone: string | null | undefined;
-      role: "manager" | "user";
+      role: "manager" | "user" | "farmer" | "writer" | "superAdmin";
+      type: string;
     } & DefaultSession["user"];
   }
   interface User extends DefaultUser {
@@ -27,6 +28,6 @@ import { JWT } from "@auth/core/jwt";
 
 declare module "@auth/core/jwt" {
   interface JWT {
-    role: "manager" | "user";
+    role: "manager" | "user" | "farmer" | "writer" | "superAdmin";
   }
 }

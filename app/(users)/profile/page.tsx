@@ -16,6 +16,8 @@ import { signOut, useSession } from "next-auth/react";
 import { empty_avatar_url } from "@/lib/constants";
 import { Loader2 } from "lucide-react";
 import Footer from "../_components/footerWrap";
+import { EnvelopeIcon } from "@heroicons/react/24/solid";
+import ProviderIcon from "@/components/providerIcon";
 
 export default function Page() {
   const [loading, setLoading] = React.useState(false);
@@ -81,35 +83,39 @@ export default function Page() {
         </div>
       ) : (
         <div className="flex flex-col items-start gap-3 lg:container lg:mx-auto">
-          {user && (
-            <div className="w-full flex flex-col items-start gap-2 p-3">
-              <div className="w-full flex flex-col lg:flex-row items-start lg:items-center  justify-between gap-3  p-3  lg:py-24">
-                <div className="flex flex-row items-center gap-3">
-                  {/* <Avatar className="size-12 lg:size-16">
-                    <AvatarImage
-                      src={user.avatar ? user.avatar : empty_avatar_url}
-                    />
-                  </Avatar> */}
-                  <div className="flex flex-col items-start gap-1">
-                    <p className="text-lg lg:text-2xl font-semibold">
-                      {user?.username}님 반가워요!
-                    </p>
-                    <p className="text-base ">{user?.email}</p>
-                    <p className="text-xs lg:text-sm  text-neutral-500">
-                      {moment(user?.created_at).format("YYYY년MM월DD일")}
+          <div className="w-full flex flex-col lg:flex-row items-start lg:items-center  justify-between gap-3  p-3  lg:py-24">
+            <div className="flex flex-row items-center gap-3">
+              {user && (
+                <div className="flex flex-col items-start gap-1">
+                  <p className="text-lg lg:text-2xl font-semibold">
+                    {user?.username}님 반가워요!
+                  </p>
+                  <div className="flex flex-row items-center gap-2">
+                    <ProviderIcon value={user.provider} />
+                    <p className="text-neutral-500 text-sm">
+                      {session?.user.email}
                     </p>
                   </div>
+                  <p className="text-xs lg:text-sm  text-neutral-500">
+                    {moment(user?.created_at).format("YYYY년MM월DD일")}
+                  </p>
                 </div>
-                <Button
-                  onClick={async () => clickLogout()}
-                  variant={"outline"}
-                  size={"sm"}
-                  className="gap-2"
-                >
-                  로그아웃
-                  <ArrowLeftStartOnRectangleIcon className="size-4" />
-                </Button>
-              </div>
+              )}
+            </div>
+            {session && (
+              <Button
+                onClick={async () => clickLogout()}
+                variant={"outline"}
+                size={"sm"}
+                className="gap-2"
+              >
+                로그아웃
+                <ArrowLeftStartOnRectangleIcon className="size-4" />
+              </Button>
+            )}
+          </div>
+          {user && (
+            <div className="w-full flex flex-col items-start gap-2 p-3">
               <Tabs
                 defaultValue="reservation"
                 className="w-full flex flex-col min-h-screen  gap-4"
@@ -145,6 +151,9 @@ export default function Page() {
                                   <Badge variant={"done"}>방문완료</Badge>
                                 )}
                                 {reservation.status === "cancle" && (
+                                  <Badge variant={"cancel"}>예약취소</Badge>
+                                )}
+                                {reservation.status === "managercancle" && (
                                   <Badge variant={"cancel"}>예약취소</Badge>
                                 )}
                                 {reservation.status === "noshow" && (
