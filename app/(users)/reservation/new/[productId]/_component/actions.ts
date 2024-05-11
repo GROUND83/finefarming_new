@@ -72,7 +72,7 @@ export async function getReservationDate({
   console.log(productId);
   let newdate = new Date(date);
 
-  let newKoreanDate = new Date(dayjs(newdate).add(9, "hour").format());
+  let newKoreanDate = new Date(dayjs(newdate).format());
   let plusDay = new Date(dayjs(newKoreanDate).add(1, "d").format());
   // console.log(productId, "date", newKoreanDate, plusDay);
 

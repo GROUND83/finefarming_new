@@ -73,7 +73,7 @@ export async function getReservationDate({
   farmId,
   selectedDay,
 }: getReservationDateProps) {
-  let koreanSelectDay = dayjs(selectedDay).add(9, "hour").toISOString();
+  let koreanSelectDay = dayjs(selectedDay).toISOString();
   let plusDay = dayjs(koreanSelectDay).add(1, "day").toISOString();
   console.log(
     "selectedDay",
