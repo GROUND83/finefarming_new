@@ -22,6 +22,8 @@ dayjs.locale("ko");
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
+
+//
 const inter = Inter({ subsets: ["latin"] });
 declare global {
   interface Window {
@@ -44,10 +46,10 @@ export default async function RootLayout({
           className={inter.className}
           style={{ fontSize: 16, margin: 0, padding: 0 }}
         >
-          <Script
+          {/* <Script
             strategy="beforeInteractive"
             src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAO_MAP_KEY}&libraries=services&autoload=false`}
-          />
+          /> */}
           <AuthProvider>
             <div className="w-screen  flex flex-col  items-stretch bg-white relative min-h-screen">
               {children}
