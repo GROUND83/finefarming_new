@@ -23,128 +23,128 @@ const publicOnlyUrls: Routes = {
 const secret = process.env.NEXTAUTH_SECRET;
 
 export async function middleware(req: NextRequest) {
-  // const pathname = req.nextUrl.pathname;
-  // // console.log("pathname", pathname);
-  // const session = await getToken({ req, secret, raw: false });
-  // //
-  // if (pathname.startsWith("/auth/login")) {
-  //   if (session) {
-  //     console.log("session writer", session, session.role, session.id);
-  //     if (session) {
-  //       console.log("check");
-  //       return NextResponse.redirect(new URL("/", req.url));
-  //       //
-  //     } else {
-  //       // console.log("session", session);
-  //       return NextResponse.next();
-  //     }
-  //   } else {
-  //     return NextResponse.next();
-  //   }
-  // }
-  // //
-  // if (pathname.startsWith("/othersAuth")) {
-  //   if (session) {
-  //     console.log("session writer", session, session.role, session.id);
-  //     if (session) {
-  //       console.log("check");
-  //       return NextResponse.redirect(new URL("/", req.url));
-  //       //
-  //     } else {
-  //       // console.log("session", session);
-  //       return NextResponse.next();
-  //     }
-  //   } else {
-  //     return NextResponse.next();
-  //   }
-  // }
-  // if (pathname.startsWith("/profile")) {
-  //   console.log("session", session);
-  //   if (session?.role === "user") {
-  //     return NextResponse.next();
-  //   } else {
-  //     return NextResponse.redirect(new URL("/auth/login", req.url));
-  //   }
-  // }
-  // if (pathname.startsWith("/admin")) {
-  //   console.log("session", session);
-  //   if (session) {
-  //     if (session.id && session.role) {
-  //       if (session.role === "manager") {
-  //         console.log("session", session);
-  //         return NextResponse.next();
-  //       } else if (session.role === "superAdmin") {
-  //         return NextResponse.next();
-  //       } else {
-  //         return NextResponse.redirect(
-  //           new URL("/othersAuth/manager/login", req.url)
-  //         );
-  //       }
-  //       //
-  //     } else {
-  //       // console.log("session", session);
-  //       return NextResponse.redirect(
-  //         new URL("/othersAuth/manager/login", req.url)
-  //       );
-  //     }
-  //   } else {
-  //     return NextResponse.redirect(
-  //       new URL("/othersAuth/manager/login", req.url)
-  //     );
-  //   }
-  // }
-  // if (pathname.startsWith("/dashwriter")) {
-  //   if (session) {
-  //     console.log("session writer", session, session.role, session.id);
-  //     if (session.id && session.role) {
-  //       console.log("check");
-  //       if (session.role === "writer") {
-  //         console.log("check");
-  //         return NextResponse.next();
-  //       } else {
-  //         return NextResponse.redirect(
-  //           new URL("/othersAuth/writer/login", req.url)
-  //         );
-  //       }
-  //       //
-  //     } else {
-  //       // console.log("session", session);
-  //       return NextResponse.redirect(
-  //         new URL("/othersAuth/writer/login", req.url)
-  //       );
-  //     }
-  //   } else {
-  //     return NextResponse.redirect(
-  //       new URL("/othersAuth/writer/login", req.url)
-  //     );
-  //   }
-  // }
-  // if (pathname.startsWith("/dashfarmer")) {
-  //   if (session) {
-  //     console.log("session writer", session, session.role, session.id);
-  //     if (session.id && session.role) {
-  //       console.log("check");
-  //       if (session.role === "farmer") {
-  //         console.log("check");
-  //         return NextResponse.next();
-  //       } else {
-  //         return NextResponse.redirect(
-  //           new URL("/othersAuth/farmer/login", req.url)
-  //         );
-  //       }
-  //       //
-  //     } else {
-  //       // console.log("session", session);
-  //       return NextResponse.redirect(
-  //         new URL("/othersAuth/farmer/login", req.url)
-  //       );
-  //     }
-  //   } else {
-  //     return NextResponse.redirect(
-  //       new URL("/othersAuth/farmer/login", req.url)
-  //     );
-  //   }
-  // }
+  const pathname = req.nextUrl.pathname;
+  // console.log("pathname", pathname);
+  const session = await getToken({ req, secret, raw: false });
+  //
+  if (pathname.startsWith("/auth/login")) {
+    if (session) {
+      console.log("session writer", session, session.role, session.id);
+      if (session) {
+        console.log("check");
+        return NextResponse.redirect(new URL("/", req.url));
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.next();
+      }
+    } else {
+      return NextResponse.next();
+    }
+  }
+  //
+  if (pathname.startsWith("/othersAuth")) {
+    if (session) {
+      console.log("session writer", session, session.role, session.id);
+      if (session) {
+        console.log("check");
+        return NextResponse.redirect(new URL("/", req.url));
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.next();
+      }
+    } else {
+      return NextResponse.next();
+    }
+  }
+  if (pathname.startsWith("/profile")) {
+    console.log("session", session);
+    if (session?.role === "user") {
+      return NextResponse.next();
+    } else {
+      return NextResponse.redirect(new URL("/auth/login", req.url));
+    }
+  }
+  if (pathname.startsWith("/admin")) {
+    console.log("session", session);
+    if (session) {
+      if (session.id && session.role) {
+        if (session.role === "manager") {
+          console.log("session", session);
+          return NextResponse.next();
+        } else if (session.role === "superAdmin") {
+          return NextResponse.next();
+        } else {
+          return NextResponse.redirect(
+            new URL("/othersAuth/manager/login", req.url)
+          );
+        }
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.redirect(
+          new URL("/othersAuth/manager/login", req.url)
+        );
+      }
+    } else {
+      return NextResponse.redirect(
+        new URL("/othersAuth/manager/login", req.url)
+      );
+    }
+  }
+  if (pathname.startsWith("/dashwriter")) {
+    if (session) {
+      console.log("session writer", session, session.role, session.id);
+      if (session.id && session.role) {
+        console.log("check");
+        if (session.role === "writer") {
+          console.log("check");
+          return NextResponse.next();
+        } else {
+          return NextResponse.redirect(
+            new URL("/othersAuth/writer/login", req.url)
+          );
+        }
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.redirect(
+          new URL("/othersAuth/writer/login", req.url)
+        );
+      }
+    } else {
+      return NextResponse.redirect(
+        new URL("/othersAuth/writer/login", req.url)
+      );
+    }
+  }
+  if (pathname.startsWith("/dashfarmer")) {
+    if (session) {
+      console.log("session writer", session, session.role, session.id);
+      if (session.id && session.role) {
+        console.log("check");
+        if (session.role === "farmer") {
+          console.log("check");
+          return NextResponse.next();
+        } else {
+          return NextResponse.redirect(
+            new URL("/othersAuth/farmer/login", req.url)
+          );
+        }
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.redirect(
+          new URL("/othersAuth/farmer/login", req.url)
+        );
+      }
+    } else {
+      return NextResponse.redirect(
+        new URL("/othersAuth/farmer/login", req.url)
+      );
+    }
+  }
   // return NextResponse.next();
 }
 
@@ -152,9 +152,6 @@ export const config = {
   //   matcher: ["/", "/profile", "auth/:path*"], // 미들웨어 실행할 path
   matcher: [
     "/reservaton/:path*",
-    // "/dashbordWriter/:path*",
-    // "/admin/:path*",
-    // "/writer/:path*",
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.svg$).*)", //제외
   ], // 미들웨어 실행할 path
 };
