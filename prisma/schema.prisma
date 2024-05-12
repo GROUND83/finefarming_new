@@ -25,6 +25,9 @@ model SuperManager {
   role String @default("superAdmin")
   approve Boolean @default(true)
   provider ProviderType @default(email)
+  servicePolicy Boolean @default(true)
+  personlaPolicy Boolean @default(true)
+  overForteen Boolean @default(true)
 }
 // admin
 model Manager {
@@ -39,6 +42,9 @@ model Manager {
   provider ProviderType @default(email)
   role String @default("manager")
   approve Boolean @default(false)
+  servicePolicy Boolean @default(true)
+  personlaPolicy Boolean @default(true)
+  overForteen Boolean @default(true)
 }
 // 고객
 model User {
@@ -56,6 +62,9 @@ model User {
   provider ProviderType
   role String @default("user")
   approve Boolean @default(true)
+  servicePolicy Boolean @default(false)
+  personlaPolicy Boolean @default(false)
+  overForteen Boolean @default(false)
   reviews Review[]
 }
 // 라이터
@@ -75,6 +84,9 @@ model Writer {
   role String @default("writer")
   approve Boolean @default(false)
   provider ProviderType @default(email)
+  servicePolicy Boolean @default(false)
+  personlaPolicy Boolean @default(false)
+  overForteen Boolean @default(false)
 }
 enum ProviderType {
   email
@@ -95,6 +107,9 @@ model Farmer {
   role String @default("farmer")
   approve Boolean @default(false)
   provider ProviderType @default(email)
+  servicePolicy Boolean @default(false)
+  personlaPolicy Boolean @default(false)
+  overForteen Boolean @default(false)
 }
 
 model Farm {

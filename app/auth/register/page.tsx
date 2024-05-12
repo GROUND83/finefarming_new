@@ -29,11 +29,17 @@ import { useRouter } from "next/navigation";
 import { formSchema } from "./registerSchema";
 import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
-import ServicePolicy from "@/components/servicePolicy";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import React from "react";
+import { Loader2 } from "lucide-react";
+import LogoWrap from "@/components/logowrap";
+import PersonalPolicyWrap from "@/components/persnalPolicyWrap";
+import ServicePolicy from "@/components/servicePolicyWrap";
+import PersonalInfo from "@/components/personalInfo";
 
 export default function Page() {
+  const [loading, setLoading] = React.useState(false);
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -61,36 +67,43 @@ export default function Page() {
       personlaPolicy: data.personlaPolicy,
       overForteen: data.overForteen,
     };
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/create`,
-      {
-        method: "POST",
-        body: JSON.stringify(userData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log("res", res, res.status);
-    if (res.ok) {
-      const result = await signIn("credentials", {
-        email: data.email,
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/create`,
+        {
+          method: "POST",
+          body: JSON.stringify(userData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("res", res, res.status);
+      if (res.ok) {
+        const result = await signIn("credentials", {
+          email: data.email,
 
-        role: "user",
-        type: "email",
-        password: data.password,
-        redirect: false,
-      });
-      if (result?.ok) {
-        router.replace("/");
+          role: "user",
+          type: "email",
+          password: data.password,
+          redirect: false,
+        });
+        if (result?.ok) {
+          router.replace("/");
+        } else {
+          toast({ variant: "destructive", title: result?.error?.toString() });
+          form.reset();
+        }
       } else {
-        toast({ variant: "destructive", title: result?.error?.toString() });
-        form.reset();
+        const data = await res.json();
+        console.log(data.message);
+        toast({ variant: "destructive", title: data.message });
       }
-    } else {
-      const data = await res.json();
-      console.log(data.message);
-      toast({ variant: "destructive", title: data.message });
+    } catch (e) {
+      //
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -112,19 +125,10 @@ export default function Page() {
     return () => subscription.unsubscribe();
   }, [form.watch]);
   return (
-    <main className="w-full lg:w-1/3 mx-auto grid grid-cols-2 gap-1 min-h-screen">
+    <main className="w-full lg:w-1/2 mx-auto grid grid-cols-2 gap-1 min-h-screen">
       <div className="flex flex-col items-center gap-6 col-span-2 p-6 justify-center">
         <div className="flex flex-col items-center gap-3">
-          <Link href={"/"} className=" relative w-[90px] h-[50px] ">
-            <Image
-              src="/logocolor.svg"
-              alt="logo"
-              fill
-              sizes="100%"
-              className=" object-cover"
-              priority
-            />
-          </Link>
+          <LogoWrap />
           <p>파인파밍에 어서오세요!</p>
         </div>
         <Form {...form}>
@@ -272,7 +276,7 @@ export default function Page() {
                   </div>
                   <AccordionContent>
                     <ScrollArea className="h-[400px] bg-neutral-100">
-                      <div>
+                      <div className="p-3">
                         <ServicePolicy />
                       </div>
                     </ScrollArea>
@@ -304,8 +308,8 @@ export default function Page() {
                   </div>
                   <AccordionContent>
                     <ScrollArea className="h-[400px] bg-neutral-100">
-                      <div>
-                        <ServicePolicy />
+                      <div className="p-3">
+                        <PersonalInfo />
                       </div>
                     </ScrollArea>
                   </AccordionContent>
@@ -335,16 +339,26 @@ export default function Page() {
                     <AccordionTrigger className=" w-[100px] flex flex-col  "></AccordionTrigger>
                   </div>
                   <AccordionContent>
-                    <ScrollArea className="h-[400px] bg-neutral-100">
-                      <div>
-                        <ServicePolicy />
-                      </div>
-                    </ScrollArea>
+                    <div className="p-3">
+                      <p>
+                        정보통신망 이용촉진 및 정보보호 등에 관한 법률에 따라 만
+                        14세 미만 아동의 개인정보 수집 시 법정대리인의 동의를
+                        받도록 규정하고 있습니다. <br />만 14세 미만 아동이
+                        법정대리인 동의 없이 회원가입을 할 경우 회원탈퇴 또는
+                        서비스 이용에 제한이 있을 수 있습니다.
+                      </p>
+                    </div>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
             </div>
-            <Button type="submit">회원가입</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                "회원가입"
+              )}
+            </Button>
           </form>
         </Form>
         <SocialLogin redirect="/" />
@@ -368,18 +382,6 @@ export default function Page() {
           >
             매거진 작가
           </Link>
-          {/* <Link
-            href={"/othersAuth/manager/register"}
-            className="text-neutral-500 text-sm "
-          >
-            매니저
-          </Link> */}
-          {/* <Link
-            href={"/othersAuth/superadmin/register"}
-            className="text-neutral-500 text-sm "
-          >
-            슈퍼어드민
-          </Link> */}
         </div>
       </div>
     </main>

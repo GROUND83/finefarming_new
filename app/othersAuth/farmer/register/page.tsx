@@ -19,7 +19,8 @@ import { signIn } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { RegisterSchema } from "../../_components/registerSchema";
 import { useRouter } from "next/navigation";
-
+import Logo from "../../../../public/logocolor.svg";
+import LogoWrap from "@/components/logowrap";
 export default function Page() {
   const { toast } = useToast();
   const router = useRouter();
@@ -82,7 +83,7 @@ export default function Page() {
     <main className=" container mx-auto grid grid-cols-2 gap-1 h-screen pb-24">
       <div className="flex flex-col items-center gap-6 col-span-2 p-6 justify-center">
         <div className="flex flex-col items-center gap-3">
-          <Image src="/logocolor.svg" alt="logo" width={90} height={100} />
+          <LogoWrap />
           <p>파인파밍에 어서오세요!</p>
           <p>농장주 회원가입</p>
         </div>

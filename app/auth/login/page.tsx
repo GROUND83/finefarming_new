@@ -25,6 +25,7 @@ import Logo from "../../../public/logocolor.svg";
 import Copyright from "@/components/copyright";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { Separator } from "@/components/ui/separator";
+import LogoWrap from "@/components/logowrap";
 //
 function Login() {
   const router = useRouter();
@@ -66,9 +67,7 @@ function Login() {
     <main className="w-full lg:w-1/3 mx-auto gap-1  pb-24 flex flex-col items-center justify-center h-full ">
       <section className="flex flex-col items-center gap-6  p-6 justify-center w-full">
         <header className="flex flex-col items-center w-full gap-2">
-          <Link href={"/"} className=" relative w-[90px] h-[50px] ">
-            <Logo />
-          </Link>
+          <LogoWrap />
           <p className="text-xl  text-pretty text-primary whitespace-pre-line text-center font-roboto">
             {`FineFarming,\n Best Farms for you`}
           </p>

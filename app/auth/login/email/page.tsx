@@ -19,8 +19,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import Logo from "../../../../public/logocolor.svg";
+import React from "react";
+import { Loader2 } from "lucide-react";
+import LogoWrap from "@/components/logowrap";
 //
 export default function Page() {
+  const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -35,33 +39,37 @@ export default function Page() {
   });
   async function onSubmit(data: z.infer<typeof formSchema>) {
     // console.log("data", data);
-    let result = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      role: "user",
-      type: "email",
-      callbackUrl: redirectStr ? redirectStr : "/",
-      redirect: false,
-    });
-    if (result?.ok) {
-      console.log("redirectStr", redirectStr);
-      if (redirectStr) {
-        router.replace(redirectStr);
+    try {
+      setLoading(true);
+      let result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        role: "user",
+        type: "email",
+        callbackUrl: redirectStr ? redirectStr : "/",
+        redirect: false,
+      });
+      if (result?.ok) {
+        console.log("redirectStr", redirectStr);
+        if (redirectStr) {
+          router.replace(redirectStr);
+        } else {
+          router.replace("/");
+        }
       } else {
-        router.replace("/");
+        toast({ variant: "destructive", title: result?.error?.toString() });
+        form.reset();
       }
-    } else {
-      toast({ variant: "destructive", title: result?.error?.toString() });
-      form.reset();
+    } catch (e) {
+    } finally {
+      setLoading(false);
     }
   }
   return (
     <main className="w-full lg:w-1/3 mx-auto gap-1  pb-24 flex flex-col items-center justify-center  p-6 h-full">
       <section className="flex flex-col items-center gap-6  p-6 justify-center w-full">
         <header className="flex flex-col items-center w-full gap-2">
-          <Link href={"/"} className=" relative w-[90px] h-[50px] ">
-            <Logo />
-          </Link>
+          <LogoWrap />
           <p className="text-xl  text-pretty text-primary whitespace-pre-line text-center font-roboto">
             {`FineFarming,\n Best Farms for you`}
           </p>
@@ -111,8 +119,8 @@ export default function Page() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="mt-6">
-            로그인
+          <Button type="submit" className="mt-6" disabled={loading}>
+            {loading ? <Loader2 className="size-4 animate-spin" /> : "로그인"}
           </Button>
         </form>
       </Form>

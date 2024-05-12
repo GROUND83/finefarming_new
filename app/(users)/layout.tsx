@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MobileUserComponet, UserComponet } from "./_components/userComponet";
 import React from "react";
 import AuthProvider from "@/lib/next-auth";
+import LogoWrap from "@/components/logowrap";
 
 export default function RootLayout({
   children,
@@ -15,11 +16,7 @@ export default function RootLayout({
       <header className="w-full border-b-[1px] fixed top-0 left-0 h-[85px] bg-white z-50 sm:hidden md:hidden xs:hidden">
         <nav className=" flex flex-row items-center gap-12 justify-between h-full w-full container mx-auto">
           <div className="flex flex-row items-center gap-12 ">
-            <Link href={"/"}>
-              <div className="flex flex-row items-center gap-12 relative w-[60px] h-[30px] ">
-                <Image src="/logocolor.svg" alt="logo" fill priority />
-              </div>
-            </Link>
+            <LogoWrap />
             <div className="flex flex-row items-center gap-12">
               <Link
                 href={"/product"}
@@ -49,11 +46,7 @@ export default function RootLayout({
       {/* 모바일 */}
       <header className="w-full  border-b-[1px]   fixed top-0 left-0 h-[70px] bg-white z-20  lg:hidden  ">
         <nav className=" flex flex-row items-center  justify-between h-full  px-6 ">
-          <Link href={"/"}>
-            <div className="flex flex-row items-center gap-12 relative w-[60px] h-[30px] ">
-              <Image src="/logocolor.svg" alt="logo" fill priority />
-            </div>
-          </Link>
+          <LogoWrap />
           <div className=" flex flex-row items-center gap-3">
             <MobileUserComponet />
           </div>

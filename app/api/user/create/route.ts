@@ -9,7 +9,15 @@ import { NextResponse } from "next/server";
 export async function POST(req: any, res: any) {
   let errors = [];
   const body = await req.json();
-  const { username, email, password, phone } = body;
+  const {
+    username,
+    email,
+    password,
+    phone,
+    servicePolicy,
+    personlaPolicy,
+    overForteen,
+  } = body;
 
   console.log(username, email, password, phone);
   if (!username || !email || !password) {
@@ -40,6 +48,9 @@ export async function POST(req: any, res: any) {
         email,
         phone,
         password: hashedPasswrod,
+        servicePolicy,
+        personlaPolicy,
+        overForteen,
         provider: "email",
         created_at: getDateTime(),
         updated_at: getDateTime(),

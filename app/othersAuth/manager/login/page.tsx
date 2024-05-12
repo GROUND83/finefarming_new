@@ -17,6 +17,7 @@ import Image from "next/image";
 import { LoginSchema } from "../../_components/loginSchema";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import LogoWrap from "@/components/logowrap";
 
 export default function Page() {
   const router = useRouter();
@@ -50,7 +51,7 @@ export default function Page() {
     <div className="bg-white  w-full min-h-screen flex flex-col items-center justify-center p-6">
       <div className=" w-full lg:w-1/2 bg-white border rounded-md p-12 flex flex-col items-center gap-12">
         <div className="flex flex-col items-center gap-3 relative">
-          <Image src="/logocolor.svg" alt="logo" width={90} height={100} />
+          <LogoWrap />
           <p>파인파밍에 어서오세요!</p>
         </div>
         <p className=" font-semibold">매니저 로그인</p>
