@@ -96,6 +96,9 @@ export default function Page() {
                       {session?.user.email}
                     </p>
                   </div>
+                  <p className="text-neutral-500 text-sm">
+                    {session?.user.phone}
+                  </p>
                   <p className="text-xs lg:text-sm  text-neutral-500">
                     {moment(user?.created_at).format("YYYY년MM월DD일")}
                   </p>
