@@ -32,36 +32,36 @@ function Login() {
   const { toast } = useToast();
   let redirectStr = searchParams.get("redirect");
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  // const form = useForm<z.infer<typeof formSchema>>({
+  //   resolver: zodResolver(formSchema),
+  //   defaultValues: {
+  //     email: "",
+  //     password: "",
+  //   },
+  // });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    // console.log("data", data);
-    let result = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      role: "user",
-      type: "email",
-      callbackUrl: redirectStr ? redirectStr : "/",
-      redirect: false,
-    });
-    if (result?.ok) {
-      console.log("redirectStr", redirectStr);
-      if (redirectStr) {
-        router.replace(redirectStr);
-      } else {
-        router.replace("/");
-      }
-    } else {
-      toast({ variant: "destructive", title: result?.error?.toString() });
-      form.reset();
-    }
-  }
+  // async function onSubmit(data: z.infer<typeof formSchema>) {
+  //   // console.log("data", data);
+  //   let result = await signIn("credentials", {
+  //     email: data.email,
+  //     password: data.password,
+  //     role: "user",
+  //     type: "email",
+  //     callbackUrl: redirectStr ? redirectStr : "/",
+  //     redirect: false,
+  //   });
+  //   if (result?.ok) {
+  //     console.log("redirectStr", redirectStr);
+  //     if (redirectStr) {
+  //       router.replace(redirectStr);
+  //     } else {
+  //       router.replace("/");
+  //     }
+  //   } else {
+  //     toast({ variant: "destructive", title: result?.error?.toString() });
+  //     form.reset();
+  //   }
+  // }
   return (
     <main className="w-full lg:w-1/3 mx-auto gap-1  pb-24 flex flex-col items-center justify-center h-full ">
       <section className="flex flex-col items-center gap-6  p-6 justify-center w-full">
