@@ -265,121 +265,131 @@ export default function AdminLayOut({
     <div className="w-full flex flex-row  items-stretch relative">
       <div className="py-6 border-r-[1px]  bg-white  w-[220px] h-screen  relative">
         <div className="fixed top-0 left-0 h-full w-[220px]">
-          <div className=" flex flex-col items-start gap-6 w-full px-6  ">
-            <Link href={"/"} className=" relative  w-[80px] aspect-[5/3]">
-              <Image src="/logo.svg" alt="logo" fill priority />
-            </Link>
+          <div className="flex flex-col items-start h-[250px]">
+            <div className=" flex flex-col items-start gap-6 w-full px-6  ">
+              <Link href={"/"} className=" relative  w-[80px] aspect-[5/3]">
+                <Image src="/logo.svg" alt="logo" fill priority />
+              </Link>
+            </div>
+            <div className="w-full flex-1 p-6">
+              <ManagerAuth />
+            </div>
           </div>
-          <div className="w-full flex-1 p-6">
-            <ManagerAuth />
-          </div>
-          <div className="w-full p-3   overflow-y-scroll">
-            {user?.role === "manager" ? (
-              <div className="flex flex-col items-start gap-2  text-black  font-light text-sm w-full">
-                {adminMenu.map((item, index) => {
-                  return (
-                    <div className="w-full" key={index}>
-                      {item.subMenu?.length > 0 ? (
-                        <Accordion type="single" collapsible>
-                          <AccordionItem value="item-1">
-                            <AccordionTrigger>
-                              {" "}
-                              <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
+          <div className="w-full p-3   overflow-y-scroll  h-[calc(100vh-220px)]">
+            <div className=" pb-24">
+              {user?.role === "manager" ? (
+                <div className="flex flex-col items-start gap-2  text-black  font-light text-sm w-full">
+                  {adminMenu.map((item, index) => {
+                    return (
+                      <div className="w-full" key={index}>
+                        {item.subMenu?.length > 0 ? (
+                          <Accordion type="single" collapsible>
+                            <AccordionItem value="item-1">
+                              <AccordionTrigger>
+                                {" "}
+                                <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
+                                  {item.icon}
+                                  {item.title}
+                                </p>
+                              </AccordionTrigger>
+                              <AccordionContent>
+                                <div className="ml-3">
+                                  {item.subMenu.map((sub, subIndex) => {
+                                    return (
+                                      <div key={subIndex}>
+                                        <Link
+                                          href={`/admin/${sub.link}`}
+                                          className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
+                                        >
+                                          {sub.icon}
+                                          {sub.title}
+                                        </Link>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        ) : (
+                          <div className="">
+                            {item.disable ? (
+                              <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors">
                                 {item.icon}
                                 {item.title}
                               </p>
-                            </AccordionTrigger>
-                            <AccordionContent>
-                              <div className="ml-3">
-                                {item.subMenu.map((sub, subIndex) => {
-                                  return (
-                                    <div key={subIndex}>
-                                      <Link
-                                        href={`/admin/${sub.link}`}
-                                        className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
-                                      >
-                                        {sub.icon}
-                                        {sub.title}
-                                      </Link>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </AccordionContent>
-                          </AccordionItem>
-                        </Accordion>
-                      ) : (
-                        <div className="">
-                          {item.disable ? (
-                            <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors">
-                              {item.icon}
-                              {item.title}
-                            </p>
-                          ) : (
-                            <Link
-                              href={`/admin/${item.link}`}
-                              className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
-                            >
-                              {item.icon}
-                              {item.title}
-                            </Link>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="flex flex-col items-start gap-2  text-black  font-light text-sm w-full">
-                {superAdminMenu.map((item, index) => {
-                  return (
-                    <div className="w-full" key={index}>
-                      {item.subMenu ? (
-                        <div className="w-full">
-                          <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
-                            {item.icon}
-                            {item.title}
-                          </p>
-                          <div className="ml-3">
-                            {item.subMenu.map((sub, subIndex) => {
-                              return (
-                                <div key={subIndex}>
-                                  <Link
-                                    href={`/admin/${sub.link}`}
-                                    className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
-                                  >
-                                    {sub.icon}
-                                    {sub.title}
-                                  </Link>
-                                </div>
-                              );
-                            })}
+                            ) : (
+                              <Link
+                                href={`/admin/${item.link}`}
+                                className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
+                              >
+                                {item.icon}
+                                {item.title}
+                              </Link>
+                            )}
                           </div>
-                        </div>
-                      ) : (
-                        <div>
-                          {item.disable ? (
-                            <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors">
-                              {item.icon}
-                              {item.title}
-                            </p>
-                          ) : (
-                            <Link
-                              href={`/admin/${item.link}`}
-                              className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
-                            >
-                              {item.icon}
-                              {item.title}
-                            </Link>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="flex flex-col items-start gap-2  text-black  font-light text-sm w-full">
+                  {superAdminMenu.map((item, index) => {
+                    return (
+                      <div className="w-full" key={index}>
+                        {item.subMenu?.length > 0 ? (
+                          <Accordion type="single" collapsible>
+                            <AccordionItem value="item-1">
+                              <AccordionTrigger>
+                                <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
+                                  {item.icon}
+                                  {item.title}
+                                </p>
+                              </AccordionTrigger>
+                              <AccordionContent>
+                                <div className="ml-3">
+                                  {item.subMenu.map((sub, subIndex) => {
+                                    return (
+                                      <div key={subIndex}>
+                                        <Link
+                                          href={`/admin/${sub.link}`}
+                                          className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
+                                        >
+                                          {sub.icon}
+                                          {sub.title}
+                                        </Link>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        ) : (
+                          <div className="">
+                            {item.disable ? (
+                              <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors">
+                                {item.icon}
+                                {item.title}
+                              </p>
+                            ) : (
+                              <Link
+                                href={`/admin/${item.link}`}
+                                className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
+                              >
+                                {item.icon}
+                                {item.title}
+                              </Link>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
