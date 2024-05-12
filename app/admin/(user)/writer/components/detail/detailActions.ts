@@ -18,6 +18,9 @@ export async function getDeatailData(id: number) {
       phone: true,
       approve: true,
       created_at: true,
+      intruduce: true,
+      intruduceTitle: true,
+      link: true,
     },
   });
   if (writer) {
@@ -37,6 +40,9 @@ export async function updateData(formData: FormData) {
       email: formData.get("email"),
       avatar: formData.get("avatar"),
       approve: formData.get("approve") === "true" ? true : false,
+      link: formData.get("link"),
+      intruduce: formData.get("intruduce"),
+      intruduceTitle: formData.get("intruduceTitle"),
     };
     console.log("data", data);
     const result = await editSchema.safeParseAsync(data);
@@ -57,6 +63,9 @@ export async function updateData(formData: FormData) {
               phone: result.data.phone,
               avatar: result.data.avatar,
               approve: result.data.approve,
+              link: result.data.link,
+              intruduce: result.data.intruduce,
+              intruduceTitle: result.data.intruduceTitle,
               updated_at: getDateTime(),
             },
           });

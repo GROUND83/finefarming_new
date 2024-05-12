@@ -91,11 +91,11 @@ function Login() {
           신규 회원 가입
         </Link>
       </section>
-      <section className=" w-full p-6 flex flex-col items-center gap-6">
+      {/* <section className=" w-full p-6 flex flex-col items-center gap-6">
         <span className="text-neutral-500 text-sm">또는</span>
         <SocialLogin redirect={redirectStr ? redirectStr : ""} />
-      </section>
-      <section className="flex flex-row items-center gap-3 px-6 mt-3">
+      </section> */}
+      <section className="flex flex-row items-center gap-3 px-6 mt-16">
         <Link
           href={"/othersAuth/farmer/login"}
           className="text-neutral-500 text-sm "

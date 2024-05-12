@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="w-full mt-24">
-      <div className="w-full p-12 border-t-[1px] bg-neutral-100">
+    <footer className="w-full mt-24 bg-neutral-100 border-t-[1px]  ">
+      <div className="w-full p-12 container mx-auto">
         <div className="flex flex-col items-start gap-1">
           <Link
             href={"/personalPolicy"}

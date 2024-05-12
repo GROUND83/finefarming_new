@@ -2,9 +2,9 @@ import Image from "next/image";
 
 export default function PersonalPolicyWrap() {
   return (
-    <div className=" container  mx-auto py-12 flex flex-col items-start">
-      <h1 className="text-2xl font-bold">개인정보처리방침</h1>
-      <p className="mt-12 border bg-neutral-100 p-3">
+    <div className="container  mx-auto py-12 flex flex-col items-start">
+      <h1 className="text-xl font-bold">개인정보처리방침</h1>
+      <p className="mt-3 border bg-neutral-100 p-3">
         파인파밍은 정보주체의 자유와 권리 보호를 위해 「개인정보 보호법」 및
         관계 법령이 정한 바를 준수하여, 적법하게 개인정보를 처리하고 안전하게
         관리하고 있습니다. 이에 「개인정보 보호법」 제30조에 따라 정보주체에게
@@ -12,7 +12,7 @@ export default function PersonalPolicyWrap() {
         신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보
         처리방침을 수립·공개합니다.
       </p>
-      <div className="flex flex-col w-full items-center mt-12">
+      <div className="flex flex-col w-full items-center mt-6">
         <h2 className="text-lg font-bold">주요 개인정보처리 표시(라벨링)</h2>
         <p className="text-neutral-500">
           ※ 세부항목은 개인정보 처리방침 본문 확인
@@ -294,7 +294,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_object.png"
             width={30}
@@ -307,7 +307,7 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>① 파인파밍은 수집한 개인정보를 다음의 목적을 위해 활용합니다.</p>
           <p>
             ② 정보주체가 제공한 모든 정보는 하기 목적에 필요한 용도 이외로는
@@ -467,7 +467,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_third.png"
             width={30}
@@ -480,7 +480,7 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① 파인파밍은 정보주체의 동의, 법률의 특별한 규정 등 「개인정보
             보호법」 제17조 및 제18조에 해당하는 경우에만 개인정보를 제3자에게
@@ -490,7 +490,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_consign.png"
             width={30}
@@ -503,7 +503,7 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>① 파인파밍은 개인정보 처리업무를 위탁하고 있지 않습니다.</p>
           <p>
             ② 파인파밍은 위탁업무의 내용이 변경될 경우에는 지체없이 본 개인정보
@@ -512,7 +512,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_destruction.png"
             width={30}
@@ -525,7 +525,7 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① 파인파밍은 다른 법률에 따라 개인정보를 보존하여야 하는 경우가 아닌
             한, 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게
@@ -549,7 +549,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_court.png"
             width={30}
@@ -562,12 +562,12 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① 정보주체는 파인파밍에 대해 언제든지 다음 각호에 해당하는
             개인정보에 관련한 권리를 행사할 수 있습니다.
           </p>
-          <div className="px-3">
+          <div className="pl-3">
             <p>가. 개인정보 열람요구</p>
             <p>나. 개인정보의 오류에 대한 정정 및 삭제의 요구</p>
             <p>다. 처리정지 요구</p>
@@ -602,7 +602,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_safe.png"
             width={30}
@@ -615,12 +615,12 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① 파인파밍은 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고
             있습니다.
           </p>
-          <div className="px-3">
+          <div className="pl-3">
             <p>가. 관리적 조치 : 내부관리계획 수립·시행 등</p>
             <p>
               나. 기술·물리적 조치 : 개인정보처리시스템 등의 접근권한 관리·통제
@@ -630,7 +630,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_cookie.png"
             width={30}
@@ -643,7 +643,7 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① 쿠키는 일반 웹사이트를 운영하는데 이용되는 서버가 사용자
             브라우저에 보내는 조그마한 데이터 꾸러미입니다.
@@ -651,7 +651,7 @@ export default function PersonalPolicyWrap() {
           <p>
             ② 쿠키는 보통 하드디스크의 windows cookies에 암호화되어 저장됩니다.
           </p>
-          <div className="px-3">
+          <div className="pl-3">
             <p>
               - 파인파밍에서 제공하는 인터넷 서비스를 통하여 개인 PC 정보를
               찾아내는 쿠키(cookie)를 설치, 운영하는 경우도 있습니다.
@@ -669,14 +669,14 @@ export default function PersonalPolicyWrap() {
               회원의 ID는 다음의 목적을 위해 사용될 수 있습니다.
             </p>
           </div>
-          <div className="px-3">
+          <div className="pl-3">
             <p>(1) 개인의 관심 분야에 따라 차별화된 화면 정보를 제공</p>
             <p>
               (2) 관심 있게 둘러본 내용들에 대한 자취를 추적하여 다음 번 접속 때
               개인 맞춤 서비스를 제공
             </p>
             <p>(3) 회원들의 습관을 분석하여 서비스 개편 등의 척도로 활용</p>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 - 거부 설정 방법: 다음의 방법을 통한 옵션 설정을 통해 쿠키 저
                 장을 거부할 수 있습니다.
@@ -700,7 +700,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/pi_collect.png"
             width={30}
@@ -713,7 +713,7 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① &quot;홈페이지&quot;에 게시된 이메일 주소가 전자우편 수집
             프로그램이나 그 밖의 기술적 장치를 이용하여 무단으로 수집되는 것을
@@ -723,7 +723,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/pi_collect.png"
             width={30}
@@ -734,7 +734,7 @@ export default function PersonalPolicyWrap() {
           <h2 className="text-lg font-bold">제9조 개인 ID/비밀번호 관리</h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① 홈페이지 서비스의 ID와 비밀번호에 대한 관리 책임은 본인에게
             있습니다.
@@ -768,7 +768,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_cpo.png"
             width={30}
@@ -781,19 +781,19 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① 파인파밍은 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보
             처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와
             같이 개인정보 보호책임자를 지정하고 있습니다.
           </p>
-          <div className="px-3">
+          <div className="pl-3">
             <p> - 개인정보보호책임자 : 허정근(010-3381-6893)</p>
           </div>
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_browse.png"
             width={30}
@@ -806,19 +806,19 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① 정보주체는 「개인정보 보호법」 제35조에 따른 개인정보의 열람
             청구를 아래의 부서에 할 수 있습니다. 파인파밍은 정보주체의 개인정보
             열람청구가 신속하게 처리되도록 노력 하겠습니다.
           </p>
-          <div className="px-3">
+          <div className="pl-3 w-full">
             <p>- 개인정보 열람청구 접수·처리 담당자 : 허정근(010-3381-6893)</p>
           </div>
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_help.png"
             width={30}
@@ -831,7 +831,7 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① 정보주체는 개인정보침해로 인한 구제를 받기 위하여
             개인정보분쟁조정위원회, 한국인터넷진흥원, 개인정보침해신고센터 등에
@@ -839,7 +839,7 @@ export default function PersonalPolicyWrap() {
             개인정보침해의 신고, 상담에 대하여는 아래의 기관에 문의하시기
             바랍니다.
           </p>
-          <div className="px-3">
+          <div className="pl-3">
             <p>
               - 개인정보분쟁조정위원회 : (국번없이) 1833-6972
               (www.privacy.go.kr)
@@ -851,7 +851,7 @@ export default function PersonalPolicyWrap() {
         </div>
       </div>
       <div className="flex flex-col w-full items-start mt-12 gap-2">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 flex-wrap">
           <Image
             src="https://www.privacy.go.kr/assets/img/sub/img_change.png"
             width={30}
@@ -864,7 +864,7 @@ export default function PersonalPolicyWrap() {
           </h2>
         </div>
 
-        <div className="flex flex-col items-start gap-2  w-full px-6">
+        <div className="flex flex-col items-start gap-2  w-full ">
           <p>
             ① 이 개인정보처리방침은 파인파밍 서비스 오픈에 맞춰 최초로 수립된
             것으로 2024년 5월 10일부터 적용됩니다.

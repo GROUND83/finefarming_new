@@ -1,14 +1,14 @@
 export default function ServicePolicy() {
   return (
     <div className=" container  mx-auto py-12 flex flex-col items-start">
-      <h1 className="text-2xl font-bold">서비스 이용약관</h1>
+      <h1 className="text-xl font-bold">서비스 이용약관</h1>
       <section className="">
-        <header className="flex flex-col w-full items-start mt-12 gap-2">
+        <header className="flex flex-col w-full items-start mt-6 gap-2">
           <h2 className="text-lg font-bold">제1장 총칙</h2>
-          <div className="px-3">
+          <div className="pl-3">
             <p>제1조 (목적)</p>
-            <div className="px-3">
-              <p>
+            <div className="pl-3">
+              <p className=" text-pretty text-sm">
                 이 약관은 파인파밍에서 제공하는 서비스의 이용과 관련하여 회사와
                 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을
                 목적으로 합니다.
@@ -16,12 +16,12 @@ export default function ServicePolicy() {
             </div>
           </div>
         </header>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제2조 (용어의 정의)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>이 약관에서 사용하는 용어의 정의는 다음과 같습니다.</p>
-              <div className="px-3">
+              <div className="pl-3">
                 <p>
                   1. “파인파밍”(이하 “서비스”라 한다)이라 함은 회사가 판매채널을
                   통해서 제공하는 전자상거래 서비스를 말합니다.
@@ -57,7 +57,7 @@ export default function ServicePolicy() {
             <h2 className="text-lg font-bold">
               제3조 (약관 등의 명시와 설명 및 개정)
             </h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 파인파밍은 예비창업자의 사업가설 검증을 위해 운영되는
                 서비스로서 이 약관의 내용, 상호, 대표자 성명, 영업소 소재지
@@ -99,7 +99,7 @@ export default function ServicePolicy() {
           </div>
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제4조 (약관 외 준칙 등)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 이 약관에 명시하지 않은 사항은 관련 법령에, 법에 명시되지 않은
                 경우는 관습에 의합니다.
@@ -112,9 +112,9 @@ export default function ServicePolicy() {
           </div>
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제5조 (서비스의 제공 및 변경)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>① 회사는 다음과 같은 서비스를 제공합니다.</p>
-              <div className="px-3">
+              <div className="pl-3">
                 <p>1. 농업체험 상품 예약 중개</p>
                 <p>2. 기타 회사가 정하는 서비스 또는 업무 등</p>
               </div>
@@ -135,7 +135,7 @@ export default function ServicePolicy() {
           </div>
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제6조 (서비스의 중단)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 회사는 서비스 제공을 위한 정보통신설비의 보수점검, 교체 및
                 고장, 통신의 두절 등의 사유가 발생한 경우에는 서비스의 제공을
@@ -155,7 +155,7 @@ export default function ServicePolicy() {
           </div>
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제7조 (회원가입)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 회원으로 가입하고자 하는 자는 회사가 정한 절차에 따라 이
                 약관과 개인정보의 수집, 이용 동의서에 동의함으로써 회원 가입을
@@ -166,7 +166,7 @@ export default function ServicePolicy() {
                 각호에 해당하는 경우 신청을 승낙 하지 않거나 사후에 이용계약을
                 해지할 수 있습니다.
               </p>
-              <div className="px-3">
+              <div className="pl-3">
                 <p>
                   1. 가입 신청자가 이 약관 제8조 제2항 내지 제3항에 의하여
                   이전에 회원 자격을 상실한 적이 있는 경우. 다만, 회원 자격 상실
@@ -193,7 +193,7 @@ export default function ServicePolicy() {
             <h2 className="text-lg font-bold">
               제8조 (회원 탈퇴 및 자격 정지 등)
             </h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 회원은 회사에 언제든지 서비스 탈퇴를 요청할 수 있으며, 회사는
                 즉시 회원 탈퇴를 처리합니다. 다만, 탈퇴 처리시점에 회원의 상품
@@ -204,7 +204,7 @@ export default function ServicePolicy() {
                 ② 회원이 다음 각호의 사유에 해당하는 경우 회사는 회원 자격을
                 제한 및 정지시킬 수 있습니다.
               </p>
-              <div className="px-3">
+              <div className="pl-3">
                 <p>1. 가입 신청 시에 허위 내용을 기재한 경우</p>
                 <p>
                   2. 상품 등의 대금, 기타 서비스 이용과 관련하여 회원이 부담하는
@@ -241,7 +241,7 @@ export default function ServicePolicy() {
           </div>
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제9조 (회원에 대한 통지)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 회사가 회원에 대한 통지를 하는 경우 이 약관에 별도 규정이 없는
                 한 회원이 제공한 전자우편, SMS 등으로 할 수 있습니다.
@@ -262,7 +262,7 @@ export default function ServicePolicy() {
           </div>
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제9조 (회원에 대한 통지)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 회사는 법령과 이 약관이 금지하거나 공서 양속에 반하는 행위를
                 하지 않으며, 이 약관이 정하는 바에 따라 지속적이고, 안정적으로
@@ -298,7 +298,7 @@ export default function ServicePolicy() {
           </div>
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제11조 (회원의 의무)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 회원은 상품 등을 구매하기 전에 반드시 회사가 제공하는 상품
                 등의 상세 내용과 거래의 조건을 정확하게 확인한 후 구매를
@@ -328,9 +328,9 @@ export default function ServicePolicy() {
           </div>
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제12조 (회원의 금지행위)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>① 회원은 다음 각호의 행위를 하여서는 안됩니다.</p>
-              <div className="px-3">
+              <div className="pl-3">
                 <p>
                   1. 회사가 제공하는 서비스 이용방법에 의하지 아니하고
                   비정상적인 방법으로 서비스를 이용하거나 시스템에 접근하는 행위
@@ -378,7 +378,7 @@ export default function ServicePolicy() {
             <h2 className="text-lg font-bold">
               제13조 (저작권의 귀속 및 이용 제한)
             </h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 회사가 작성한 저작물에 대한 저작권 기타 지적재산권은 회사에
                 귀속합니다.
@@ -393,14 +393,14 @@ export default function ServicePolicy() {
           </div>
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제14조 (결제수단)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 서비스에서 구매한 상품 등에 대한 대금 결제 수단은 다음 각호의
                 방법 중 가용한 방법으로 할 수 있습니다. 다만, 회사는 회원의
                 지급방법에 대하여 어떠한 명목의 수수료도 추가하여 징수하지
                 않습니다.
               </p>
-              <div className="px-3">
+              <div className="pl-3">
                 <p>1. 선불카드, 직불카드, 신용카드 등의 각종 카드결제</p>
                 <p>
                   2. 폰뱅킹, 인터넷뱅킹, 메일뱅킹, 온라인 무통장 입금, 가상계좌
@@ -436,7 +436,7 @@ export default function ServicePolicy() {
           </div>
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제15조 (할인 쿠폰)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 회사는 회원이 서비스를 통하여 상품 등을 구매하는 경우, 회사의
                 정책에 따라 회원에게 일정액 또는 일정비율을 할인 받을 수 있는
@@ -470,10 +470,10 @@ export default function ServicePolicy() {
         <header className="flex flex-col w-full items-start mt-12 gap-2">
           <h2 className="text-lg font-bold">제2장 판매 서비스</h2>
         </header>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제16조 (구매신청)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 &quot;회원&quot;은 &quot;판매채널&quot; 상에서 다음 또는 이와
                 유사한 방법에 의하여 체험 예약을 신청하며, .
@@ -483,7 +483,7 @@ export default function ServicePolicy() {
                 내용을 알기 쉽게 제공하여야 합니다.
               </p>
             </div>
-            <div className="px-3">
+            <div className="pl-3">
               <p>1. 체험상품 등의 검색 및 선택</p>
               <p>
                 2. 체험농장의 상호, 주소, 전화번호, 전자우편주소(또는
@@ -505,17 +505,17 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제17조(계약의 성립)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① ”회사”는 제16조와 같은 구매신청에 대하여 다음 각 호에 해당하면
                 승낙하지 않을 수 있으며, 신청을 승낙한 이후 해당 사실을 확인한
                 경우 구매신청에 대한 승낙을 취소하거나 “체험상품 등”의 제공을
                 중단할 수 있습니다.
               </p>
-              <div className="px-3">
+              <div className="pl-3">
                 <p>1. 신청 내용에 허위, 기재누락, 오기가 있는 경우</p>
                 <p>
                   2. 기타 구매신청에 승낙하는 것이 “회사”의 기술 상 현저히
@@ -560,10 +560,10 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제18조(대금 결제)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 구매대금의 결제방법은 상품에 안내된 방식에 따르며
                 판매채널에서의 결제와 관련하여 “회원”이 입력한 정보 및 그 정보와
@@ -596,12 +596,12 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">
               제19조(수신확인통지, 구매신청 변경 및 취소)
             </h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① &quot;회사&quot;는 “회원”의 구매신청이 있는 경우 “회원”에게
                 전자우편 등 전자적 수단을 이용하여 수신확인통지를 합니다.
@@ -617,10 +617,10 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제20조(체험예약의 진행)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① ”회사”와 “회원” 간에 체험예약의 이행시기에 관하여 별도의
                 약정이 있는 경우에는 당해 약정이 이 약관 등에 우선합니다.
@@ -633,10 +633,10 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제21조(환급)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 “회사”는 “회원”이 구매 신청한 “체험상품 등”이 기후 이상 등의
                 사유로 이용을 할 수 없을 때에는 지체 없이 그 사유를 “회원”에게
@@ -646,10 +646,10 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제22조 (거래완료)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① “회원”의 “체험상품 이용 완료”가 이루어진 경우에는 회사에
                 대하여 교환 및 반품을 요청할 수 없습니다. 단, 체험상품 등의
@@ -659,10 +659,10 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제23조(청약철회 등)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① “회사”와 “체험상품 등”의 이용에 관한 취소 및 환불 규정은
                 「전자상거래 등에서의 소비자 보호에 관한 법령」을 준수합니다.
@@ -681,10 +681,10 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제24조(회원탈퇴 등)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 본 약관 제8조에 따른 회원 탈퇴 시 할인쿠폰 및 기타 혜택 등도
                 모두 소멸되며, “회사”는 이에 대해 별도로 보상하지 않습니다. 단,
@@ -706,10 +706,10 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제25조 (손해배상)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① “회원”이 이 약관의 규정을 위반함으로 인하여 “회사”에 손해가
                 발생하게 되는 경우, 이 약관을 위반한 “회원”은 “회사”에 발생하는
@@ -726,10 +726,10 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제26조(면책 조항)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① “회사”가 천재지변 또는 이에 준하는 불가항력으로 인하여
                 &quot;서비스&quot;를 제공할 수 없는 경우에는 &quot;서비스&quot;
@@ -762,10 +762,10 @@ export default function ServicePolicy() {
         <header className="flex flex-col w-full items-start mt-12 gap-2">
           <h2 className="text-lg font-bold">제3장 기타</h2>
         </header>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제27조 (분쟁 해결)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 회사는 회원이 제기하는 정당한 의견이나 불만을 반영하고 그
                 피해를 보상 처리하기 위하여 피해 보상 처리 기구인 고객만족센터를
@@ -784,10 +784,10 @@ export default function ServicePolicy() {
             </div>
           </div>
         </div>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start mt-6 gap-2">
             <h2 className="text-lg font-bold">제28조 (준거법 및 재판관할)</h2>
-            <div className="px-3">
+            <div className="pl-3">
               <p>
                 ① 이 약관과 관련된 사항에 대하여는 대한민국법을 준거법으로
                 합니다.
@@ -804,9 +804,9 @@ export default function ServicePolicy() {
         <header className="flex flex-col w-full items-start mt-12 gap-2">
           <h2 className="text-lg font-bold">부칙</h2>
         </header>
-        <div className="px-3">
+        <div className="pl-3">
           <div className="flex flex-col w-full items-start  gap-2">
-            <div className="px-3">
+            <div className="pl-3">
               <p>1. 이 약관은 2024년 5월 10일부터 시행합니다.</p>
             </div>
           </div>

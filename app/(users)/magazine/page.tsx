@@ -1,3 +1,4 @@
+import Footer from "@/components/footerWrap";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import db from "@/lib/db";
 import Image from "next/image";
@@ -35,8 +36,8 @@ export default async function Page({
   }
   console.log("magazines", magazines);
   return (
-    <div className="w-full p-3  container mx-auto">
-      <div className="w-full grid grid-cols-12 gap-3">
+    <div className="w-full  ">
+      <div className="w-full grid grid-cols-12 gap-3 container mx-auto p-3  min-h-screen">
         {magazines.map((magazine, index) => {
           return (
             <Link
@@ -72,6 +73,7 @@ export default async function Page({
           );
         })}
       </div>
+      <Footer />
     </div>
   );
 }

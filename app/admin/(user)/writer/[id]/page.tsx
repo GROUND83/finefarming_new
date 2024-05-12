@@ -35,6 +35,7 @@ import { empty_avatar_url } from "@/lib/constants";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import moment from "moment";
+import { Textarea } from "@/components/ui/textarea";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -85,6 +86,9 @@ export default function Page({ params }: { params: { id: string } }) {
             phone: manager.phone ?? "",
             username: manager.username ?? "",
             approve: manager.approve,
+            intruduceTitle: manager.intruduceTitle ?? "",
+            intruduce: manager.intruduce ?? "",
+            link: manager.link ?? "",
           });
           if (manager.avatar) {
             console.log(manager.avatar);
@@ -163,6 +167,9 @@ export default function Page({ params }: { params: { id: string } }) {
     const formData = new FormData();
     formData.append("id", params.id);
     formData.append("username", data.username);
+    formData.append("intruduceTitle", data.intruduceTitle ?? "");
+    formData.append("intruduce", data.intruduce ?? "");
+    formData.append("link", data.link ?? "");
     formData.append("phone", data.phone);
     formData.append("email", data.email);
     formData.append("avatar", data.avatar);
@@ -359,6 +366,39 @@ export default function Page({ params }: { params: { id: string } }) {
                       placeholder="010-0000-0000"
                       required
                       errors={[errors.phone?.message ?? ""]}
+                    />
+                  </div>
+                  <div className="gap-1 flex flex-col w-full ">
+                    <p className="text-neutral-600 text-sm font-semibold">
+                      작가 타이틀
+                    </p>
+                    <Input
+                      type="text"
+                      {...register("intruduceTitle")}
+                      placeholder="일상 인플러언서"
+                      errors={[errors.intruduceTitle?.message ?? ""]}
+                    />
+                  </div>
+                  <div className="gap-1 flex flex-col w-full ">
+                    <p className="text-neutral-600 text-sm font-semibold">
+                      작가 링크
+                    </p>
+                    <Input
+                      type="text"
+                      {...register("link")}
+                      placeholder="https://blog.naver.com/oioi3030"
+                      errors={[errors.link?.message ?? ""]}
+                    />
+                  </div>
+                  <div className="gap-1 flex flex-col w-full ">
+                    <p className="text-neutral-600 text-sm font-semibold">
+                      소개글
+                    </p>
+                    <Textarea
+                      rows={5}
+                      {...register("intruduce")}
+                      placeholder="작가 소개글을 입력하세요."
+                      className=" resize-none"
                     />
                   </div>
                   <div className="gap-1 flex flex-col w-full ">

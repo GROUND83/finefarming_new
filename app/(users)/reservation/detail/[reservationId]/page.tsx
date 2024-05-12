@@ -118,7 +118,7 @@ export default function Page({
                 <p>
                   {moment(reservationDetail.checkInDate).format(
                     "YYYY년 MM월 DD일"
-                  )}
+                  )}{" "}
                   {reservationDetail.checkInTime}시
                 </p>
               </div>
@@ -267,7 +267,7 @@ export default function Page({
                 <div className="col-span-4">
                   <p className=""> 추가상품</p>
                 </div>
-                <div className="col-span-8">
+                <div className=" col-span-12 lg:col-span-8">
                   {reservationDetail.subProduct.map(
                     (sub: any, subInex: any) => {
                       return (
@@ -425,10 +425,12 @@ export default function Page({
             </div>
             <div className="p-6 grid grid-cols-12  gap-1 w-full bg-neutral-800  ">
               <div className=" col-span-12">
-                <p className="font-semibold text-white">취소 환불 정책</p>
+                <p className="font-semibold text-white text-sm">
+                  취소 환불 정책
+                </p>
               </div>
               <div className=" col-span-12">
-                <p className=" whitespace-pre text-pretty text-sm text-neutral-500">
+                <p className=" whitespace-pre text-pretty text-xs text-neutral-500">
                   {reservationDetail.farm.refundPolicy}
                 </p>
               </div>
