@@ -7,8 +7,15 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,6 +28,10 @@ import { useRouter } from "next/navigation";
 
 import { formSchema } from "./registerSchema";
 import { useToast } from "@/components/ui/use-toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import ServicePolicy from "@/components/servicePolicy";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import React from "react";
 
 export default function Page() {
   const { toast } = useToast();
@@ -32,10 +43,13 @@ export default function Page() {
       username: "",
       phone: "",
       password: "",
-      confirmPassword: "",
+
+      servicePolicy: false,
+      personlaPolicy: false,
+      overForteen: false,
     },
   });
-  async function onSubmit(data: any) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     console.log("data", data);
 
     let userData = {
@@ -43,6 +57,9 @@ export default function Page() {
       phone: data.phone,
       email: data.email,
       password: data.password,
+      servicePolicy: data.servicePolicy,
+      personlaPolicy: data.personlaPolicy,
+      overForteen: data.overForteen,
     };
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/create`,
@@ -76,8 +93,26 @@ export default function Page() {
       toast({ variant: "destructive", title: data.message });
     }
   }
+
+  React.useEffect(() => {
+    const subscription = form.watch((value, { name, type }) => {
+      console.log(value, name, type);
+      if (name === "whole") {
+        if (form.getValues("whole")) {
+          form.setValue("servicePolicy", true);
+          form.setValue("personlaPolicy", true);
+          form.setValue("overForteen", true);
+        } else {
+          form.setValue("servicePolicy", false);
+          form.setValue("personlaPolicy", false);
+          form.setValue("overForteen", false);
+        }
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form.watch]);
   return (
-    <main className="w-full lg:w-1/3 mx-auto grid grid-cols-2 gap-1 h-screen pb-24">
+    <main className="w-full lg:w-1/3 mx-auto grid grid-cols-2 gap-1 min-h-screen">
       <div className="flex flex-col items-center gap-6 col-span-2 p-6 justify-center">
         <div className="flex flex-col items-center gap-3">
           <Link href={"/"} className=" relative w-[90px] h-[50px] ">
@@ -102,7 +137,6 @@ export default function Page() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>이메일</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="이메일을 입력하세요."
@@ -110,7 +144,6 @@ export default function Page() {
                       {...field}
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -121,7 +154,6 @@ export default function Page() {
                 name="username"
                 render={({ field }) => (
                   <FormItem className="flex-1 w-full">
-                    <FormLabel>이름</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="이름을 입력하세요."
@@ -139,7 +171,6 @@ export default function Page() {
                 name="phone"
                 render={({ field }) => (
                   <FormItem className="flex-1 w-full">
-                    <FormLabel>전화번호</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="전화번호를 입력하세요."
@@ -159,7 +190,6 @@ export default function Page() {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="flex-1 w-full">
-                    <FormLabel>비밀번호</FormLabel>
                     <FormControl>
                       <Input
                         className="w-full"
@@ -173,7 +203,7 @@ export default function Page() {
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="confirmPassword"
                 render={({ field }) => (
@@ -191,7 +221,128 @@ export default function Page() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
+            </div>
+            <div className="mt-6">
+              <div className="py-3 border-b">
+                <FormField
+                  control={form.control}
+                  name="whole"
+                  render={({ field }) => (
+                    <FormItem className="w-full  flex flex-row items-center   space-y-0 gap-2">
+                      <FormControl>
+                        <Checkbox
+                          className="size-5 rounded-none "
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormLabel className=" ">사용자 약관 전체 동의</FormLabel>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <div className="flex flex-row items-center ">
+                    <FormField
+                      control={form.control}
+                      name="servicePolicy"
+                      render={({ field }) => (
+                        <FormItem className="w-full  flex flex-row items-center   space-y-0 gap-2">
+                          <FormControl>
+                            <Checkbox
+                              className="size-5 rounded-none "
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormLabel className=" ">
+                            서비스 이용 약관 동의(필수)
+                          </FormLabel>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <AccordionTrigger className=" w-[100px] flex flex-col  "></AccordionTrigger>
+                  </div>
+                  <AccordionContent>
+                    <ScrollArea className="h-[400px] bg-neutral-100">
+                      <div>
+                        <ServicePolicy />
+                      </div>
+                    </ScrollArea>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2">
+                  <div className="flex flex-row items-center ">
+                    <FormField
+                      control={form.control}
+                      name="personlaPolicy"
+                      render={({ field }) => (
+                        <FormItem className="w-full  flex flex-row items-center   space-y-0 gap-2">
+                          <FormControl>
+                            <Checkbox
+                              className="size-5 rounded-none "
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormLabel className=" ">
+                            개인정보 수집 및 이용동의(필수)
+                          </FormLabel>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <AccordionTrigger className=" w-[100px] flex flex-col  "></AccordionTrigger>
+                  </div>
+                  <AccordionContent>
+                    <ScrollArea className="h-[400px] bg-neutral-100">
+                      <div>
+                        <ServicePolicy />
+                      </div>
+                    </ScrollArea>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-3">
+                  <div className="flex flex-row items-center w-full justify-between ">
+                    <FormField
+                      control={form.control}
+                      name="overForteen"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center   space-y-0 gap-2 flex-1">
+                          <FormControl>
+                            <Checkbox
+                              className="size-5 rounded-none "
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormLabel className=" ">
+                            만 14세 이상 확인(필수)
+                          </FormLabel>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <AccordionTrigger className=" w-[100px] flex flex-col  "></AccordionTrigger>
+                  </div>
+                  <AccordionContent>
+                    <ScrollArea className="h-[400px] bg-neutral-100">
+                      <div>
+                        <ServicePolicy />
+                      </div>
+                    </ScrollArea>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
             <Button type="submit">회원가입</Button>
           </form>

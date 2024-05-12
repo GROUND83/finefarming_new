@@ -11,7 +11,16 @@ const nextConfig = {
       { hostname: "finefarming-new.vercel.app" },
       { hostname: "finefarming-pq31y3od4-wonchangkims-projects.vercel.app" },
       { hostname: "dapi.kakao.com" },
+      { hostname: "www.privacy.go.kr" },
     ],
+  },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+
+    return config;
   },
 };
 

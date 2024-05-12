@@ -81,6 +81,10 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      fontFamily: {
+        // 폰트패밀리
+        roboto: ["var(--roboto)"], // 다음과 같이 배열 안에 string으로 작성합니다.
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

@@ -15,7 +15,7 @@ import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { signOut, useSession } from "next-auth/react";
 import { empty_avatar_url } from "@/lib/constants";
 import { Loader2 } from "lucide-react";
-import Footer from "../_components/footerWrap";
+import Footer from "../../../components/footerWrap";
 import { EnvelopeIcon } from "@heroicons/react/24/solid";
 import ProviderIcon from "@/components/providerIcon";
 

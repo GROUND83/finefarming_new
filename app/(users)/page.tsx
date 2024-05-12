@@ -8,7 +8,7 @@ import {
   ArticleHeader,
   ImageWrap,
 } from "./_components/mainImageWrap";
-import Footer from "./_components/footerWrap";
+import Footer from "../../components/footerWrap";
 export const dynamic = "force-dynamic";
 export default function Page() {
   return (

@@ -10,7 +10,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductTitleWrap } from "./_components/ProductTitleWrap";
-import Footer from "../_components/footerWrap";
+import Footer from "../../../components/footerWrap";
 import { BookOpenIcon } from "@heroicons/react/24/outline";
 import { Loader2 } from "lucide-react";
 

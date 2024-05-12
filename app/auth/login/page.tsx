@@ -21,7 +21,11 @@ import { formSchema } from "./loginSchema";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { useToast } from "@/components/ui/use-toast";
-
+import Logo from "../../../public/logocolor.svg";
+import Copyright from "@/components/copyright";
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
+import { Separator } from "@/components/ui/separator";
+//
 function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -59,100 +63,68 @@ function Login() {
     }
   }
   return (
-    <main className="w-full lg:w-1/3 mx-auto grid grid-cols-2 gap-1 h-screen pb-24">
-      <div className="flex flex-col items-center gap-6 col-span-2 p-6 justify-center w-full">
-        <div className="flex flex-col items-center gap-3">
+    <main className="w-full lg:w-1/3 mx-auto gap-1  pb-24 flex flex-col items-center justify-center h-full ">
+      <section className="flex flex-col items-center gap-6  p-6 justify-center w-full">
+        <header className="flex flex-col items-center w-full gap-2">
           <Link href={"/"} className=" relative w-[90px] h-[50px] ">
-            <Image
-              src="/logocolor.svg"
-              alt="logo"
-              fill
-              sizes="100%"
-              className=" object-cover"
-              priority
-            />
+            <Logo />
           </Link>
-          <p>파인파밍에 어서오세요!</p>
-        </div>
-        <Form {...form}>
-          <form
-            className="flex flex-col gap-6 w-full"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>이메일</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="이메일을 입력하세요."
-                      type="email"
-                      {...field}
-                    />
-                  </FormControl>
+          <p className="text-xl  text-pretty text-primary whitespace-pre-line text-center font-roboto">
+            {`FineFarming,\n Best Farms for you`}
+          </p>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>비밀번호</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="비밀번호를 입력하세요."
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">로그인</Button>
-          </form>
-        </Form>
-
+          <h1 className=" whitespace-pre-line font-roboto tracking-[10px]  font-bold text-lg mt-6">
+            LOGIN
+          </h1>
+          <span className="text-neutral-500">로그인</span>
+        </header>
+      </section>
+      <section className="flex flex-row items-center gap-3  px-6  mt-24 h-6">
+        <Link
+          href={"/auth/login/email"}
+          className=" flex flex-row items-center gap-2 text-base"
+        >
+          <EnvelopeIcon className="size-4" />
+          이메일 로그인
+        </Link>
+        <Separator orientation="vertical" className="bg-neutral-600" />
+        <Link href={"/auth/register"} className="text-base">
+          신규 회원 가입
+        </Link>
+      </section>
+      <section className=" w-full p-6 flex flex-col items-center gap-6">
+        <span className="text-neutral-500 text-sm">또는</span>
         <SocialLogin redirect={redirectStr ? redirectStr : ""} />
-        <div className="flex flex-row items-center gap-3 ">
-          <span>아직 계정이 없나요?</span>
-          <Link href={"/auth/register"} className="text-primary font-bold">
-            회원가입
-          </Link>
-        </div>
-        <div className="flex flex-row items-center gap-3 ">
-          <Link
-            href={"/othersAuth/farmer/login"}
-            className="text-neutral-500 text-sm "
-          >
-            농장주
-          </Link>
-          <Link
-            href={"/othersAuth/writer/login"}
-            className="text-neutral-500 text-sm "
-          >
-            매거진 작가
-          </Link>
-          <Link
-            href={"/othersAuth/manager/login"}
-            className="text-neutral-500 text-sm "
-          >
-            매니저
-          </Link>
-          <Link
-            href={"/othersAuth/superadmin/login"}
-            className="text-neutral-500 text-sm "
-          >
-            관리자
-          </Link>
-        </div>
-      </div>
+      </section>
+      <section className="flex flex-row items-center gap-3 px-6 mt-3">
+        <Link
+          href={"/othersAuth/farmer/login"}
+          className="text-neutral-500 text-sm "
+        >
+          농장주
+        </Link>
+        <Link
+          href={"/othersAuth/writer/login"}
+          className="text-neutral-500 text-sm "
+        >
+          매거진 작가
+        </Link>
+        <Link
+          href={"/othersAuth/manager/login"}
+          className="text-neutral-500 text-sm "
+        >
+          매니저
+        </Link>
+        <Link
+          href={"/othersAuth/superadmin/login"}
+          className="text-neutral-500 text-sm "
+        >
+          관리자
+        </Link>
+      </section>
+      <footer className=" col-span-1  mt-3">
+        <Copyright />
+      </footer>
     </main>
   );
 }
