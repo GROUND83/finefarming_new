@@ -145,13 +145,33 @@ export async function middleware(req: NextRequest) {
       );
     }
   }
+  // if (pathname.startsWith("/reservation/new")) {
+  //   if (session) {
+  //     console.log("session writer", session, session.role, session.id);
+  //     if (session.id && session.role) {
+  //       console.log("check");
+  //       if (session.role === "customer") {
+  //         console.log("check");
+  //         return NextResponse.next();
+  //       } else {
+  //         return NextResponse.redirect(new URL("/auth/login", req.url));
+  //       }
+  //       //
+  //     } else {
+  //       // console.log("session", session);
+  //       return NextResponse.redirect(new URL("/auth/login", req.url));
+  //     }
+  //   } else {
+  //     return NextResponse.redirect(new URL("/auth/login", req.url));
+  //   }
+  // }
   // return NextResponse.next();
 }
 
 export const config = {
   //   matcher: ["/", "/profile", "auth/:path*"], // 미들웨어 실행할 path
   matcher: [
-    "/reservaton/:path*",
+    // "/reservaton/:path*",
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.svg$).*)", //제외
   ], // 미들웨어 실행할 path
 };

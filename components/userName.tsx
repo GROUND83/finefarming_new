@@ -27,7 +27,7 @@ export function ManagerAuth() {
     <div className="flex flex-col  items-start gap-3py-6">
       {user && (
         <>
-          <div className="flex flex-col items-start gap-2 w-full ">
+          <div className="flex flex-col items-start gap-1 w-full ">
             {user.role === "manager" && <Badge>매니저</Badge>}
             {user.role === "superAdmin" && <Badge>슈퍼어드민</Badge>}
             <span className="text-sm mt-3">{user?.username}</span>

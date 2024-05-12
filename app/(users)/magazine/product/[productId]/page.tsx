@@ -43,7 +43,7 @@ export default async function Page({
             <Link
               href={`/magazine/${magazine.id}`}
               key={index}
-              className=" col-span-12 lg:col-span-4 bg-white"
+              className=" col-span-12 lg:col-span-6 bg-white"
             >
               <div className=" relative w-full aspect-square flex flex-col items-center justify-center  ">
                 <Image

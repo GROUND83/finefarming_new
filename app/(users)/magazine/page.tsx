@@ -37,13 +37,14 @@ export default async function Page({
   console.log("magazines", magazines);
   return (
     <div className="w-full  ">
+      <p></p>
       <div className="w-full grid grid-cols-12 gap-3 container mx-auto p-3  min-h-screen">
         {magazines.map((magazine, index) => {
           return (
             <Link
               href={`/magazine/${magazine.id}`}
               key={index}
-              className=" col-span-12 lg:col-span-4 bg-white"
+              className=" col-span-12 lg:col-span-6 bg-white"
             >
               <div className=" relative w-full aspect-square flex flex-col items-center justify-center  ">
                 <Image
@@ -53,7 +54,7 @@ export default async function Page({
                   alt={magazine.title}
                   className="z-10 bg-cover brightness-50"
                 />
-                <div className="bg-white z-20 absolute w-[60%] h-[60%] p-6  flex flex-col items-center justify-center gap-3">
+                <div className="bg-white z-20 absolute w-[70%] h-[70%] p-6  flex flex-col items-center justify-center gap-3">
                   <p className="text-xl text-neutral-400">#{magazine.id}</p>
                   <p className="text-md text-center">{magazine.title}</p>
                   <div className="flex flex-row items-center gap-3 mt-6 text-xs">

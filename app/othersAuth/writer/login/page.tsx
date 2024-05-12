@@ -18,8 +18,12 @@ import { LoginSchema } from "../../_components/loginSchema";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LogoWrap from "@/components/logowrap";
+import React from "react";
+import { Loader2 } from "lucide-react";
+import LoadingSumnitButton from "@/components/loadingSubmit";
 
 export default function Page() {
+  const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -31,19 +35,26 @@ export default function Page() {
   });
 
   async function onSubmit(data: z.infer<typeof LoginSchema>) {
-    const result = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      role: "writer",
-      type: "email",
-      callbackUrl: "/dashwriter/magazine",
-      redirect: false,
-    });
-    if (result?.ok) {
-      router.replace("/dashwriter/magazine");
-    } else {
-      toast({ variant: "destructive", title: result?.error?.toString() });
-      form.reset();
+    try {
+      setLoading(true);
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        role: "writer",
+        type: "email",
+        callbackUrl: "/dashwriter/magazine",
+        redirect: false,
+      });
+      if (result?.ok) {
+        router.replace("/dashwriter/magazine");
+      } else {
+        toast({ variant: "destructive", title: result?.error?.toString() });
+        form.reset();
+      }
+    } catch (e) {
+      //
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -98,7 +109,7 @@ export default function Page() {
                 )}
               />
               <div className="w-full flex flex-col items-end">
-                <Button type="submit">로그인</Button>
+                <LoadingSumnitButton loading={loading} />
               </div>
             </form>
           </Form>

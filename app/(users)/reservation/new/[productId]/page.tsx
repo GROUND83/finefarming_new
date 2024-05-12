@@ -537,7 +537,7 @@ export default function Page({ params }: { params: { productId: string } }) {
   const getUser = async () => {
     let sessiondata = await getSession();
     console.log("sessiondata", sessiondata);
-    if (sessiondata) {
+    if (sessiondata?.user.role === "user") {
       //
     } else {
       return router.push(`/auth/login?redirect=${pathname}`);

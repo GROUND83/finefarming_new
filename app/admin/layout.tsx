@@ -21,6 +21,7 @@ import React from "react";
 import { ManagerAuth } from "@/components/userName";
 import { getSession } from "next-auth/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import LogoWrap from "@/components/logowrap";
 
 export const superAdminMenu = [
   {
@@ -265,12 +266,11 @@ export default function AdminLayOut({
     <div className="w-full flex flex-row  items-stretch relative">
       <div className="py-6 border-r-[1px]  bg-white  w-[220px] h-screen  relative">
         <div className="fixed top-0 left-0 h-full w-[220px]">
-          <div className="flex flex-col items-start h-[250px]">
-            <div className=" flex flex-col items-start gap-6 w-full px-6  ">
-              <Link href={"/"} className=" relative  w-[80px] aspect-[5/3]">
-                <Image src="/logo.svg" alt="logo" fill priority />
-              </Link>
+          <div className="flex flex-col items-center h-[250px] g-3 py-6">
+            <div className="h-[50px] w-[80px]">
+              <LogoWrap />
             </div>
+
             <div className="w-full flex-1 p-6">
               <ManagerAuth />
             </div>
@@ -286,8 +286,7 @@ export default function AdminLayOut({
                           <Accordion type="single" collapsible>
                             <AccordionItem value="item-1">
                               <AccordionTrigger>
-                                {" "}
-                                <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  ">
+                                <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  font-normal">
                                   {item.icon}
                                   {item.title}
                                 </p>
@@ -299,7 +298,7 @@ export default function AdminLayOut({
                                       <div key={subIndex}>
                                         <Link
                                           href={`/admin/${sub.link}`}
-                                          className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
+                                          className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors font-normal"
                                         >
                                           {sub.icon}
                                           {sub.title}
@@ -314,14 +313,14 @@ export default function AdminLayOut({
                         ) : (
                           <div className="">
                             {item.disable ? (
-                              <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors">
+                              <p className="w-full  py-3 px-3 flex flex-row items-center gap-2  text-neutral-400 transition-colors  font-normal">
                                 {item.icon}
                                 {item.title}
                               </p>
                             ) : (
                               <Link
                                 href={`/admin/${item.link}`}
-                                className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
+                                className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors font-normal"
                               >
                                 {item.icon}
                                 {item.title}
