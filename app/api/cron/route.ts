@@ -34,5 +34,6 @@ export async function GET(req: NextRequest) {
       },
     },
   });
-  return NextResponse.json({ ok: true, data: reservavtion });
+  console.log("reservavtion", reservavtion);
+  return NextResponse.json({ ok: true });
 }
