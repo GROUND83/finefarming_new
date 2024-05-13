@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { XIcon } from "lucide-react";
+import { Loader2, XIcon } from "lucide-react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,6 +35,7 @@ const FormSchema = z.object({
 });
 export default function NewCommunity() {
   const { data: session } = useSession();
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -46,28 +47,34 @@ export default function NewCommunity() {
   });
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log("Data", data);
-    if (session?.user.username) {
-      let newData = JSON.stringify({
-        ...data,
-        authorName: session?.user.username,
-        autherId: session?.user.id,
-        authorType: "user",
-      });
-      let result = await createCommunity(newData);
-      console.log("result", result);
-    } else {
-      // toast({
-      //   title: "You submitted the following values:",
-      //   description: (
-      //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-      //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-      //     </pre>
-      //   ),
-      // });
+    setLoading(true);
+    try {
+      if (session?.user.username) {
+        let newData = JSON.stringify({
+          ...data,
+          authorName: session?.user.username,
+          autherId: session?.user.id,
+          authorType: "user",
+        });
+        let result = await createCommunity(newData);
+        console.log("result", result);
+      } else {
+        // toast({
+        //   title: "You submitted the following values:",
+        //   description: (
+        //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        //     </pre>
+        //   ),
+        // });
+      }
+    } catch (e) {
+    } finally {
+      setLoading(false);
+      setOpen(false);
+      window.location.reload();
     }
     // getBaseData();
-    setOpen(false);
-    window.location.reload();
   }
   const closeModal = () => {
     form.reset();
@@ -87,7 +94,7 @@ export default function NewCommunity() {
         커뮤니티
       </Button>
       <Dialog open={open}>
-        <DialogContent className="w-[80vw] rounded-md p-12 flex flex-col items-start gap-6">
+        <DialogContent className="w-[80vw] rounded-md p-3 lg:p-12 flex flex-col items-start gap-6">
           <div className="flex flex-col items-end  w-full">
             <Button onClick={() => closeModal()} variant={"outline"}>
               <XIcon className="size-4" />
@@ -96,7 +103,7 @@ export default function NewCommunity() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="w-full space-y-6 border p-6 rounded-md"
+              className="w-full space-y-6 lg:border p-6 rounded-md"
             >
               <div>
                 <h3 className="mb-4 text-lg font-medium">커뮤니티</h3>
@@ -141,7 +148,9 @@ export default function NewCommunity() {
                   />
                 </div>
               </div>
-              <Button type="submit">추가</Button>
+              <Button type="submit">
+                {loading ? <Loader2 className="size-4 animate-spin" /> : "생성"}
+              </Button>
             </form>
           </Form>
         </DialogContent>

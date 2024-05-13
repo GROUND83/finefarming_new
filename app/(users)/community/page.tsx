@@ -2,7 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 
-import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
+import {
+  ChatBubbleLeftEllipsisIcon,
+  PlusIcon,
+} from "@heroicons/react/24/outline";
 import { DataTable } from "./_component/table/table";
 import React from "react";
 import { getCommunity } from "./_component/table/actions";
@@ -14,6 +17,7 @@ import { useSession } from "next-auth/react";
 import { MobileTable } from "./_component/table/mobileTable";
 import NewCommunity from "./_component/newModal";
 import Footer from "@/components/footerWrap";
+import Link from "next/link";
 
 export default function Page() {
   const [community, setCommunity] = React.useState<any[]>([]);
@@ -41,7 +45,15 @@ export default function Page() {
           </div>
           {session && (
             <div>
-              <NewCommunity />
+              <Button asChild>
+                <Link
+                  href="/community/new"
+                  className="flex flex-row items-center gap-2"
+                >
+                  <PlusIcon className="size-4" />
+                  커뮤니터
+                </Link>
+              </Button>
             </div>
           )}
         </div>

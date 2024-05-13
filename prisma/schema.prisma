@@ -401,7 +401,7 @@ model Community {
   image String?
   isNotice Boolean @default(false)
   reader Json[]
-  visible Boolean @default(true)
+  visible Boolean @default(false)
   authorName String?
   autherId Int?
   authorType CommunityAuthor @default(manager)

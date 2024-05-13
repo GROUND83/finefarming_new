@@ -132,7 +132,17 @@ export default function QuillEditor({ content, setContent }: editProps) {
           ],
           ["link", "image"],
         ],
-        handlers: { image: imageHandler },
+        handlers: {
+          image: imageHandler,
+          // link: function (value: any) {
+          //   if (value) {
+          //     const href = prompt("Enter the URL");
+          //     this.quill.format("link", href);
+          //   } else {
+          //     this.quill.format("link", false);
+          //   }
+          // },
+        },
         clipboard: {
           matchVisual: false,
         },

@@ -1,17 +1,23 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
 import {
   Form,
@@ -21,23 +27,24 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { getCommunityDetail, updateCommunity } from "./_component/actions";
+import { createCommunity } from "./_component/actions";
+import { useSession } from "next-auth/react";
 import { LinkPreview } from "@/components/linktoHtml";
+import { useRouter } from "next/navigation";
 const FormSchema = z.object({
-  visible: z.boolean(),
   isNotice: z.boolean().default(false),
   title: z.string(),
   content: z.string(),
 });
-export default function Page({ params }: { params: { communityId: string } }) {
+export default function Page() {
+  const [open, setOpen] = React.useState(false);
+  const { data: session } = useSession();
   const [preview, setPreview] = React.useState<any>("");
   const router = useRouter();
-  const { data: session } = useSession();
-
+  //
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      visible: false,
       title: "",
       content: "",
       isNotice: true,
@@ -51,32 +58,15 @@ export default function Page({ params }: { params: { communityId: string } }) {
       authorName: "매니저",
       autherId: session?.user.id,
       authorType: "manager",
-      communityId: Number(params.communityId),
     });
-    let result = await updateCommunity(newData);
+    let result = await createCommunity(newData);
     console.log("result", result);
     router.push("/admin/community");
     // setOpen(false);
   }
-  const reload = async () => {
-    const result = await getCommunityDetail(Number(params.communityId));
-    console.log("result", result);
-    form.reset({
-      visible: result?.visible,
-      title: result?.title,
-      content: result?.content,
-      isNotice: result?.isNotice,
-    });
-    setPreview(result?.content);
-  };
 
-  React.useEffect(() => {
-    if (params.communityId) {
-      reload();
-    }
-  }, [params.communityId]);
   return (
-    <div className="w-full  p-3  ">
+    <div className=" w-full p-3">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -87,35 +77,17 @@ export default function Page({ params }: { params: { communityId: string } }) {
             <div className="space-y-4">
               <FormField
                 control={form.control}
-                name="visible"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center  space-y-0 gap-2 ">
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    {field.value ? (
-                      <FormLabel className="text-base">공개</FormLabel>
-                    ) : (
-                      <FormLabel className="text-base">비공개</FormLabel>
-                    )}
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
                 name="isNotice"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center  space-y-0 gap-2 ">
+                    <FormLabel className="text-base">공지사항</FormLabel>
+
                     <FormControl>
                       <Switch
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <FormLabel className="text-base">공지사항</FormLabel>
                   </FormItem>
                 )}
               />

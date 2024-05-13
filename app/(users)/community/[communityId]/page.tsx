@@ -1,8 +1,17 @@
+import { UserLinkPreview } from "@/components/linktoHtml";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
-import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftCircleIcon,
+  ArrowLeftIcon,
+  ChatBubbleLeftEllipsisIcon,
+} from "@heroicons/react/24/outline";
 import dayjs from "dayjs";
+import { MoveLeft } from "lucide-react";
+import Link from "next/link";
+
 import { notFound } from "next/navigation";
 
 async function getIsOwner(authorId: number) {
@@ -37,25 +46,34 @@ export default async function Page({
   if (!community) {
     return notFound();
   }
-  console.log("community", community, params.communityId);
+  // console.log("community", community, params.communityId);
   return (
-    <div className=" container mx-auto mt-3">
-      <div className="w-full border-b  px-6 py-3 flex flex-row items-center justify-between ">
+    <div className="w-full lg:container mx-auto p-3 mt-3 ">
+      <div className="w-full border-b   py-3 flex flex-row items-center justify-between ">
         <div className="flex flex-row gap-2 items-center">
           <ChatBubbleLeftEllipsisIcon className="size-6" />
           <p className="text-lg lg:text-xl font-semibold">커뮤니티</p>
         </div>
       </div>
-      <div className="p-3 flex flex-col items-start gap-5 mt-3">
+      <div className="p-3 flex flex-col items-start gap-5 mt-3 w-full">
         {community.isNotice && <Badge>공지</Badge>}
         <p className="text-2xl font-semibold">{community.title}</p>
-        <div className="flex flex-row items-center gap-3 text-base ">
+        <div className="flex flex-row items-center gap-3 text-base border-b w-full pb-6 ">
           <p className="">{community.authorName} </p>
           <p className="text-neutral-500">
             {dayjs(community.created_at).format("YYYY.MM.DD")}
           </p>
         </div>
-        <p className="text-pretty whitespace-pre-wrap">{community.content}</p>
+        <UserLinkPreview content={community.content} />
+        {/* <p className="text-pretty whitespace-pre-wrap">{community.content}</p> */}
+      </div>
+      <div className="mt-12">
+        <Button asChild variant={"outline"}>
+          <Link href="/community" className="flex flex-row items-center gap-2">
+            <ArrowLeftIcon className="size-4" />
+            뒤로가기
+          </Link>
+        </Button>
       </div>
     </div>
   );

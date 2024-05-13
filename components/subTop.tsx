@@ -57,7 +57,11 @@ export default function SubTop({
           {pathname === "/admin/writer" && <NewWriter />}
           {pathname === "/admin/customer" && <NewCustomer />}
           {pathname === "/admin/manager" && <NewManager />}
-          {pathname === "/admin/community" && <NewCommunity />}
+          {pathname === "/admin/community" && (
+            <Button>
+              <Link href={"/admin/community/new"}>커뮤니티</Link>
+            </Button>
+          )}
 
           {/* {pathname === "/admin/magazine" && <NewMagazineModal />} */}
           {/* {newbutton && (

@@ -78,6 +78,19 @@ export const columns: ColumnDef<any>[] = [
     },
   },
   {
+    accessorKey: "visible",
+    header: "공개여부",
+    cell: ({ row }) => (
+      <div className=" ">
+        {row.getValue("visible") ? (
+          <Badge>공개</Badge>
+        ) : (
+          <Badge variant={"outline"}>비공개</Badge>
+        )}
+      </div>
+    ),
+  },
+  {
     accessorKey: "authorName",
     header: "작성자",
     cell: ({ row }) => (
@@ -100,7 +113,7 @@ export const columns: ColumnDef<any>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      console.log(row);
+      // console.log(row);
       return (
         <div className=" text-right">
           <Link href={`/admin/community/${row.original.id}`}>
