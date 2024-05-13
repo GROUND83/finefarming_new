@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
   }
   let koreanSelectDay = dayjs().toISOString();
   let plusDay = dayjs().add(1, "day").toISOString();
+  console.log("koreanSelectDay", koreanSelectDay, "plusDay", plusDay);
   let reservavtion = await db.reservation.findMany({
     where: {
       status: "complete",
