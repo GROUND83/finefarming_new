@@ -130,9 +130,6 @@ export default function Page() {
                   </FormItem>
                 )}
               />
-              <div className="flex flex-col items-start justify-center    col-span-9">
-                <QuillEditor content={content} setContent={setContent} />
-              </div>
             </div>
           </div>
           <Button type="submit">
