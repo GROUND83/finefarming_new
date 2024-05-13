@@ -1,3 +1,5 @@
+import db from "@/lib/db";
+import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -6,5 +8,30 @@ export async function GET(req: NextRequest) {
   ) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  return NextResponse.json({ ok: true });
+  let koreanSelectDay = dayjs().toISOString();
+  let plusDay = dayjs().add(1, "day").toISOString();
+  let reservavtion = await db.reservation.findMany({
+    where: {
+      status: "complete",
+      checkInDate: {
+        gte: koreanSelectDay,
+        lt: plusDay,
+      },
+    },
+    include: {
+      farm: {
+        include: {
+          owner: {
+            select: {
+              email: true,
+              username: true,
+              phone: true,
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  return NextResponse.json({ ok: true, data: reservavtion });
 }
