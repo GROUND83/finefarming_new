@@ -17,7 +17,14 @@ export default function Footer() {
           >
             서비스이용 약관
           </Link>
-
+          <div className="text-xs text-neutral-500">
+            <div className="flex flex-row items-center gap-2">
+              <p>그라운드83</p>
+              <p>229-01-75910</p>
+              <p>김원창</p>
+            </div>
+            <p>제주특별자치도 제주시 연수로 2길 24-6 201호</p>
+          </div>
           <p className="text-sm text-neutral-500">{`© ${new Date().getFullYear()}. FineFarming All rights reserved.`}</p>
         </div>
       </div>
