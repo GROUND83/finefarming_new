@@ -60,6 +60,13 @@ export const superAdminMenu = [
     subMenu: [],
   },
   {
+    title: "매일 구독 관리",
+    icon: <BookOpenIcon className="size-4" />,
+    link: "subscriber",
+    disable: false,
+    subMenu: [],
+  },
+  {
     title: "사용자 관리",
     subMenu: [
       {
@@ -170,6 +177,13 @@ export const adminMenu = [
     title: "매거진 관리",
     icon: <BookOpenIcon className="size-4" />,
     link: "magazine",
+    disable: false,
+    subMenu: [],
+  },
+  {
+    title: "매일 구독 관리",
+    icon: <BookOpenIcon className="size-4" />,
+    link: "subscriber",
     disable: false,
     subMenu: [],
   },

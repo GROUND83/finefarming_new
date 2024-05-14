@@ -9,6 +9,7 @@ import {
   ImageWrap,
 } from "./_components/mainImageWrap";
 import Footer from "../../components/footerWrap";
+import Subscrip from "./_components/subscrip";
 export const dynamic = "force-dynamic";
 export default function Page() {
   return (
@@ -23,14 +24,8 @@ export default function Page() {
             우리는 농업체험을 선택하는데 필요한 지식을 제공하는 동시에 여러분의
             체험활동이 기억에 남고 유익한 추억이 될 수 있도록 돕습니다.
           </p>
-          <form className="flex flex-col lg:flex-row lg:items-center  items-start gap-3 w-full ">
-            <div className="w-full">
-              <Input name="email" placeholder="이메일을 입력하세요." />
-            </div>
-            <Button type="submit" className=" ">
-              최신 소식 받아보기
-            </Button>
-          </form>
+          <Subscrip />
+
           <p className="tracking-wide w-full text-sm lg:text-base text-neutral-500">
             <Link href={"/personalPolicy"} className=" underline  ">
               개인정보 보호정책

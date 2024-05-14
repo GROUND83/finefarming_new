@@ -74,3 +74,15 @@ export async function getUser({
     return;
   }
 }
+
+export async function updateSubscriper(data: string) {
+  if (data) {
+    let parser = JSON.parse(data);
+    let result = await db.subscriber.create({
+      data: {
+        email: parser.email,
+      },
+    });
+    return result;
+  }
+}

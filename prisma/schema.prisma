@@ -445,3 +445,11 @@ model RefundPolicy {
   updated_at DateTime @updatedAt
   content String?
 }
+
+
+model Subscriber{
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  email String @unique
+}

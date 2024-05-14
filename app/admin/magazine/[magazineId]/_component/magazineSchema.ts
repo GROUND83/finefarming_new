@@ -30,7 +30,7 @@ export const magazineSchema = z.object({
     })
   ),
   productId: z.string(),
-  authorId: z.number(),
+  authorId: z.string(),
   author: z.object({
     id: z.number(),
     username: z.string(),
