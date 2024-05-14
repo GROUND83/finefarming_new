@@ -4,13 +4,11 @@ import getDateTime from "@/lib/getDateTime";
 import getSession from "@/lib/session";
 import { notFound } from "next/navigation";
 
-export async function getInitData() {
-  let session = await getSession();
-  console.log(session);
-  if (session) {
+export async function getInitData(userId: number) {
+  if (userId) {
     let user = await db.writer.findUnique({
       where: {
-        id: Number(session.id),
+        id: userId,
       },
       select: {
         id: true,
@@ -23,6 +21,9 @@ export async function getInitData() {
       },
     });
     let products = await db.product.findMany({
+      where: {
+        visible: true,
+      },
       select: {
         id: true,
         title: true,

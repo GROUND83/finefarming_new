@@ -33,7 +33,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSession } from "next-auth/react";
 export default function Page() {
+  const { data: session } = useSession();
   const [user, setUser] = React.useState<{
     id: number;
     username: string | null;
@@ -132,15 +134,19 @@ export default function Page() {
   };
 
   const getUser = async () => {
-    let result = await getInitData();
-    if (result) {
-      setUser(result.user);
-      setProducts(result.products);
+    console.log("session", session);
+    if (session?.user) {
+      let userId = session?.user.id;
+      let result = await getInitData(userId);
+      if (result) {
+        setUser(result.user);
+        setProducts(result.products);
+      }
     }
   };
   React.useEffect(() => {
     getUser();
-  }, []);
+  }, [session?.user]);
   const onSubmit = form.handleSubmit(async (data) => {
     setUpdateLoading(true);
     console.log("data", data);
