@@ -85,7 +85,7 @@ export function UserLinkPreview({ content }: { content: string }) {
   };
   return (
     <div className="flex flex-col items-start justify-start flex-1   w-full h-full gap-2 ">
-      <div className=" p-6 flex-1 border w-full h-full ">
+      <div className="  flex-1  w-full h-full ">
         {replace(content).map((item: any, index: any) => {
           console.log("item", item);
           return (

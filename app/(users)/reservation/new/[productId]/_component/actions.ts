@@ -238,7 +238,48 @@ export async function getReservationDate({
     return { result: sortArray, type: "slot" };
   }
 }
+export async function getFarmImpossibe(farmId: number) {
+  const reservationDates = await db.reserVationDate.findMany({
+    where: {
+      farmId: farmId,
+    },
+  });
 
+  let newArray = {} as any;
+  for (const reservationDate of reservationDates) {
+    if (Object.keys(newArray).length > 0) {
+      console.log(
+        "test",
+        dayjs(reservationDate.date).format("YYYY-MM-DD") in newArray
+      );
+      if (dayjs(reservationDate.date).format("YYYY-MM-DD") in newArray) {
+        newArray[`${dayjs(reservationDate.date).format("YYYY-MM-DD")}`].push(
+          reservationDate.visible
+        );
+      } else {
+        newArray[`${dayjs(reservationDate.date).format("YYYY-MM-DD")}`] = [
+          reservationDate.visible,
+        ];
+        // newArray[`${dayjs(reservationDate.date).format("YYYY-MM-DD")}`] = [reservationDate.visible];
+      }
+    } else {
+      newArray[`${dayjs(reservationDate.date).format("YYYY-MM-DD")}`] = [
+        reservationDate.visible,
+      ];
+    }
+  }
+  let copyObj = { ...newArray };
+  for (const key in newArray) {
+    let trueCheck = newArray[key].filter((item: any) => item === true);
+    console.log("copyObj", trueCheck, copyObj);
+    if (trueCheck.length > 0) {
+      copyObj[key] = true;
+    } else {
+      copyObj[key] = false;
+    }
+  }
+  return copyObj;
+}
 export async function makeReservation(jsonData: string) {
   let result = await JSON.parse(jsonData);
   console.log("result", result);

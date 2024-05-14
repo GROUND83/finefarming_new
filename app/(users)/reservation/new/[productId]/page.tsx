@@ -2,6 +2,7 @@
 import { notFound, usePathname, useRouter } from "next/navigation";
 import React from "react";
 import {
+  getFarmImpossibe,
   getProductDetail,
   getReservationDate,
   makeReservation,
@@ -40,10 +41,12 @@ import { SelectProductField } from "./_component/selectProductField";
 import dayjs from "dayjs";
 import { getSession, useSession } from "next-auth/react";
 import {
+  farmPossibleDay,
   getHolidays,
   getNationalHoliday,
 } from "@/app/admin/farm/[id]/reservation/_compoents/actions";
 import { z } from "zod";
+import { getFarmImages } from "@/app/admin/farm/[id]/image/_components/actions";
 
 const FormSchema = z.object({
   checkInDate: z.union([
@@ -113,6 +116,8 @@ export default function Page({ params }: { params: { productId: string } }) {
   const [nationalholiday, setNationalHoliday] = React.useState<
     nationalholidayType[]
   >([]);
+  const [possibleDay, setPossibleDay] = React.useState<any>();
+
   const [totalPriceObj, setTotalPriceObj] = React.useState<any>();
   const [farmHoliday, setFarmHoliday] = React.useState<any>();
   const [groupPrice, setGroupPrice] = React.useState(0);
@@ -144,7 +149,9 @@ export default function Page({ params }: { params: { productId: string } }) {
           date,
         });
         console.log("totalReservationDate", totalReservationDate);
-        setTotalReservationDate(totalReservationDate.result);
+        if (totalReservationDate.result) {
+          setTotalReservationDate(totalReservationDate.result);
+        }
         getProductsDetailData();
       } catch (e) {
         //
@@ -453,6 +460,9 @@ export default function Page({ params }: { params: { productId: string } }) {
     let holidays = await getHolidays(detail.farmId);
     console.log("holidays", holidays);
     setFarmHoliday(holidays);
+    let resultdata = await getFarmImpossibe(Number(detail.farmId));
+    setPossibleDay(resultdata);
+    console.log("result", resultdata);
   };
   React.useEffect(() => {
     if (detail) {
@@ -462,6 +472,33 @@ export default function Page({ params }: { params: { productId: string } }) {
   //
   const checkDisable = (date: any) => {
     // console.log(date);
+    if (Object.keys(possibleDay).length > 0) {
+      console.log(possibleDay[dayjs(date).format("YYYY-MM-DD")]);
+      if (possibleDay[dayjs(date).format("YYYY-MM-DD")] !== undefined) {
+        if (possibleDay[dayjs(date).format("YYYY-MM-DD")]) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+      }
+      // for (const key in possibleDay) {
+      //   console.log("possibleDay", possibleDay[key]);
+      //   console.log(
+      //     "possibleDay",
+      //     key,
+      //     key == dayjs(date).format("YYYY-MM-DD")
+      //   );
+      //   if (key === dayjs(date).format("YYYY-MM-DD")) {
+      //     //
+      //     if (possibleDay[key]) {
+      //       return false;
+      //     } else {
+      //       return true;
+      //     }
+      //   }
+      // }
+    }
     if (detail) {
       let getDay = new Date(date).getDay();
       // console.log(monday);

@@ -52,9 +52,9 @@ export const DeleteButton = ({
       >
         <TrashIcon className="size-4 text-destructive" />
       </Button>
-      <div className="">
+      <div>
         <AlertDialog open={deleteAlert}>
-          <AlertDialogContent className=" rounded-md">
+          <AlertDialogContent className=" rounded-md w-[80vw] ">
             <AlertDialogHeader>
               <AlertDialogTitle>{title}</AlertDialogTitle>
               <AlertDialogDescription>{description}</AlertDialogDescription>

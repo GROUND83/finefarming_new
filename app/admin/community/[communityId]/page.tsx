@@ -21,16 +21,35 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { getCommunityDetail, updateCommunity } from "./_component/actions";
+import {
+  adminDeleteCommunity,
+  getCommunityDetail,
+  updateCommunity,
+} from "./_component/actions";
 import { LinkPreview } from "@/components/linktoHtml";
+import { DeleteButton } from "@/components/ButtonComponent";
+import ReplyEdit from "./_component/replyEdit";
 const FormSchema = z.object({
   visible: z.boolean(),
   isNotice: z.boolean().default(false),
   title: z.string(),
   content: z.string(),
+  replys: z.array(
+    z.object({
+      id: z.number(),
+      authorAvatar: z.string(),
+      authorId: z.number(),
+      authorName: z.string(),
+      authorType: z.string(),
+      depth: z.number(),
+      title: z.string(),
+      visible: z.boolean(),
+    })
+  ),
 });
 export default function Page({ params }: { params: { communityId: string } }) {
   const [preview, setPreview] = React.useState<any>("");
+  const [deleteLoading, setDeleteLoading] = React.useState(false);
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -43,6 +62,7 @@ export default function Page({ params }: { params: { communityId: string } }) {
       isNotice: true,
     },
   });
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log("Data", data);
 
@@ -66,6 +86,7 @@ export default function Page({ params }: { params: { communityId: string } }) {
       title: result?.title,
       content: result?.content,
       isNotice: result?.isNotice,
+      replys: result?.replys,
     });
     setPreview(result?.content);
   };
@@ -75,6 +96,11 @@ export default function Page({ params }: { params: { communityId: string } }) {
       reload();
     }
   }, [params.communityId]);
+
+  const clickDelelte = async () => {
+    //
+    let result = await adminDeleteCommunity(Number(params.communityId));
+  };
   return (
     <div className="w-full  p-3  ">
       <Form {...form}>
@@ -169,9 +195,18 @@ export default function Page({ params }: { params: { communityId: string } }) {
               </div>
             </div>
           </div>
-          <Button type="submit">추가</Button>
+          <div className="flex flex-row items-center justify-between w-full">
+            <DeleteButton
+              onDelete={() => clickDelelte()}
+              title={"커뮤니티 삭제"}
+              description={"커뮤니티 삭제 시 댓글 모두 삭제 됩니다."}
+              deleteLoading={deleteLoading}
+            />
+            <Button type="submit">수정</Button>
+          </div>
         </form>
       </Form>
+      <ReplyEdit communityId={params.communityId} />
     </div>
   );
 }

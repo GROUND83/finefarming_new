@@ -1,7 +1,7 @@
 "use server";
 import db from "@/lib/db";
 import getDateTime from "@/lib/getDateTime";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export async function getCommunity(options: {
   pageIndex: number;
@@ -26,9 +26,20 @@ export async function getCommunity(options: {
 
 export async function createCommunity(data: string) {
   console.log(data);
+
   let newdata = JSON.parse(data);
+
   let result = await db.community.create({
-    data: { ...newdata, created_at: getDateTime(), updated_at: getDateTime() },
+    data: {
+      ...newdata,
+      created_at: getDateTime(),
+      updated_at: getDateTime(),
+    },
   });
-  return result;
+  console.log("result", result);
+  if (result) {
+    redirect("/community/result");
+  } else {
+    notFound();
+  }
 }

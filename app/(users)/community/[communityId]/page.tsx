@@ -2,7 +2,7 @@ import { UserLinkPreview } from "@/components/linktoHtml";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import db from "@/lib/db";
-import getSession from "@/lib/session";
+
 import {
   ArrowLeftCircleIcon,
   ArrowLeftIcon,
@@ -13,12 +13,17 @@ import { MoveLeft } from "lucide-react";
 import Link from "next/link";
 
 import { notFound } from "next/navigation";
+import Reply from "./_component/reply";
+import NewReply from "./_component/newReply";
+import { getSession } from "next-auth/react";
+import DeleteCommunity from "./_component/deleteCommunity";
 
-async function getIsOwner(authorId: number) {
+async function getIsOwner() {
   const session = await getSession();
-  if (session.id) {
-    return session.id === authorId;
-  }
+  console.log("getIsOwner", session);
+  // if (session.id) {
+  //   return session.id === authorId;
+  // }
   return false;
 }
 
@@ -43,10 +48,11 @@ export default async function Page({
     return notFound();
   }
   const community = await getCommunity(id);
+  console.log("community", community, params.communityId);
   if (!community) {
     return notFound();
   }
-  // console.log("community", community, params.communityId);
+  const isMine = await getIsOwner();
   return (
     <div className="w-full lg:container mx-auto p-3 mt-3 ">
       <div className="w-full border-b   py-3 flex flex-row items-center justify-between ">
@@ -64,8 +70,21 @@ export default async function Page({
             {dayjs(community.created_at).format("YYYY.MM.DD")}
           </p>
         </div>
-        <UserLinkPreview content={community.content} />
-        {/* <p className="text-pretty whitespace-pre-wrap">{community.content}</p> */}
+        <div className="border w-full px-6 pt-6 rounded-md flex flex-col items-start gap-6">
+          <UserLinkPreview content={community.content} />
+
+          <div className=" border-t w-full py-3 flex  flex-row items-center justify-between">
+            <NewReply depth={0} communityId={community.id} parentId={null} />
+            <DeleteCommunity
+              communityId={community.id}
+              ahutorId={Number(community.autherId)}
+            />
+            {/* { community.autherId === } */}
+          </div>
+        </div>
+      </div>
+      <div className="p-3 flex flex-col items-start gap-5  w-full">
+        <Reply communityId={params.communityId} />
       </div>
       <div className="mt-12">
         <Button asChild variant={"outline"}>

@@ -44,7 +44,7 @@ import { tree } from "next/dist/build/templates/app-page";
 //
 
 const deletFarm = async (farmId: number) => {
-  console.log(farmId);
+  // console.log(farmId);
   await deletFarm(farmId);
 };
 
@@ -76,7 +76,7 @@ export const columns: ColumnDef<any>[] = [
     enableResizing: true, //disable resizing for just this column
     size: 400, //starting column size
     cell: ({ row }) => {
-      console.log("row", row.original.isNotice);
+      // console.log("row", row.original.isNotice);
       let isNotice = row.original.isNotice;
       return (
         <div className=" flex flex-row items-center gap-2 justify-start lg:text-sm text-xs">
@@ -133,7 +133,7 @@ export const columns: ColumnDef<any>[] = [
     enableResizing: true, //disable resizing for just this column
     size: 50, //starting column size
     cell: ({ row }) => {
-      console.log(row);
+      // console.log(row);
       return (
         <div className=" text-right">
           <Link href={`/community/${row.original.id}`}>

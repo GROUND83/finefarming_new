@@ -61,27 +61,16 @@ export default function Page() {
         let result = await createCommunity(newData);
         console.log("result", result);
       } else {
-        // toast({
-        //   title: "You submitted the following values:",
-        //   description: (
-        //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        //     </pre>
-        //   ),
-        // });
       }
     } catch (e) {
     } finally {
       setLoading(false);
-      setOpen(false);
-      window.location.reload();
+
+      // window.location.reload();
     }
     // getBaseData();
   }
-  const closeModal = () => {
-    form.reset();
-    setOpen(false);
-  };
+
   return (
     <div className="w-full lg:container lg:mx-auto py-6">
       <Form {...form}>

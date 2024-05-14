@@ -463,3 +463,52 @@ export async function getReservation(date: string) {
   // console.log("reservation", reservation);
   return reservation;
 }
+export async function farmPossibleDay(farmId: number) {
+  const farm = await db.farm.findUnique({
+    where: {
+      id: farmId,
+    },
+    select: {
+      slot: true,
+    },
+  });
+  let newFarm = JSON.stringify(farm);
+  let resutFarm = JSON.parse(newFarm);
+  const slotarray = resutFarm?.slot;
+  let newSlot = slotarray.filter((item: any) => item.visible === true);
+
+  let reserVationDates = await db.reserVationDate.findMany({
+    where: {
+      farmId: farmId,
+      visible: true,
+    },
+    select: {
+      id: true,
+      visible: true,
+      date: true,
+      startTime: true,
+      amount: true,
+      type: true,
+    },
+  });
+  if (reserVationDates.length > 0) {
+    const map = new Map();
+    reserVationDates.forEach((item: any) => {
+      if (item.visible) {
+        return map.set(item.startTime, { ...map.get(item.startTime), ...item });
+      }
+    });
+    // console.log("map", map);
+    // map 을 array 로 만들기
+    const mergedArray = Array.from(map.values());
+    console.log("mergedArray", reserVationDates, mergedArray);
+    let newArray = [];
+    for (const reserVationDate of reserVationDates) {
+      newArray.push(dayjs(reserVationDate.date).format("YYYY-MM-DD"));
+    }
+    console.log("newArray", newArray);
+    return newArray;
+  } else {
+    return [];
+  }
+}

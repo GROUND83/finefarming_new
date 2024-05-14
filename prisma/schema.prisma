@@ -66,6 +66,7 @@ model User {
   personlaPolicy Boolean @default(false)
   overForteen Boolean @default(false)
   reviews Review[]
+ 
 }
 // 라이터
 model Writer {
@@ -282,7 +283,6 @@ model ReserVationDate {
   visible Boolean @default(true)
   type Boolean @default(true)
   date DateTime 
- 
   startTime String
   amount Int
   farm Farm @relation(fields: [farmId], references: [id], onDelete:Cascade)
@@ -388,7 +388,6 @@ model Reply {
   review Review @relation(fields: [reviewId], references: [id],onDelete: Cascade) // 상품
   reviewId Int 
   title String
-
   visble Boolean @default(false)
 }
 
@@ -405,8 +404,25 @@ model Community {
   authorName String?
   autherId Int?
   authorType CommunityAuthor @default(manager)
+  replys CommunityReply []
   
 }
+model CommunityReply {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  community Community @relation(fields: [communityId], references: [id],onDelete: Cascade) 
+  communityId Int 
+  title String
+  visible Boolean @default(false)
+  depth Int @default(0)
+  parentId Int?
+  authorId Int
+  authorName String
+  authorAvatar String
+  authorType CommunityAuthor @default(manager)
+}
+
 enum CommunityAuthor {
   manager
   user
