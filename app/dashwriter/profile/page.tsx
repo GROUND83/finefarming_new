@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getUploadUrl } from "@/lib/uploadUrl";
 import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 // async function getUserData() {
 //   const user = await getWriter();
@@ -223,26 +224,21 @@ export default function Page() {
   return (
     <div className=" w-full  flex-1 flex flex-col items-start    ">
       <SubSectionWrap isLoading={loading}>
+        <div className="flex flex-row items-center gap-3">
+          <Button type="button" asChild variant={"outline"}>
+            <Link href={"/dashwriter/profile/changeprofile"}>
+              비밀번호 수정
+            </Link>
+          </Button>
+          <Button type="button" onClick={() => signOut()}>
+            로그아웃
+          </Button>
+        </div>
         <Form {...form}>
           <form
-            className="w-full flex flex-col items-start gap-6 "
+            className="w-full flex flex-col items-start gap-6 mt-6 "
             onSubmit={onSubmit}
           >
-            <div className="  mt-3">
-              <LoadingEditSubmitButton
-                loading={updateloading}
-                disabled={
-                  !form.formState.isDirty ||
-                  form.formState.isSubmitting ||
-                  updateloading
-                }
-              />
-            </div>
-            <div>
-              <Button type="button" onClick={() => signOut()}>
-                로그아웃
-              </Button>
-            </div>
             <div className="w-full bg-white border gap-2 p-12 flex flex-col items-start justify-center">
               <FormField
                 control={form.control}
@@ -396,6 +392,16 @@ export default function Page() {
                       </FormItem>
                     );
                   }}
+                />
+              </div>
+              <div className="  mt-3 w-full flex flex-col items-end mt-6">
+                <LoadingEditSubmitButton
+                  loading={updateloading}
+                  disabled={
+                    !form.formState.isDirty ||
+                    form.formState.isSubmitting ||
+                    updateloading
+                  }
                 />
               </div>
             </div>

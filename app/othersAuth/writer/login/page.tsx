@@ -21,6 +21,7 @@ import LogoWrap from "@/components/logowrap";
 import React from "react";
 import { Loader2 } from "lucide-react";
 import LoadingSumnitButton from "@/components/loadingSubmit";
+import Link from "next/link";
 
 export default function Page() {
   const [loading, setLoading] = React.useState(false);
@@ -48,11 +49,14 @@ export default function Page() {
       if (result?.ok) {
         router.replace("/dashwriter/magazine");
       } else {
+        console.log("result", result);
         toast({ variant: "destructive", title: result?.error?.toString() });
         form.reset();
+        setLoading(false);
       }
     } catch (e) {
       //
+      console.log("e", e);
     } finally {
       setLoading(false);
     }
@@ -113,6 +117,11 @@ export default function Page() {
               </div>
             </form>
           </Form>
+        </div>
+        <div>
+          <Link href="/othersAuth/writer/findpassword" className="text-sm">
+            비밀번호 찾기
+          </Link>
         </div>
         <p className="text-sm text-neutral-500">{`© ${new Date().getFullYear()}. FineFarming All rights reserved.`}</p>
       </div>

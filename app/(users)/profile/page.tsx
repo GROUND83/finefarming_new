@@ -92,16 +92,26 @@ export default function Page() {
                   </p>
                   <div className="flex flex-row items-center gap-2">
                     <ProviderIcon value={user.provider} />
-                    <p className="text-neutral-500 text-sm">
-                      {session?.user.email}
-                    </p>
+                    <p className="text-neutral-500 text-sm">{user.email}</p>
                   </div>
-                  <p className="text-neutral-500 text-sm">
-                    {session?.user.phone}
-                  </p>
+                  <p className="text-neutral-500 text-sm">{user.phone}</p>
                   <p className="text-xs lg:text-sm  text-neutral-500">
                     {moment(user?.created_at).format("YYYY년MM월DD일")}
                   </p>
+                  {/* <div>
+                    <Button asChild size="sm" className="mt-3">
+                      <Link href={"/profile/changeprofile"}>정보 수정</Link>
+                    </Button>
+                  </div> */}
+                  {user.provider === "email" && (
+                    <div>
+                      <Button asChild size="sm" className="mt-3">
+                        <Link href={"/profile/changeprofile"}>
+                          비밀번호 변경
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

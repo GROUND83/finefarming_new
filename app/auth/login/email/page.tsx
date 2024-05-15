@@ -22,6 +22,7 @@ import Logo from "../../../../public/logocolor.svg";
 import React from "react";
 import { Loader2 } from "lucide-react";
 import LogoWrap from "@/components/logowrap";
+import { LockClosedIcon } from "@heroicons/react/24/outline";
 //
 export default function Page() {
   const [loading, setLoading] = React.useState(false);
@@ -124,7 +125,15 @@ export default function Page() {
           </Button>
         </form>
       </Form>
-
+      <section className="flex flex-row items-center gap-3  px-6  mt-24 h-6">
+        <Link
+          href={"/auth/findpassword"}
+          className=" flex flex-row items-center gap-2 text-base"
+        >
+          <LockClosedIcon className="size-4" />
+          비밀번호 찾기
+        </Link>
+      </section>
       <Link href={"/auth/register"} className="text-base mt-6">
         신규 회원 가입
       </Link>

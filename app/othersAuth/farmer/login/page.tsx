@@ -108,6 +108,11 @@ export default function Page() {
             </form>
           </Form>
         </div>
+        <div>
+          <Link href="/othersAuth/farmer/findpassword" className="text-sm">
+            비밀번호 찾기
+          </Link>
+        </div>
         <p className="text-sm text-neutral-500">{`© ${new Date().getFullYear()}. FineFarming All rights reserved.`}</p>
       </div>
     </div>

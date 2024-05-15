@@ -1,68 +1,17 @@
 "use client";
 
 import SocialLogin from "@/components/social-login";
-import Image from "next/image";
+
 import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { signIn } from "next-auth/react";
-import { formSchema } from "./loginSchema";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
+
 import { Suspense } from "react";
-import { useToast } from "@/components/ui/use-toast";
-import Logo from "../../../public/logocolor.svg";
+
 import Copyright from "@/components/copyright";
-import { EnvelopeIcon } from "@heroicons/react/24/outline";
+import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import { Separator } from "@/components/ui/separator";
 import LogoWrap from "@/components/logowrap";
 //
 function Login() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const { toast } = useToast();
-  let redirectStr = searchParams.get("redirect");
-
-  // const form = useForm<z.infer<typeof formSchema>>({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     email: "",
-  //     password: "",
-  //   },
-  // });
-
-  // async function onSubmit(data: z.infer<typeof formSchema>) {
-  //   // console.log("data", data);
-  //   let result = await signIn("credentials", {
-  //     email: data.email,
-  //     password: data.password,
-  //     role: "user",
-  //     type: "email",
-  //     callbackUrl: redirectStr ? redirectStr : "/",
-  //     redirect: false,
-  //   });
-  //   if (result?.ok) {
-  //     console.log("redirectStr", redirectStr);
-  //     if (redirectStr) {
-  //       router.replace(redirectStr);
-  //     } else {
-  //       router.replace("/");
-  //     }
-  //   } else {
-  //     toast({ variant: "destructive", title: result?.error?.toString() });
-  //     form.reset();
-  //   }
-  // }
   return (
     <main className="w-full lg:w-1/3 mx-auto gap-1  pb-24 flex flex-col items-center justify-center h-full ">
       <section className="flex flex-col items-center gap-6  p-6 justify-center w-full">
@@ -91,6 +40,7 @@ function Login() {
           신규 회원 가입
         </Link>
       </section>
+
       {/* <section className=" w-full p-6 flex flex-col items-center gap-6">
         <span className="text-neutral-500 text-sm">또는</span>
         <SocialLogin redirect={redirectStr ? redirectStr : ""} />

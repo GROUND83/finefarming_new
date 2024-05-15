@@ -7,6 +7,7 @@ import React from "react";
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { Badge } from "./ui/badge";
 import { getSession, signOut } from "next-auth/react";
+import Link from "next/link";
 
 export function ManagerAuth() {
   const [user, setUser] = React.useState<any>();
@@ -27,7 +28,10 @@ export function ManagerAuth() {
     <div className="flex flex-col  items-start gap-3py-6">
       {user && (
         <>
-          <div className="flex flex-col items-start gap-1 w-full ">
+          <Link
+            className="flex flex-col items-start gap-1 w-full "
+            href={"/admin/profile"}
+          >
             {user.role === "manager" && <Badge>매니저</Badge>}
             {user.role === "superAdmin" && <Badge>슈퍼어드민</Badge>}
             <span className="text-sm mt-3">{user?.username}</span>
@@ -36,17 +40,7 @@ export function ManagerAuth() {
                 {user?.email}
               </p>
             </div>
-          </div>
-
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            onClick={() => logOutClick()}
-            className="flex gap-2 mt-3"
-          >
-            로그아웃
-            <ArrowRightStartOnRectangleIcon className="size-4" />
-          </Button>
+          </Link>
         </>
       )}
     </div>
