@@ -280,7 +280,7 @@ export default function AdminLayOut({
     <div className="w-full flex flex-row  items-stretch relative">
       <div className="py-6 border-r-[1px]  bg-white  w-[220px] h-screen  relative">
         <div className="fixed top-0 left-0 h-full w-[220px]">
-          <div className="flex flex-col items-center h-[250px] g-3 py-6">
+          <div className="flex flex-col items-center h-[180px] g-3 py-6">
             <div className="h-[50px] w-[80px]">
               <LogoWrap />
             </div>
@@ -290,7 +290,7 @@ export default function AdminLayOut({
             </div>
           </div>
           <div className="w-full p-3   overflow-y-scroll  h-[calc(100vh-220px)]">
-            <div className=" pb-24">
+            <div className=" pb-12">
               {user?.role === "manager" ? (
                 <div className="flex flex-col items-start gap-2  text-black  font-light text-sm w-full">
                   {adminMenu.map((item, index) => {

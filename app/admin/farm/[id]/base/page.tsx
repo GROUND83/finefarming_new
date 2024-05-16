@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-
+import { toast } from "sonner";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -18,7 +18,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { useToast } from "@/components/ui/use-toast";
 import {
   Form,
   FormControl,
@@ -70,12 +69,12 @@ export default function Page({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const { toast } = useToast();
+
   const router = useRouter();
   //
   const initailData = async () => {
     let defaultData: any = await getBaseData(Number(params.id));
-    console.log("defaultData", defaultData);
+    // console.log("defaultData", defaultData);
     let farmers = await getFarmers();
     setFarmers(farmers);
     return {
@@ -151,15 +150,11 @@ export default function Page({ params }: { params: { id: string } }) {
       const result = await updateData(formData);
       console.log("result", result);
     } catch (e: any) {
-      console.log(e);
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      console.log("e", e);
+      // toast.error(e);
     } finally {
       // await new Promise((resolve) => setTimeout(resolve, 1000));
+      toast.success("수정이 완료 되었습니다.");
       setUpdateLoading(false);
       reload();
       // router.push(`/admin/farm/${params.id}/base`);
@@ -169,17 +164,15 @@ export default function Page({ params }: { params: { id: string } }) {
   const deleteItem = async () => {
     //
     console.log("delete");
-    setDeleteLoading(true);
-    await deleteFarm(Number(params.id));
-    toast({
-      title: "삭제 완료",
-      description: "삭제가 완료 되었습니다.",
-      duration: 1000,
-      variant: "default",
-    });
-    router.replace("/admin/farm");
-
-    setDeleteLoading(false);
+    try {
+      setDeleteLoading(true);
+      await deleteFarm(Number(params.id));
+      toast.success("삭제가 완료 되었습니다.");
+    } catch (e) {
+    } finally {
+      router.replace("/admin/farm");
+      setDeleteLoading(false);
+    }
   };
   const getGeo = async (address: string) => {
     return new Promise<any>(async (resolve, reject) => {
@@ -236,23 +229,7 @@ export default function Page({ params }: { params: { id: string } }) {
     form.reset(data);
     setLoading(false);
   };
-  React.useEffect(() => {
-    if (form.formState.isSubmitSuccessful) {
-      // navigate("/");
-      console.log(
-        "form.formState.isSubmitSuccessful",
-        form.formState.isSubmitSuccessful
-      );
-      toast({
-        duration: 3000,
-        title: "수정완료",
-        description: "데이터 수정이 완료 되었습니다.",
-      });
-      reload();
-      console.log("done");
-      // window.location.reload();
-    }
-  }, [form.formState.isSubmitSuccessful]);
+
   React.useEffect(() => {
     reload();
   }, []);
@@ -616,7 +593,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     <DeleteButton
                       onDelete={() => deleteItem()}
                       title="농장을 삭제하겠습니까?"
-                      description="농장을 삭제하면 관련된데이터(농장,리뷰,예약내역,주문내역 등) 모두 삭제됩니다."
+                      description={`농장을 삭제하면 관련된데이터(농장,리뷰,예약내역,주문내역 등) \n모두 삭제됩니다.`}
                       deleteLoading={deleteLoading}
                     />
                   </div>

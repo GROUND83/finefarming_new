@@ -5,7 +5,8 @@ import { useState } from "react";
 import { PlusIcon, XIcon } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
+
 import {
   Select,
   SelectContent,
@@ -65,8 +66,7 @@ const timeData = [
 export default function Page({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
-  const { toast } = useToast();
-  //
+
   const form = useForm<editSchemaType>({
     resolver: zodResolver(editSchema),
     defaultValues: async () => {
@@ -126,12 +126,7 @@ export default function Page({ params }: { params: { id: string } }) {
     let checkDup = checkDuplicate(slot, keysToCheck);
     console.log("checkDup", checkDup);
     if (checkDup) {
-      toast({
-        variant: "destructive",
-        duration: 3000,
-        title: "중복된 값",
-        description: "중복된 값이 있습니다.",
-      });
+      toast.warning("중복된 값이 있습니다.");
     } else {
       setUpdateLoading(true);
       let newData = JSON.stringify(data);
@@ -141,20 +136,11 @@ export default function Page({ params }: { params: { id: string } }) {
       try {
         const result = await updateData(formData);
         if (result) {
-          toast({
-            duration: 3000,
-            title: "수정완료",
-            description: "데이터 수정이 완료 되었습니다.",
-          });
+          toast.success("데이터 수정이 완료 되었습니다.");
         }
       } catch (e: any) {
         console.log(e);
-        toast({
-          duration: 3000,
-          variant: "destructive",
-          title: "수정 ERROR",
-          description: `${e}`,
-        });
+        toast.error(e);
       } finally {
         // await new Promise((resolve) => setTimeout(resolve, 1000));
         setUpdateLoading(false);
@@ -277,11 +263,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         console.log(form.getValues("slot").length);
                         let limitLength = form.getValues("slot").length;
                         if (limitLength >= 12) {
-                          toast({
-                            variant: "destructive",
-                            title: "최대 허용개수 초과",
-                            description: "12개 까지 업로드 가능합니다.",
-                          });
+                          toast.error("12개 까지 업로드 가능합니다.");
                         } else {
                           slotAppend({
                             startTime: "",

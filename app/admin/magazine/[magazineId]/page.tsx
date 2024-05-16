@@ -1,8 +1,7 @@
 "use client";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/components/ui/use-toast";
-import db from "@/lib/db";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
@@ -40,28 +39,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { Switch } from "@/components/ui/switch";
-// async function getMagazine(id: string) {
-//   let magazine = await db.magazine.findUnique({
-//     where: {
-//       id: Number(id),
-//     },
-//     include: {
-//       author: {
-//         select: {
-//           username: true,
-//           avatar: true,
-//           intruduceTitle: true,
-//           link: true,
-//           intruduce: true,
-//         },
-//       },
-//     },
-//   });
-//   return magazine;
-// }
+import { toast } from "sonner";
+import { updateMagazine } from "./actions";
+import { useRouter } from "next/navigation";
+import ModalPcComponent from "./_component/modalPcComponent";
 export default function Page({ params }: { params: { magazineId: string } }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [selectAuthor, setSelectAuthor] = useState<any>("");
@@ -88,7 +73,7 @@ export default function Page({ params }: { params: { magazineId: string } }) {
   >([]);
   const [sectionType, setSectionType] = useState("mobile");
   const [updateloading, setUpdateLoading] = useState(false);
-  const { toast } = useToast();
+
   const imageRef = useRef<any>(null);
   const { data: session } = useSession();
   const form = useForm<magazineSchemaType>({
@@ -176,6 +161,8 @@ export default function Page({ params }: { params: { magazineId: string } }) {
       image: "",
       // authorId: user?.id,
       productId: data.productId,
+      magazineId: Number(params.magazineId),
+      authorId: data.authorId,
       title: "",
       sections: [] as any,
       suggestion: data.suggestion as any,
@@ -229,25 +216,19 @@ export default function Page({ params }: { params: { magazineId: string } }) {
       try {
         console.log("newdata", checkData);
         let JsonData = JSON.stringify(checkData);
-        // let result = await createMagazine(JsonData);
-      } catch (e) {
+
+        let result = await updateMagazine(JsonData);
+        if (result) {
+          toast.success("데이터 수정에 성공하였습니다.");
+        }
+      } catch (e: any) {
         console.log(e);
+        toast.error(e);
       } finally {
-        // reload();
+        reload();
         setUpdateLoading(false);
       }
     }
-
-    // try {
-    //   console.log("newdata", newdata);
-    //   let JsonData = JSON.stringify(newdata);
-    //   let result = await updateDetailProduct(JsonData);
-    // } catch (e) {
-    //   console.log(e);
-    // } finally {
-    // //   reload();
-    //   setUpdateLoading(false);
-    // }
   });
   const reload = async () => {
     setLoading(true);
@@ -317,12 +298,6 @@ export default function Page({ params }: { params: { magazineId: string } }) {
     }
   };
 
-  // React.useEffect(() => {
-  //   if (form.formState.errors) {
-  //     console.log(form.formState.errors);
-  //   }
-  // }, [form.formState]);
-
   React.useEffect(() => {
     reload();
   }, [params.magazineId]);
@@ -331,16 +306,19 @@ export default function Page({ params }: { params: { magazineId: string } }) {
     try {
       setDeleteLoading(true);
       let detate = await deleteMagazine(params.magazineId);
-    } catch (e) {
+      toast.success("매거진 삭제에 성공하였습니다.");
+    } catch (e: any) {
+      toast.error(e);
     } finally {
       setDeleteLoading(false);
+      router.push("/admin/magazine");
     }
   };
   return (
     <div className=" w-full  flex-1 flex flex-col items-start  p-3 ">
       <div className="w-full  flex-1 flex ">
         <div className="p-6 flex-1 border rounded-md  bg-white   flex flex-col items-start justify-between w-full  ">
-          <div className="w-full grid grid-cols-12 gap-6 pb-12">
+          <div className="w-full grid grid-cols-12 gap-3">
             <div className=" col-span-12 flex flex-row items-center  justify-between gap-1">
               <div>
                 <p>매거진 자세히보기</p>
@@ -350,23 +328,8 @@ export default function Page({ params }: { params: { magazineId: string } }) {
                 </p>
               </div>
             </div>
-            <div className={`col-span-12`}>
-              <div className="  grid grid-cols-12 gap-3 w-full">
-                <div className=" col-span-12 flex flex-row items-center justify-end gap-3">
-                  {/* <Button onClick={() => setSectionType("mobile")}>
-                    mobile
-                  </Button> */}
-
-                  <Button onClick={() => {}}>PC 미리보기</Button>
-                </div>
-              </div>
-              <div
-                className={` ${
-                  sectionType === "mobile"
-                    ? "w-[350px] min-h-[500px]"
-                    : "w-[1024px] min-h-[500px]"
-                } `}
-              >
+            <div className="col-span-12 flex flex-col items-start">
+              <div className={"w-[350px] min-h-[500px]"}>
                 {author.length > 0 && products.length > 0 && (
                   <Form {...form}>
                     <form
@@ -380,6 +343,11 @@ export default function Page({ params }: { params: { magazineId: string } }) {
                           description={"매거진을 삭제 하겠습니까?"}
                           deleteLoading={deleteLoading}
                         />
+                        <div className=" col-span-12 flex flex-row items-center justify-end gap-3">
+                          <ModalPcComponent
+                            magazine={form.formState.defaultValues}
+                          />
+                        </div>
                         <LoadingEditSubmitButton
                           loading={updateloading}
                           disabled={

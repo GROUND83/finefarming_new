@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { notFound } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
+
 import { getUploadUrl } from "@/lib/uploadUrl";
 import { Form, FormField } from "@/components/ui/form";
+import { toast } from "sonner";
 import {
   newFarmImageSchema,
   newFarmImageSchemaType,
@@ -25,8 +26,6 @@ export default function Page({ params }: { params: { id: string } }) {
   //
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
-
-  const { toast } = useToast();
 
   const form = useForm<newFarmImageSchemaType>({
     resolver: zodResolver(newFarmImageSchema),
@@ -49,11 +48,7 @@ export default function Page({ params }: { params: { id: string } }) {
     console.log("data", data);
 
     if (!data.mainImage.image) {
-      toast({
-        variant: "destructive",
-        title: "메인이미지",
-        description: "메인이미지가 없습니다.",
-      });
+      toast.error("메인이미지가 없습니다.");
       return;
     }
 
@@ -111,12 +106,7 @@ export default function Page({ params }: { params: { id: string } }) {
         const result = await farmImageUpload(formData);
       } catch (e: any) {
         console.log(e);
-        toast({
-          duration: 3000,
-          variant: "destructive",
-          title: "수정 ERROR",
-          description: `${e}`,
-        });
+        toast.error(e);
       } finally {
         setUpdateLoading(false);
       }
@@ -191,11 +181,7 @@ export default function Page({ params }: { params: { id: string } }) {
         "form.formState.isSubmitSuccessful",
         form.formState.isSubmitSuccessful
       );
-      toast({
-        duration: 3000,
-        title: "수정완료",
-        description: "데이터 수정이 완료 되었습니다.",
-      });
+      toast.success("데이터 수정이 완료 되었습니다.");
       reload();
       console.log("done");
       // window.location.reload();

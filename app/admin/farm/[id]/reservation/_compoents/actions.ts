@@ -378,6 +378,7 @@ export async function updateCalender(formData: FormData) {
           return resolve(true);
         } catch (e: any) {
           console.log(e);
+          reject(e);
         }
       }
     }

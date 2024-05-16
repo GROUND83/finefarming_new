@@ -9,8 +9,7 @@ import { Button } from "@/components/ui/button";
 import { notFound } from "next/navigation";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
-import { useToast } from "@/components/ui/use-toast";
-
+import { toast } from "sonner";
 import { XIcon } from "lucide-react";
 
 import { getProductDetail, updateDetailProduct } from "./_component/actions";
@@ -53,7 +52,6 @@ export default function Page({
   const [updateloading, setUpdateLoading] = useState(false);
   const [refund, setRefund] = useState();
   const imageRef = useRef<any>(null);
-  const { toast } = useToast();
 
   const form = useForm<detailSchemaType>({
     resolver: zodResolver(detailSchema),
@@ -276,11 +274,7 @@ export default function Page({
         "form.formState.isSubmitSuccessful",
         form.formState.isSubmitSuccessful
       );
-      toast({
-        duration: 3000,
-        title: "수정완료",
-        description: "데이터 수정이 완료 되었습니다.",
-      });
+      toast.success("데이터 수정이 완료 되었습니다.");
       reload();
       console.log("done");
       // window.location.reload();

@@ -1,15 +1,13 @@
-import { DataTable } from "./_components/table/table";
-import { Prisma } from "@prisma/client";
-import Search from "./search/page";
+"use client";
 
-import Link from "next/link";
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { Button } from "@/components/ui/button";
+import { DataTableComponent } from "@/components/table/tableComponent";
+import { getMoreData } from "./_components/table/actions";
+import { columns } from "./_components/table/colums";
 
 export default async function FarmerList() {
   return (
-    <div className="w-full h-full">
-      <DataTable />
+    <div className="w-full h-full  p-3">
+      <DataTableComponent getdata={getMoreData} columns={columns} />
     </div>
   );
 }

@@ -5,12 +5,12 @@ import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { notFound } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
+
 import {
   Form,
   FormControl,
@@ -41,7 +41,6 @@ export default function Page({ params }: { params: { id: string } }) {
   const [parkingFeeAvail, setParkingFeeAvail] = useState(false);
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
-  const { toast } = useToast();
 
   const form = useForm<editSchemaType>({
     resolver: zodResolver(editSchema),
@@ -70,20 +69,12 @@ export default function Page({ params }: { params: { id: string } }) {
     try {
       const result = await updateData(formData);
       if (result) {
-        toast({
-          duration: 3000,
-          title: "수정완료",
-          description: "데이터 수정이 완료 되었습니다.",
-        });
+        toast.success("데이터 수정이 완료 되었습니다.");
+        reload();
       }
     } catch (e: any) {
       console.log(e);
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      toast.error(e);
     } finally {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setUpdateLoading(false);
@@ -133,22 +124,22 @@ export default function Page({ params }: { params: { id: string } }) {
     setLoading(false);
   };
   //
-  React.useEffect(() => {
-    if (form.formState.isSubmitSuccessful) {
-      console.log(
-        "form.formState.isSubmitSuccessful",
-        form.formState.isSubmitSuccessful
-      );
-      toast({
-        duration: 3000,
-        title: "수정완료",
-        description: "데이터 수정이 완료 되었습니다.",
-      });
-      reload();
-      console.log("done");
-      // window.location.reload();
-    }
-  }, [form.formState.isSubmitSuccessful]);
+  // React.useEffect(() => {
+  //   if (form.formState.isSubmitSuccessful) {
+  //     console.log(
+  //       "form.formState.isSubmitSuccessful",
+  //       form.formState.isSubmitSuccessful
+  //     );
+  //     toast({
+  //       duration: 3000,
+  //       title: "수정완료",
+  //       description: "데이터 수정이 완료 되었습니다.",
+  //     });
+  //     reload();
+  //     console.log("done");
+  //     // window.location.reload();
+  //   }
+  // }, [form.formState.isSubmitSuccessful]);
   //
   React.useEffect(() => {
     reload();

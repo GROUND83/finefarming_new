@@ -23,12 +23,13 @@ import React from "react";
 import { Loader2 } from "lucide-react";
 import LogoWrap from "@/components/logowrap";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
 //
 export default function Page() {
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { toast } = useToast();
+
   let redirectStr = searchParams.get("redirect");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,7 +59,7 @@ export default function Page() {
           router.replace("/");
         }
       } else {
-        toast({ variant: "destructive", title: result?.error?.toString() });
+        toast.error(result?.error?.toString());
         form.reset();
       }
     } catch (e) {

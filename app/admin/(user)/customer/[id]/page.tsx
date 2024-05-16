@@ -35,12 +35,15 @@ import { empty_avatar_url } from "@/lib/constants";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import moment from "moment";
+import Link from "next/link";
+import dayjs from "dayjs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
-//
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
+  const [reviewsData, setReviewsData] = useState<any[]>([]);
+  const [reservationData, setReservationData] = useState<any[]>([]);
+  const [communityData, setCommunityData] = useState<any[]>([]);
   const [imageUrlUpload, setImageUrlUpload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
@@ -75,6 +78,8 @@ export default function Page({ params }: { params: { id: string } }) {
         setLoading(true);
         const customer = await getDeatailData(id);
         console.log("customer", customer);
+        setReservationData(customer.reservation);
+        setReviewsData(customer.reviews);
         if (!customer) {
           notFound();
         }
@@ -225,7 +230,7 @@ export default function Page({ params }: { params: { id: string } }) {
     setDeleteLoading(false);
   };
   return (
-    <div className=" w-full  flex-1 flex flex-col items-start   ">
+    <div className=" w-full  flex-1 flex flex-col items-start  p-3 ">
       {loading ? (
         <div className="w-full  flex flex-col items-center justify-center flex-1">
           <Loader2 className="size-12 animate-spin text-primary" />
@@ -244,28 +249,22 @@ export default function Page({ params }: { params: { id: string } }) {
                       <>
                         {originaAvatar ? (
                           <div className="rounded-full overflow-hidden  relative">
-                            {provider === "email" ? (
-                              <Image
-                                src={`${getValues("avatar")}/avatar`}
-                                alt="profile"
-                                priority
-                                width={80}
-                                height={80}
-                              />
-                            ) : (
-                              <Image
-                                src={`${getValues("avatar")}`}
-                                alt="profile"
-                                priority
-                                width={80}
-                                height={80}
-                              />
-                            )}
+                            <Image
+                              src={`${
+                                getValues("avatar")
+                                  ? getValues("avatar")
+                                  : empty_avatar_url
+                              }`}
+                              alt="profile"
+                              priority
+                              width={80}
+                              height={80}
+                            />
                           </div>
                         ) : (
                           <div className="rounded-full overflow-hidden   relative flex flex-col items-center justify-center border">
                             <Image
-                              src={`${empty_avatar_url}/avatar`}
+                              src={`${empty_avatar_url}`}
                               width={80}
                               height={80}
                               alt="profile"
@@ -468,6 +467,7 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
             <div className=" w-full  flex flex-col items-end">
               <Button
+                type="button"
                 onClick={() => setDeleteAlert(true)}
                 variant="ghost"
                 size={"icon"}
@@ -476,10 +476,118 @@ export default function Page({ params }: { params: { id: string } }) {
               </Button>
             </div>
           </div>
-          <div className="w-full  p-6  col-span-8 bg-white border rounded-md">
-            <p>주문내역</p>
-            <p>리뷰내역</p>
-            <p>커뮤니티내역</p>
+          <div className="w-full  p-6  col-span-8 bg-white border rounded-md grid grid-cols-3 gap-3">
+            <div className="col-span-1 p-3 flex flex-col items-start border rounded-md">
+              <p>주문내역</p>
+              <ScrollArea className="w-full flex flex-col items-start gap-2 mt-3 h-[600px]">
+                {reservationData.length > 0 ? (
+                  <div className="flex flex-col w-full gap-3 items-start">
+                    {reservationData.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex flex-row items-center w-full p-3 border rounded-md justify-between"
+                        >
+                          <div>
+                            <p className=" font-semibold text-sm">
+                              {item.reservationNumber}
+                            </p>
+                            <p className="text-neutral-500  text-sm">
+                              {dayjs(item.created_at).format("YYYY-MM-DD")}
+                            </p>
+                          </div>
+                          <div>
+                            <Button asChild size={"sm"} variant={"outline"}>
+                              <Link href={`/admin/reservation/${item.id}`}>
+                                자세히보기
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div>
+                    <p>예약 내역이 없습니다.</p>
+                  </div>
+                )}
+              </ScrollArea>
+            </div>
+            <div className="col-span-1 p-3 flex flex-col items-start border rounded-md">
+              <p>체험후기</p>
+              <ScrollArea className="w-full flex flex-col items-start gap-2 mt-3 h-[600px]">
+                {reviewsData.length > 0 ? (
+                  <div className="flex flex-col w-full gap-3 items-start">
+                    {reviewsData.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex flex-row items-center w-full p-3 border rounded-md justify-between"
+                        >
+                          <div>
+                            <p className=" font-semibold text-sm">
+                              {item.title}
+                            </p>
+                            <p className="text-neutral-500  text-sm">
+                              {dayjs(item.created_at).format("YYYY-MM-DD")}
+                            </p>
+                          </div>
+                          <div>
+                            <Button asChild size={"sm"} variant={"outline"}>
+                              <Link href={`/admin/review/${item.id}`}>
+                                자세히보기
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div>
+                    <p>체험후기 내역이 없습니다.</p>
+                  </div>
+                )}
+              </ScrollArea>
+            </div>
+            <div className="col-span-1 p-3 flex flex-col items-start border rounded-md">
+              <p>커뮤니티</p>
+              <ScrollArea className="w-full flex flex-col items-start gap-2 mt-3 h-[600px]">
+                {communityData.length > 0 ? (
+                  <div className="flex flex-col w-full gap-3 items-start">
+                    {communityData.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex flex-row items-center w-full p-3 border rounded-md justify-between"
+                        >
+                          <div>
+                            <p className=" font-semibold text-sm">
+                              {item.title}
+                            </p>
+                            <p className="text-neutral-500  text-sm">
+                              {dayjs(item.created_at).format("YYYY-MM-DD")}
+                            </p>
+                          </div>
+                          <div>
+                            <Button asChild size={"sm"} variant={"outline"}>
+                              <Link href={`/admin/community/${item.id}`}>
+                                자세히보기
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div>
+                    <p>커뮤니티 내역이 없습니다.</p>
+                  </div>
+                )}
+              </ScrollArea>
+            </div>
           </div>
         </div>
       )}

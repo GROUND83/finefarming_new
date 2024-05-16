@@ -3,12 +3,13 @@ import { Calendar } from "@/components/ui/calendar";
 import moment from "moment";
 import React, { useState } from "react";
 import { ko } from "date-fns/locale";
+import { toast } from "sonner";
+
 import {
   deleteCalender,
   getAllReservationDate,
   getHolidays,
   getNationalHoliday,
-  getReservation,
   getReservationDate,
   updateCalender,
 } from "./actions";
@@ -23,19 +24,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useToast } from "@/components/ui/use-toast";
+
 import { PlusIcon, XIcon } from "lucide-react";
 import { LoadingEditSubmitButton } from "@/components/ButtonComponent";
 import OpentimeModal from "./opentimeModal";
@@ -95,7 +87,6 @@ export default function CalenderWrap({ farmId }: farmIdprops) {
   );
   const [bookedDays, setBookedDay] = useState<Date[]>([]);
 
-  const { toast } = useToast();
   //
   const form = useForm<calenderSchemaType>({
     resolver: zodResolver(calenderSchema),
@@ -265,12 +256,7 @@ export default function CalenderWrap({ farmId }: farmIdprops) {
     console.log("checkDup", checkDup);
 
     if (checkDup) {
-      toast({
-        variant: "destructive",
-        duration: 3000,
-        title: "중복된 값",
-        description: "중복된 값이 있습니다.",
-      });
+      toast.warning("중복된 값이 있습니다.");
     } else {
       setUpdateLoading(true);
       let newData = JSON.stringify(data);
@@ -286,22 +272,14 @@ export default function CalenderWrap({ farmId }: farmIdprops) {
       try {
         const result = await updateCalender(formData);
         if (result) {
-          toast({
-            duration: 3000,
-            title: "수정완료",
-            description: "데이터 수정이 완료 되었습니다.",
-          });
+          console.log("result", result);
+          toast.success("데이터 수정이 완료 되었습니다.");
         }
       } catch (e: any) {
         console.log(e);
-        toast({
-          duration: 3000,
-          variant: "destructive",
-          title: "수정 ERROR",
-          description: `${e}`,
-        });
+        toast.error(e);
       } finally {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
         setUpdateLoading(false);
         //   window.location.reload();
       }
@@ -322,11 +300,7 @@ export default function CalenderWrap({ farmId }: farmIdprops) {
         if (selectedDay) {
           changeSelectedDay(selectedDay);
         }
-        toast({
-          duration: 3000,
-          title: "수정완료",
-          description: "데이터 수정이 완료 되었습니다.",
-        });
+        toast.success("데이터 수정이 완료 되었습니다.");
       }
       //
     } else {

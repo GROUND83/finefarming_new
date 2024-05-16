@@ -4,14 +4,14 @@ import * as React from "react";
 import moment from "moment";
 import {
   PaginationState,
-  ColumnDef,
   SortingState,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+
 import { useQuery } from "react-query";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,59 +22,32 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-
 import { getMoreData } from "./actions";
 import { columns } from "./columns";
 
-export interface TableDataType {
-  id: number;
-  reservationNumber: string | null;
-  farm: { name: string | null } | null;
-  user: { username: string | null } | null;
-  checkInDate: Date | null;
-  status: string | null;
-  created_at: Date | null;
-}
-
 export function DataTable() {
-  const [{ pageIndex, pageSize }, setPagination] =
-    React.useState<PaginationState>({
-      pageIndex: 0, //initial page index
-      pageSize: 7, //default page size
-    });
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 7,
+  });
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
-  //
-  const fetchDataOptions = {
-    pageIndex,
-    pageSize,
-  };
   const dataQuery = useQuery(
-    ["data", fetchDataOptions],
-    async () => {
-      let result = await getMoreData(fetchDataOptions);
-      console.log("result", result);
-      return result;
-    }
+    ["table", pagination],
+    async () => await getMoreData(pagination)
     // { keepPreviousData: true }
   );
-
+  React.useEffect(() => {
+    if (pagination) {
+      console.log(pagination, table);
+    }
+  }, [pagination]);
   const defaultData = React.useMemo(() => [], []);
 
-  const pagination = React.useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  );
   const table = useReactTable({
     data: dataQuery.data?.rows ?? defaultData,
     columns: columns as any,
-    pageCount: dataQuery.data?.pageCount ?? -1,
+    pageCount: dataQuery.data?.pageCount ?? 7,
     onSortingChange: setSorting,
     state: {
       sorting,
@@ -83,9 +56,9 @@ export function DataTable() {
     onPaginationChange: setPagination,
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-
+    getPaginationRowModel: getPaginationRowModel(),
     debugTable: true,
+    manualPagination: true,
   });
 
   return (
@@ -144,8 +117,8 @@ export function DataTable() {
         <div className="flex-1 text-sm text-neutral-400  font-light">
           총 {dataQuery.data?.pageCount}개의 데이터가 있습니다.
         </div>
-        {dataQuery.data?.pageCount! > 7 && (
-          <div className="space-x-2">
+        {dataQuery.data?.pageCount && dataQuery.data?.pageCount! > 7 && (
+          <div className="space-x-2 flex flex-row items-center gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -154,11 +127,17 @@ export function DataTable() {
             >
               이전
             </Button>
+            <p className="border px-6 py-2 rounded-md text-sm">
+              {pagination.pageIndex + 1}
+            </p>
             <Button
               variant="outline"
               size="sm"
               onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              disabled={
+                Math.round(dataQuery.data?.pageCount! / 7) <=
+                pagination.pageIndex
+              }
             >
               다음
             </Button>

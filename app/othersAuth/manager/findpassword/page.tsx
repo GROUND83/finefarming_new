@@ -94,7 +94,7 @@ export default function Page() {
           />
           <div className="w-full flex flex-col items-center">
             <p className="text-neutral-500 text-sm">
-              임시비빌번호를 가입한 이메일로 발송합니다.
+              임시비밀번호를 가입한 이메일로 발송합니다.
             </p>
           </div>
           <Button type="submit" className="mt-3" disabled={loading}>

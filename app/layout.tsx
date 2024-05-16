@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { ReactQueryClientProvider } from "@/components/reactQuery/ClientProvider";
 import { Roboto, Noto_Sans_KR } from "next/font/google";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
-import "dayjs/locale/ko";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import utc from "dayjs/plugin/utc";
@@ -18,8 +16,8 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
 
 const notoSansKr = Noto_Sans_KR({
-  // preload: true, 기본값
-  subsets: ["latin"], // 또는 preload: false
+  preload: false,
+  // subsets: ["latin"], // 또는 preload: false
   weight: ["100", "400", "700"],
 });
 const roboto = Roboto({
@@ -59,7 +57,17 @@ export default async function RootLayout({
               {children}
             </div>
           </AuthProvider>
-          <Toaster />
+          <Toaster
+            toastOptions={{
+              unstyled: false,
+              classNames: {
+                error: "bg-red-500 text-white",
+                success: "bg-primary text-white",
+                warning: "bg-yellow-400",
+                info: "bg-blue-400",
+              },
+            }}
+          />
         </body>
       </html>
     </ReactQueryClientProvider>

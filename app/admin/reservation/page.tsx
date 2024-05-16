@@ -1,10 +1,15 @@
+"use client";
 import Link from "next/link";
 import { DataTable } from "./_components/table/DataTable";
+import { DataTableComponent } from "@/components/table/tableComponent";
+import { getMoreData } from "./_components/actions/actions";
+import { columns } from "./_components/table/columns";
 
-export default async function Page() {
+export default function Page() {
   return (
     <div className="w-full p-3">
-      <DataTable />
+      {/* <DataTable /> */}
+      <DataTableComponent getdata={getMoreData} columns={columns} />
     </div>
   );
 }

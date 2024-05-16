@@ -1,16 +1,14 @@
 import Search from "./search/page";
 import { DataTable } from "./_component/table/table";
+import { DataTableComponent } from "@/components/table/tableComponent";
+import { getMoreData } from "./_component/table/actions";
+import { columns } from "./_component/table/colums";
 
 export default async function Page() {
   return (
-    <div className="w-full p-2">
-      {/* <div className="w-full flex flex-row items-center justify-between bg-white px-2 py-2 rounded-md border gap-3 ">
-        <Search />
-
-        <NewCommunityModal getBaseData={getBaseData} />
-      </div> */}
+    <div className="w-full p-3">
       <div>
-        <DataTable />
+        <DataTableComponent getdata={getMoreData} columns={columns} />
       </div>
     </div>
   );

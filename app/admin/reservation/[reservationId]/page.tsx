@@ -1,24 +1,14 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+
 import React from "react";
-import {
-  changeComplete,
-  changeStatus,
-  getReservationDetail,
-} from "./_components/actions";
+import { getReservationDetail } from "./_components/actions";
 import moment from "moment";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+
+import Cancle from "./_components/cancle";
+import Complete from "./_components/complete";
+import NoShow from "./_components/noshow";
+import VisitDone from "./_components/visitdone";
 
 export default function Page({
   params,
@@ -38,35 +28,6 @@ export default function Page({
     //
     getData();
   }, [params.reservationId]);
-
-  const clickComplete = async () => {
-    //
-    let result = await changeComplete(Number(params.reservationId));
-    console.log(result);
-    getData();
-  };
-  const clickDone = async () => {
-    let result = await changeStatus({
-      reservationId: Number(params.reservationId),
-      status: `done`,
-    });
-    getData();
-  };
-  const clickNoShow = async () => {
-    let result = await changeStatus({
-      reservationId: Number(params.reservationId),
-      status: "noshow",
-    });
-    getData();
-  };
-  const clickCancle = async () => {
-    let result = await changeStatus({
-      reservationId: Number(params.reservationId),
-      status: "managercancle",
-    });
-    console.log(result);
-    getData();
-  };
 
   return (
     <div className="w-full  h-full">
@@ -109,103 +70,27 @@ export default function Page({
             <div className="flex flex-row items-center gap-3">
               {detail.status === "waiting" && (
                 <>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="deleteOutline" size={"sm"}>
-                        예약 취소
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className=" rounded-md">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          예약을 취소하겠습니까?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          예약상태를 예약취소로 변경합니다.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>닫기</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => clickCancle()}>
-                          확정
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="default" size={"sm"}>
-                        예약 확정
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className=" rounded-md">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          예약상태를 예약확정으로 변경하겠습니까?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          예약상태를 예약확정으로 변경합니다.
-                          <br /> 고객, 농장주에게 알림 메세지가 발송됩니다.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>닫기</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => clickComplete()}>
-                          확정
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <Cancle
+                    getData={getData}
+                    reservationId={Number(params.reservationId)}
+                  />
+                  <Complete
+                    getData={getData}
+                    reservationId={Number(params.reservationId)}
+                  />
+                  {/*  */}
                 </>
               )}
               {detail.status === "complete" && (
                 <>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="outline" size={"sm"}>
-                        노쇼
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className=" rounded-md">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          예약상태를 노쇼로 변경하겠습니까?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          예약상태를 노쇼로 변경합니다.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>닫기</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => clickNoShow()}>
-                          확정
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="default" size={"sm"}>
-                        방문완료
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className=" rounded-md">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          예약상태를 방문완료으로 변경하겠습니까?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          예약상태를 방문완료으로 변경합니다.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>닫기</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => clickDone()}>
-                          확정
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <NoShow
+                    getData={getData}
+                    reservationId={Number(params.reservationId)}
+                  />
+                  <VisitDone
+                    getData={getData}
+                    reservationId={Number(params.reservationId)}
+                  />
                 </>
               )}
             </div>

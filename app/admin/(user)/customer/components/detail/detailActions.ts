@@ -19,6 +19,20 @@ export async function getDeatailData(id: number) {
       approve: true,
       created_at: true,
       provider: true,
+      reservation: {
+        select: {
+          id: true,
+          created_at: true,
+          reservationNumber: true,
+        },
+      },
+      reviews: {
+        select: {
+          id: true,
+          title: true,
+          created_at: true,
+        },
+      },
     },
   });
   if (user) {

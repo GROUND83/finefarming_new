@@ -21,6 +21,13 @@ export async function getDeatailData(id: number) {
       intruduce: true,
       intruduceTitle: true,
       link: true,
+      magazines: {
+        select: {
+          id: true,
+          title: true,
+          created_at: true,
+        },
+      },
     },
   });
   if (writer) {

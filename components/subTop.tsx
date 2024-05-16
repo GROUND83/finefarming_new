@@ -59,7 +59,7 @@ export default function SubTop({
           {pathname === "/admin/manager" && <NewManager />}
           {pathname === "/admin/community" && (
             <Button>
-              <Link href={"/admin/community/new"}>커뮤니티</Link>
+              <Link href={"/admin/community/new"}>+ 커뮤니티</Link>
             </Button>
           )}
 

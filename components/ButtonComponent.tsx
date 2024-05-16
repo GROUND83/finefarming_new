@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Loader2, TrashIcon } from "lucide-react";
+import { Loader2, PlusIcon, TrashIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   AlertDialog,
@@ -57,7 +57,9 @@ export const DeleteButton = ({
           <AlertDialogContent className=" rounded-md w-[80vw] ">
             <AlertDialogHeader>
               <AlertDialogTitle>{title}</AlertDialogTitle>
-              <AlertDialogDescription>{description}</AlertDialogDescription>
+              <AlertDialogDescription className=" whitespace-pre-wrap">
+                {description}
+              </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <div className="flex flex-row items-center justify-end gap-3">
@@ -216,5 +218,14 @@ export const ConfirmButton = ({
         </AlertDialog>
       </div>
     </div>
+  );
+};
+
+export const AddButton = ({ loading }: { loading: boolean }) => {
+  return (
+    <Button type="submit" className="flex flex-row items-center gap-2">
+      <PlusIcon className="size-4" />
+      추가
+    </Button>
   );
 };

@@ -79,6 +79,8 @@ export default function NewFarm() {
       console.log(e);
     } finally {
       onCloseModal();
+      // router.refresh();
+      // router.replace("/admin/farm");
       window.location.reload();
     }
     // onCloseModal();
@@ -142,7 +144,7 @@ export default function NewFarm() {
       </Button>
       <Dialog open={open}>
         {farmers.length > 0 ? (
-          <DialogContent className="max-w-[90vw] ">
+          <DialogContent className="max-w-[90vw] rounded-md p-3 ">
             <div className="w-full p-3 ">
               <div className="w-full flex flex-col items-end py-3">
                 <Button
@@ -270,6 +272,7 @@ export default function NewFarm() {
                                           onChange={onChange}
                                         />
                                       </FormControl>
+
                                       <FormMessage />
                                     </FormItem>
                                   )}
@@ -282,6 +285,10 @@ export default function NewFarm() {
                                   검색
                                 </Button>
                               </div>
+                              <FormDescription>
+                                검색을 통해 입력하세요. 주소의 지도 좌표가
+                                검색됩니다.
+                              </FormDescription>
                             </div>
                             <Dialog open={modalOpen}>
                               <DialogContent className="w-[70vw] h-[80vh] p-12">

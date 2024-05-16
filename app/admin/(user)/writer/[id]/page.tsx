@@ -36,12 +36,12 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import moment from "moment";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
+import dayjs from "dayjs";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
-//
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
+  const [magazineData, setMagazineData] = React.useState<any[]>([]);
   const [imageUrlUpload, setImageUrlUpload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
@@ -79,6 +79,7 @@ export default function Page({ params }: { params: { id: string } }) {
           notFound();
         }
         if (manager) {
+          setMagazineData(manager.magazines);
           reset({
             id: manager.id ?? "",
             avatar: manager.avatar ?? "",
@@ -228,14 +229,14 @@ export default function Page({ params }: { params: { id: string } }) {
     setDeleteLoading(false);
   };
   return (
-    <div className=" w-full  flex-1 flex flex-col items-start   ">
+    <div className=" w-full  flex-1 flex flex-col items-start  p-3  ">
       {loading ? (
         <div className="w-full  flex flex-col items-center justify-center flex-1">
           <Loader2 className="size-12 animate-spin text-primary" />
         </div>
       ) : (
-        <div className="w-full  gap-3 flex-1   flex ">
-          <div className="p-6 flex-1 border rounded-md bg-white  flex flex-col items-start justify-between">
+        <div className="w-full grid grid-cols-12 gap-3 ">
+          <div className="p-6  border rounded-md bg-white  flex flex-col items-start justify-between col-span-4">
             <form
               className="w-full flex flex-col items-start gap-6 text-sm"
               action={onValid}
@@ -248,7 +249,11 @@ export default function Page({ params }: { params: { id: string } }) {
                         {originaAvatar ? (
                           <div className="rounded-full overflow-hidden  relative">
                             <Image
-                              src={`${getValues("avatar")}`}
+                              src={`${
+                                getValues("avatar")
+                                  ? getValues("avatar")
+                                  : empty_avatar_url
+                              }`}
                               alt="profile"
                               priority
                               width={80}
@@ -504,8 +509,40 @@ export default function Page({ params }: { params: { id: string } }) {
               </Button>
             </div>
           </div>
-          <div className="w-full  p-6  col-span-8 bg-white border rounded-md">
+          <div className="p-6  col-span-8 bg-white border rounded-md">
             <p>매거진</p>
+            <div className="w-full flex flex-col items-start gap-2 mt-3">
+              {magazineData.length > 0 ? (
+                <>
+                  {magazineData.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex flex-row items-center w-full p-3 border rounded-md justify-between"
+                      >
+                        <div>
+                          <p className=" font-semibold text-sm">{item.title}</p>
+                          <p className="text-neutral-500  text-sm">
+                            {dayjs(item.created_at).format("YYYY-MM-DD")}
+                          </p>
+                        </div>
+                        <div>
+                          <Button asChild size={"sm"} variant={"outline"}>
+                            <Link href={`/admin/magazine/${item.id}`}>
+                              자세히보기
+                            </Link>
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </>
+              ) : (
+                <div>
+                  <p>등록된 매거진이 없습니다.</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

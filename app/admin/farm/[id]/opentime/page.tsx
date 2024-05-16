@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
-import { useToast } from "@/components/ui/use-toast";
 import {
   Select,
   SelectContent,
@@ -30,28 +30,34 @@ import { Switch } from "@/components/ui/switch";
 import { notFound } from "next/navigation";
 import { FormTitle, FormWrap } from "@/app/admin/_component/form/form";
 import SubSectionWrap from "@/app/admin/_component/subSectionWrap";
-
 const timeData = [
-  "6:00",
-  "8:00",
   "9:00",
+  "9:30",
   "10:00",
+  "10:30",
   "11:00",
+  "11:30",
   "12:00",
+  "12:30",
   "13:00",
+  "13:30",
   "14:00",
+  "14:30",
   "15:00",
+  "15:30",
   "16:00",
+  "16:30",
   "17:00",
+  "17:30",
   "18:00",
+  "18:30",
   "19:00",
-  "20:00",
 ];
 //
 export default function Page({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
-  const { toast } = useToast();
+
   const form = useForm<editSchemaType>({
     resolver: zodResolver(editSchema),
     defaultValues: {},
@@ -73,12 +79,7 @@ export default function Page({ params }: { params: { id: string } }) {
       const result = await updateData(formData);
     } catch (e: any) {
       console.log(e);
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      toast.error(`${e}`);
     } finally {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setUpdateLoading(false);
@@ -132,11 +133,7 @@ export default function Page({ params }: { params: { id: string } }) {
         "form.formState.isSubmitSuccessful",
         form.formState.isSubmitSuccessful
       );
-      toast({
-        duration: 3000,
-        title: "수정완료",
-        description: "데이터 수정이 완료 되었습니다.",
-      });
+      toast.success("데이터 수정이 완료 되었습니다.");
       reload();
       console.log("done");
       // window.location.reload();

@@ -21,6 +21,8 @@ export async function getDeatailData(id: number) {
       farm: {
         select: {
           name: true,
+          id: true,
+          address: true,
         },
       },
     },

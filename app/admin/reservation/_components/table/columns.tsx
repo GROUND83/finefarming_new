@@ -50,9 +50,10 @@ export const columns: ColumnDef<TableDataType>[] = [
       );
     },
     cell: ({ row }) => {
+      // console.log(row);
       return (
         <div className="text-left ">
-          <p>{row.getValue("farm")}</p>
+          <p>{row.original?.farm?.name}</p>
         </div>
       );
     },
@@ -77,7 +78,7 @@ export const columns: ColumnDef<TableDataType>[] = [
     cell: ({ row }) => {
       return (
         <div className=" text-center">
-          <p>{row.getValue("user")}</p>
+          <p>{row.original?.user?.username}</p>
         </div>
       );
     },

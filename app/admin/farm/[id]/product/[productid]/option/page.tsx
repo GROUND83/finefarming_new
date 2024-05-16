@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { notFound } from "next/navigation";
 
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { Form } from "@/components/ui/form";
 
 import { optionSchema, optionSchemaType } from "./_component/optionSchema";
@@ -26,8 +26,6 @@ export default function Page({
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
-
-  const { toast } = useToast();
 
   const form = useForm<optionSchemaType>({
     resolver: zodResolver(optionSchema),
@@ -50,6 +48,8 @@ export default function Page({
     try {
       let result = await upDateOptionProduct(formData);
       if (result) {
+        toast.success("데이터 수정이 완료 되었습니다.");
+        reload();
         // toast({
         //   duration: 3000,
         //   title: "수정완료",
@@ -58,12 +58,7 @@ export default function Page({
       }
     } catch (e: any) {
       console.log(e);
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      toast.error(e);
     } finally {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setUpdateLoading(false);
@@ -71,11 +66,11 @@ export default function Page({
     }
   });
 
-  React.useEffect(() => {
-    if (form.formState.errors) {
-      console.log(form.formState.errors);
-    }
-  }, [form.formState.errors]);
+  // React.useEffect(() => {
+  //   if (form.formState.errors) {
+  //     console.log(form.formState.errors);
+  //   }
+  // }, [form.formState.errors]);
 
   const reload = async () => {
     setLoading(true);
@@ -99,12 +94,12 @@ export default function Page({
         "form.formState.isSubmitSuccessful",
         form.formState.isSubmitSuccessful
       );
-      toast({
-        duration: 3000,
-        title: "수정완료",
-        description: "데이터 수정이 완료 되었습니다.",
-      });
-      reload();
+      // toast({
+      //   duration: 3000,
+      //   title: "수정완료",
+      //   description: "데이터 수정이 완료 되었습니다.",
+      // });
+      // reload();
       console.log("done");
       // window.location.reload();
     }

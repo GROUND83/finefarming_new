@@ -21,7 +21,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { notFound, useRouter } from "next/navigation";
 
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -69,7 +69,7 @@ export default function Page({
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const { toast } = useToast();
+
   const router = useRouter();
 
   const form = useForm<baseInfoSchemType>({
@@ -145,19 +145,10 @@ export default function Page({
 
       try {
         const result = await createBaseProduct(formData);
-        toast({
-          duration: 3000,
-          title: "수정완료",
-          description: "데이터 수정이 완료 되었습니다.",
-        });
+        toast.success("데이터 수정이 완료 되었습니다.");
       } catch (e: any) {
         console.log(e);
-        toast({
-          duration: 3000,
-          variant: "destructive",
-          title: "수정 ERROR",
-          description: `${e}`,
-        });
+        toast.error(educationSubjectAppend);
       } finally {
         // await new Promise((resolve) => setTimeout(resolve, 1000));
         setUpdateLoading(false);
@@ -176,18 +167,11 @@ export default function Page({
       formData.append("productId", params.productid);
       const result = await deleteProduct(formData);
       if (result) {
-        toast({
-          title: "삭제 완료",
-          description: "삭제 완료 되었습니다.",
-        });
+        toast.success("삭제 완료 되었습니다.");
         router.push(`/admin/farm/${params.id}/product`);
       }
     } catch (e) {
-      toast({
-        variant: "destructive",
-        title: "삭제 ERROR",
-        description: `${e}`,
-      });
+      toast.error(e);
     }
     setDeleteLoading(false);
   };
@@ -204,7 +188,7 @@ export default function Page({
     const file = files[0];
     console.log(file);
     if (file.size > 2000000) {
-      alert("이미지 사이즈가 2mb를 초과 하였습니다.");
+      toast.warning("이미지 사이즈가 2mb를 초과 하였습니다.");
       return;
     }
 
@@ -250,7 +234,7 @@ export default function Page({
     const file = files[0];
     console.log(file);
     if (file.size > 2000000) {
-      alert("이미지 사이즈가 2mb를 초과 하였습니다.");
+      toast.warning("이미지 사이즈가 2mb를 초과 하였습니다.");
       return;
     }
 
@@ -363,11 +347,7 @@ export default function Page({
         "form.formState.isSubmitSuccessful",
         form.formState.isSubmitSuccessful
       );
-      toast({
-        duration: 3000,
-        title: "수정완료",
-        description: "데이터 수정이 완료 되었습니다.",
-      });
+      toast.success("데이터 수정이 완료 되었습니다.");
       reload();
       console.log("done");
       // window.location.reload();

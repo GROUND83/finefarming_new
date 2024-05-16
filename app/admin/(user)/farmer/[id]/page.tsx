@@ -35,12 +35,12 @@ import { empty_avatar_url } from "@/lib/constants";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import moment from "moment";
+import Link from "next/link";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
 //
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
+  const [farmData, setFarmData] = useState<any[]>([]);
   const [imageUrlUpload, setImageUrlUpload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
@@ -79,6 +79,7 @@ export default function Page({ params }: { params: { id: string } }) {
           notFound();
         }
         if (farmer) {
+          setFarmData(farmer.farm);
           reset({
             id: farmer.id ?? "",
             avatar: farmer.avatar ?? "",
@@ -242,7 +243,11 @@ export default function Page({ params }: { params: { id: string } }) {
                         {originaAvatar ? (
                           <div className="rounded-full overflow-hidden  relative">
                             <Image
-                              src={`${getValues("avatar")}`}
+                              src={`${
+                                getValues("avatar")
+                                  ? getValues("avatar")
+                                  : empty_avatar_url
+                              }`}
                               alt="profile"
                               priority
                               width={80}
@@ -465,8 +470,40 @@ export default function Page({ params }: { params: { id: string } }) {
               </Button>
             </div>
           </div>
-          <div className="w-full  p-6  col-span-8 bg-white border rounded-md">
+          <div className="w-full  p-6  col-span-8 bg-white border rounded-md flex flex-col gap-3">
             <p>농장</p>
+            <div className="w-full flex flex-col items-start gap-2">
+              {farmData.length > 0 ? (
+                <>
+                  {farmData.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex flex-row items-center w-full p-3 border rounded-md justify-between"
+                      >
+                        <div>
+                          <p className=" font-semibold text-sm">{item.name}</p>
+                          <p className="text-neutral-500  text-sm">
+                            {item.address}
+                          </p>
+                        </div>
+                        <div>
+                          <Button asChild size={"sm"} variant={"outline"}>
+                            <Link href={`/admin/farm/${item.id}/base`}>
+                              자세히보기
+                            </Link>
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </>
+              ) : (
+                <div>
+                  <p>등록된 농장이 없습니다.</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

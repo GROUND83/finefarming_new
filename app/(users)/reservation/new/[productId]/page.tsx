@@ -472,47 +472,66 @@ export default function Page({ params }: { params: { productId: string } }) {
   //
   const checkDisable = (date: any) => {
     // console.log(date);
+    // 1.특정일 슬롯에 모두 없거나 하나라도 있는경우
     if (Object.keys(possibleDay).length > 0) {
-      console.log(possibleDay[dayjs(date).format("YYYY-MM-DD")]);
+      // console.log(possibleDay[dayjs(date).format("YYYY-MM-DD")]);
       if (possibleDay[dayjs(date).format("YYYY-MM-DD")] !== undefined) {
         if (possibleDay[dayjs(date).format("YYYY-MM-DD")]) {
-          return false;
+          // return false;
         } else {
           return true;
         }
       } else {
       }
-      // for (const key in possibleDay) {
-      //   console.log("possibleDay", possibleDay[key]);
-      //   console.log(
-      //     "possibleDay",
-      //     key,
-      //     key == dayjs(date).format("YYYY-MM-DD")
-      //   );
-      //   if (key === dayjs(date).format("YYYY-MM-DD")) {
-      //     //
-      //     if (possibleDay[key]) {
-      //       return false;
-      //     } else {
-      //       return true;
-      //     }
-      //   }
-      // }
     }
     if (detail) {
       let getDay = new Date(date).getDay();
-      // console.log(monday);
-
+      // console.log(monday); 모두 한국시간
+      console.log(
+        "min",
+        dayjs(date).format("YYYY-MM-DD"),
+        new Date(
+          dayjs()
+            .add(detail?.farm.reservationMin, "day")
+            .hour(0)
+            .minute(0)
+            .second(0)
+            .format()
+        ),
+        date <=
+          new Date(
+            dayjs()
+              .add(detail?.farm.reservationMin, "day")
+              .hour(0)
+              .minute(0)
+              .second(0)
+              .format()
+          )
+      );
       if (
-        date <
-        new Date(dayjs().add(detail?.farm.reservationMin, "day").format())
+        date <=
+        new Date(
+          dayjs()
+            .add(detail?.farm.reservationMin, "day")
+            .hour(0)
+            .minute(0)
+            .second(0)
+            .format()
+        )
       ) {
         return true;
       }
 
       if (
-        date >
-        new Date(dayjs().add(detail?.farm.reservationMax, "day").format())
+        date >=
+        new Date(
+          dayjs()
+            .add(detail?.farm.reservationMax, "day")
+            .hour(0)
+            .minute(0)
+            .second(0)
+            .format()
+        )
       ) {
         return true;
       }

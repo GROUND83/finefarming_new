@@ -36,9 +36,6 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import moment from "moment";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
-//
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [imageUrlUpload, setImageUrlUpload] = useState(false);
