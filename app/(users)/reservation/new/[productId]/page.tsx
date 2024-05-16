@@ -116,7 +116,7 @@ export default function Page({ params }: { params: { productId: string } }) {
   const [nationalholiday, setNationalHoliday] = React.useState<
     nationalholidayType[]
   >([]);
-  const [possibleDay, setPossibleDay] = React.useState<any>();
+  const [possibleDay, setPossibleDay] = React.useState<any>({});
 
   const [totalPriceObj, setTotalPriceObj] = React.useState<any>();
   const [farmHoliday, setFarmHoliday] = React.useState<any>();
@@ -473,6 +473,7 @@ export default function Page({ params }: { params: { productId: string } }) {
   const checkDisable = (date: any) => {
     // console.log(date);
     // 1.특정일 슬롯에 모두 없거나 하나라도 있는경우
+
     if (Object.keys(possibleDay).length > 0) {
       // console.log(possibleDay[dayjs(date).format("YYYY-MM-DD")]);
       if (possibleDay[dayjs(date).format("YYYY-MM-DD")] !== undefined) {

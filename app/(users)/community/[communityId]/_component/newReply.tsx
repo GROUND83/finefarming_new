@@ -26,6 +26,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { empty_avatar_url } from "@/lib/constants";
 import { newReply } from "./actions";
+import Link from "next/link";
 const FormSchema = z.object({
   title: z.string(),
 });
@@ -77,7 +78,7 @@ export default function NewReply({
   }
 
   return (
-    <div className="w0full">
+    <div className="w-full">
       {session?.user ? (
         <Dialog open={open}>
           <Button onClick={() => setOpen(true)} size={"sm"} variant={"outline"}>
@@ -139,8 +140,15 @@ export default function NewReply({
           </DialogContent>
         </Dialog>
       ) : (
-        <div>
-          <p>로그인이 필요합니다.</p>
+        <div className="flex flex-row items-center gap-3 w-full justify-between">
+          <p className="text-sm text-neutral-500">
+            댓글 쓰기는 회원만 가능합니다.
+          </p>
+          <div>
+            <Button asChild size={"sm"}>
+              <Link href={"/auth/login"}>로그인</Link>
+            </Button>
+          </div>
         </div>
       )}
     </div>

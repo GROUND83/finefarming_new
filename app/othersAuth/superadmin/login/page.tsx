@@ -12,16 +12,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+
 import Image from "next/image";
 import { LoginSchema } from "../../_components/loginSchema";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LogoWrap from "@/components/logowrap";
-
+import { toast } from "sonner";
+//
 export default function Page() {
   const router = useRouter();
-  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -42,7 +43,7 @@ export default function Page() {
     if (result?.ok) {
       router.push("/admin/farm");
     } else {
-      toast({ variant: "destructive", title: result?.error?.toString() });
+      toast.error(result?.error?.toString());
       form.reset();
     }
   }

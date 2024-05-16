@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { TableDataType } from "./DataTable";
+
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import moment from "moment";
@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-export const columns: ColumnDef<TableDataType>[] = [
+export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "reservationNumber",
     header: ({ column }) => {

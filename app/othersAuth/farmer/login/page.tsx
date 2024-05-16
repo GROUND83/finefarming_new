@@ -14,8 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-
+import { toast } from "sonner";
 import Image from "next/image";
 import { login } from "../../_components/actions";
 import { LoginSchema } from "../../_components/loginSchema";
@@ -26,7 +25,7 @@ import Logo from "../../../../public/logocolor.svg";
 import LogoWrap from "@/components/logowrap";
 export default function Page() {
   const router = useRouter();
-  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -47,7 +46,7 @@ export default function Page() {
     if (result?.ok) {
       router.push("/dashfarmer/farm");
     } else {
-      toast({ variant: "destructive", title: result?.error?.toString() });
+      toast.error(result?.error?.toString());
       form.reset();
     }
   }

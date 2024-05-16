@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import Image from "next/image";
 import { LoginSchema } from "../../_components/loginSchema";
 import { signIn } from "next-auth/react";
@@ -26,7 +26,7 @@ import Link from "next/link";
 export default function Page() {
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
-  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -50,7 +50,7 @@ export default function Page() {
         router.replace("/dashwriter/magazine");
       } else {
         console.log("result", result);
-        toast({ variant: "destructive", title: result?.error?.toString() });
+        toast.error(result?.error?.toString());
         form.reset();
         setLoading(false);
       }

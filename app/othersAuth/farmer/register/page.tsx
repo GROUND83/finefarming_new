@@ -16,13 +16,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { RegisterSchema } from "../../_components/registerSchema";
 import { useRouter } from "next/navigation";
 import Logo from "../../../../public/logocolor.svg";
 import LogoWrap from "@/components/logowrap";
 export default function Page() {
-  const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -66,7 +65,7 @@ export default function Page() {
         if (result?.ok) {
           router.replace("/dashFarmer/farm");
         } else {
-          toast({ variant: "destructive", title: result?.error?.toString() });
+          toast.error(result?.error?.toString());
           form.reset();
         }
       } else {
@@ -76,7 +75,7 @@ export default function Page() {
     } else {
       const data = await res.json();
       console.log(data.message);
-      toast({ variant: "destructive", title: data.message });
+      toast.error(data.message);
     }
   }
   return (

@@ -366,11 +366,7 @@ export default function CalenderWrap({ farmId }: farmIdprops) {
                   console.log(form.getValues("reservationDate").length);
                   let limitLength = form.getValues("reservationDate").length;
                   if (limitLength >= 12) {
-                    toast({
-                      variant: "destructive",
-                      title: "최대 허용개수 초과",
-                      description: "12개 까지 업로드 가능합니다.",
-                    });
+                    toast.warning("12개 까지 업로드 가능합니다.");
                   } else {
                     reservationDateAppend({
                       startTime: "",

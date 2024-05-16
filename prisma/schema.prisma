@@ -313,7 +313,7 @@ model Reservation {
   priceType String
   status ReservationStatus @default(waiting)
   checkInDate DateTime
-  sendDate String // "YYYY-MM-DD"
+  sendDate String?
   checkInTime String
   isPaid Boolean @default(false)
   optionProduct Json[]

@@ -83,6 +83,7 @@ export default async function Page({
           </div>
         </div>
       </div>
+
       <div className="p-3 flex flex-col items-start gap-5  w-full">
         <Reply communityId={params.communityId} />
       </div>

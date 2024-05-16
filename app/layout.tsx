@@ -33,6 +33,15 @@ declare global {
     Kakao: any;
   }
 }
+export const metadata: Metadata = {
+  title: "파인파밍",
+  description:
+    "우리는 농업체험을 선택하는데 필요한 지식을 제공하는 동시에 여러분의 체험활동이 기억에 남고 유익한 추억이 될 수 있도록 돕습니다.",
+  other: {
+    "naver-site-verification": "891e21064b72d582235c53163a400fc58e244be6",
+  },
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{

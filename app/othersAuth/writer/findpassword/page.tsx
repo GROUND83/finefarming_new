@@ -19,8 +19,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { useRouter } from "next/navigation";
 import findPassword from "./actions";
-import { toast } from "@/components/ui/use-toast";
-
+import { toast } from "sonner";
 //
 export default function Page() {
   const [loading, setLoading] = React.useState(false);
@@ -40,13 +39,11 @@ export default function Page() {
       console.log(error);
       if (error) {
         form.reset();
-        return toast({
-          variant: "destructive",
-          title: error,
-        });
+        return toast.error(error);
       }
 
       if (message) {
+        toast.success("임시비밀번호 이메일 방송에 성공하였습니다.");
         router.push("/othersAuth/writer/login");
       }
     } catch (e) {

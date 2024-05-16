@@ -27,9 +27,9 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import { formSchema } from "./registerSchema";
-import { useToast } from "@/components/ui/use-toast";
-import { Checkbox } from "@/components/ui/checkbox";
 
+import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import React from "react";
 import { Loader2 } from "lucide-react";
@@ -40,7 +40,6 @@ import PersonalInfo from "@/components/personalInfo";
 
 export default function Page() {
   const [loading, setLoading] = React.useState(false);
-  const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -92,13 +91,13 @@ export default function Page() {
         if (result?.ok) {
           router.replace("/");
         } else {
-          toast({ variant: "destructive", title: result?.error?.toString() });
+          toast.error(result?.error?.toString());
           form.reset();
         }
       } else {
         const data = await res.json();
         console.log(data.message);
-        toast({ variant: "destructive", title: data.message });
+        toast.error(data.message);
       }
     } catch (e) {
       //

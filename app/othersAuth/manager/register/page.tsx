@@ -16,13 +16,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
+//
 import { RegisterSchema } from "../../_components/registerSchema";
 import LogoWrap from "@/components/logowrap";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const { toast } = useToast();
-
+  const router = useRouter();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -62,6 +63,11 @@ export default function Page() {
           callbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}`,
           redirect: true,
         });
+        if (result?.ok) {
+          router.push("/admin/farm");
+        } else {
+          toast.error(result?.error?.toString());
+        }
       } else {
         const data = await res.json();
         console.log(data.message);
@@ -69,7 +75,7 @@ export default function Page() {
     } else {
       const data = await res.json();
       console.log(data.message);
-      toast({ variant: "destructive", title: data.message });
+      toast.error(data.message);
     }
   }
   return (

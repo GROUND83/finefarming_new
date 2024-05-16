@@ -301,6 +301,7 @@ export async function makeReservation(jsonData: string) {
           select: {
             id: true,
             initail: true,
+            reservationMin: true,
           },
         },
       },
@@ -309,22 +310,11 @@ export async function makeReservation(jsonData: string) {
       let {
         priceType,
         groupPrice,
-        farm: { initail, id },
+        farm: { initail, id, reservationMin },
       } = product;
-      let groupLimit = product.groupLimit;
-      let personalPrice = result.personalPrice;
-
-      // if (personalPrice.length > 0) {
-      //   for (const personal of personalPrice) {
-      //     if (!personal.isFree) {
-      //       totalAmount += personal.amount;
-      //     }
-      //   }
-      // }
-      // if (groupLimit) {
-      //   totalAmount += groupNumber;
-      // }
-      //
+      let sendDate = dayjs(result.checkInDate)
+        .subtract(Number(reservationMin) - 1)
+        .format("YYYY-MM-DD");
       let createReservation = await db.reservation.create({
         data: {
           reservationNumber: `${initail}-${new Date().getTime()}`,
@@ -351,6 +341,7 @@ export async function makeReservation(jsonData: string) {
           created_at: getDateTime(),
           updated_at: getDateTime(),
           totalAmount: result.totalAmount,
+          sendDate: sendDate,
         },
         include: {
           user: {
@@ -423,9 +414,9 @@ export async function makeReservation(jsonData: string) {
             howmany: howmany!,
             totalPrice: totalPrice!,
             resevationPhone: resevationPhone!,
-            visitor,
-            visitorPhone,
-            farmName,
+            visitor: visitor!,
+            visitorPhone: visitorPhone!,
+            farmName: farmName!,
           }),
         };
 

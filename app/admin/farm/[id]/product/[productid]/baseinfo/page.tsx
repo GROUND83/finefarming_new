@@ -148,7 +148,7 @@ export default function Page({
         toast.success("데이터 수정이 완료 되었습니다.");
       } catch (e: any) {
         console.log(e);
-        toast.error(educationSubjectAppend);
+        toast.error(e);
       } finally {
         // await new Promise((resolve) => setTimeout(resolve, 1000));
         setUpdateLoading(false);
@@ -170,7 +170,7 @@ export default function Page({
         toast.success("삭제 완료 되었습니다.");
         router.push(`/admin/farm/${params.id}/product`);
       }
-    } catch (e) {
+    } catch (e: any) {
       toast.error(e);
     }
     setDeleteLoading(false);
@@ -646,11 +646,7 @@ export default function Page({
                                 let limitLength =
                                   form.getValues("images").length;
                                 if (limitLength >= 9) {
-                                  toast({
-                                    variant: "destructive",
-                                    title: "최대 허용개수 초과",
-                                    description: "9개 까지 업로드 가능합니다.",
-                                  });
+                                  toast.warning("9개 까지 업로드 가능합니다.");
                                 } else {
                                   imagesForm.append({
                                     image: "",
@@ -784,12 +780,9 @@ export default function Page({
                                               "groupMember"
                                             ).length;
                                           if (limitLength >= 5) {
-                                            toast({
-                                              variant: "destructive",
-                                              title: "최대 허용개수 초과",
-                                              description:
-                                                "5개 까지 업로드 가능합니다.",
-                                            });
+                                            toast.warning(
+                                              "5개 까지 업로드 가능합니다."
+                                            );
                                           } else {
                                             groupMemberAppend({
                                               message: "",
@@ -949,12 +942,9 @@ export default function Page({
                                               "personalPrice"
                                             ).length;
                                           if (limitLength >= 5) {
-                                            toast({
-                                              variant: "destructive",
-                                              title: "최대 허용개수 초과",
-                                              description:
-                                                "5개 까지 업로드 가능합니다.",
-                                            });
+                                            toast.warning(
+                                              "5개 까지 업로드 가능합니다."
+                                            );
                                           } else {
                                             personalPriceAppend({
                                               price: "1000",
@@ -1299,11 +1289,7 @@ export default function Page({
                             let limitLength =
                               form.getValues("educationSubject").length;
                             if (limitLength >= 5) {
-                              toast({
-                                variant: "destructive",
-                                title: "최대 허용개수 초과",
-                                description: "5개 까지 업로드 가능합니다.",
-                              });
+                              toast.warning("5개 까지 업로드 가능합니다.");
                             } else {
                               educationSubjectAppend({
                                 tag: "",

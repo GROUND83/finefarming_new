@@ -206,11 +206,7 @@ export default function Reply({ communityId }: { communityId: string }) {
               );
             })}
         </div>
-      ) : (
-        <div>
-          <p>로그인</p>
-        </div>
-      )}
+      ) : null}
     </div>
   );
 }

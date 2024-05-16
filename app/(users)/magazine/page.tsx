@@ -53,6 +53,7 @@ export default async function Page({
                   priority
                   alt={magazine.title}
                   className="z-10 bg-cover brightness-50"
+                  sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                 />
                 <div className="bg-white z-20 absolute w-[70%] h-[70%] p-6  flex flex-col items-center justify-center gap-3">
                   <p className="text-xl text-neutral-400">#{magazine.id}</p>

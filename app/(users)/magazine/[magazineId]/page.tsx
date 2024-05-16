@@ -2,40 +2,13 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import db from "@/lib/db";
-import getSession from "@/lib/session";
+import type { Metadata, ResolvingMetadata } from "next";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-async function getIsOwner(authorId: number) {
-  const session = await getSession();
-  if (session.id) {
-    return session.id === authorId;
-  }
-  return false;
-}
-
-// async function getJournal(id: number) {
-//   //
-//   //   await new Promise((resolve) => setTimeout(resolve, 10000));
-//   const journal = await db.journal.findUnique({
-//     where: {
-//       id,
-//     },
-//     include: {
-//       author: {
-//         select: {
-//           username: true,
-//         },
-//       },
-//     },
-//   });
-//   return journal;
-// }
 async function getMagazine(magazineId: number) {
-  //
-  //   await new Promise((resolve) => setTimeout(resolve, 10000));
   const magazines = await db.magazine.findUnique({
     where: {
       id: magazineId,
@@ -54,11 +27,46 @@ async function getMagazine(magazineId: number) {
   });
   return magazines;
 }
-export default async function Page({
-  params,
-}: {
+type Props = {
   params: { magazineId: string };
-}) {
+};
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const id = params.magazineId;
+
+  // fetch data
+  const product = await getMagazine(Number(params.magazineId));
+  console.log("product", product);
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    metadataBase: new URL("https://www.finefarming.co.kr"),
+    alternates: {
+      canonical: "/",
+    },
+    title: product?.title,
+    openGraph: {
+      title: product?.title,
+      description: "The React Framework for the Web",
+      url: `https://www.finefarming.co.kr/magazine/${product?.id!}`,
+      siteName: "파인파밍",
+      images: [
+        {
+          url: product?.image!, // Must be an absolute URL
+          width: 800,
+          height: 600,
+        },
+      ],
+      locale: "ko_KR",
+      type: "website",
+    },
+  };
+}
+export default async function Page({ params }: Props) {
   const id = Number(params.magazineId);
   if (isNaN(id)) {
     return notFound();
@@ -78,6 +86,7 @@ export default async function Page({
             fill
             priority
             className="object-cover   brightness-50"
+            sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
           />
         </div>
 
@@ -143,6 +152,7 @@ export default async function Page({
                                       fill
                                       priority
                                       className=" object-cover"
+                                      sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                                     />
                                   </div>
                                 );
@@ -189,6 +199,7 @@ export default async function Page({
             fill
             priority
             className="object-cover brightness-50  "
+            sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
           />
           {magazine.author && (
             <div className="  absolute  rounded-md flex flex-col items-center justify-center h-full">

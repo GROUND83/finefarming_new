@@ -31,12 +31,12 @@ export default function Page({ params }: { params: { productId: string } }) {
       return notFound();
     }
     let result: any = await getProductDetail(productId);
-    console.log("result", result);
+    // console.log("result", result);
     setDetail(result);
     let newImage = [...result.images];
     if (result.mainImage) {
       let images = [result.mainImage, ...newImage];
-      console.log("images", images);
+      // console.log("images", images);
       setImages(images);
     } else {
       setImages(newImage);
@@ -82,6 +82,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                           fill
                           priority
                           className="  object-cover"
+                          sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                         />
                       </div>
                     </SwiperSlide>
@@ -281,6 +282,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                           priority
                           style={{ objectFit: "cover" }}
                           className=" z-0"
+                          sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                         />
                         <div className="absolute z-20 bottom-0 left-0 p-6 text-white w-full">
                           <div className="flex flex-col items-start gap-1 w-full">
@@ -296,7 +298,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                       <div className="w-full bg-white flex flex-col items-start px-3 gap-3 mt-9 ">
                         {detail.detail.sections.map(
                           (session: any, sessionIndex: any) => {
-                            console.log("session", session);
+                            // console.log("session", session);
                             return (
                               <div
                                 key={sessionIndex}
@@ -360,6 +362,7 @@ export default function Page({ params }: { params: { productId: string } }) {
                                               priority
                                               alt={`image${k}`}
                                               style={{ objectFit: "cover" }}
+                                              sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                                             />
                                           </div>
                                         );

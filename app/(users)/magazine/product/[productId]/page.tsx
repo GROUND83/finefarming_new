@@ -3,6 +3,7 @@ import db from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata, ResolvingMetadata } from "next";
 
 async function getMagazine(productId: string) {
   //
@@ -24,11 +25,12 @@ async function getMagazine(productId: string) {
   });
   return magazines;
 }
-export default async function Page({
-  params,
-}: {
+
+type Props = {
   params: { productId: string };
-}) {
+};
+
+export default async function Page({ params }: Props) {
   const magazines = await getMagazine(params.productId);
   console.log(params.productId, magazines);
 
@@ -37,6 +39,7 @@ export default async function Page({
   }
   return (
     <div className="w-full p-3  container mx-auto">
+      {/*  */}
       <div className="w-full grid grid-cols-12 gap-3">
         {magazines.map((magazine, index) => {
           return (

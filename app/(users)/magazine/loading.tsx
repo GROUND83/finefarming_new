@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="p-5 animate-pulse flex flex-col gap-5">
+    <div className="p-5 animate-pulse flex flex-col gap-5  container mx-auto">
       {[...Array(10)].map((_, index) => (
         <div key={index} className="*:rounded-md flex gap-5 ">
           <div className="bg-neutral-300 size-28 " />

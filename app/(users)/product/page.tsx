@@ -62,7 +62,11 @@ export default function Page() {
                           fill
                           priority
                           alt={item.title}
-                          style={{ objectFit: "cover" }}
+                          style={{
+                            objectFit: "cover",
+                            objectPosition: "center center",
+                          }}
+                          sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                         />
                       ) : (
                         <div className="col-span-2 h-full bg-neutral-100"></div>
