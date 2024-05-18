@@ -6,13 +6,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { XIcon } from "lucide-react";
-import { PlusIcon } from "@heroicons/react/24/outline";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 
-import { toast } from "@/components/ui/use-toast";
 import {
   Form,
   FormControl,

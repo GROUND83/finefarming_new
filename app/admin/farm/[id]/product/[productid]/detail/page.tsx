@@ -39,11 +39,7 @@ import { LoadingEditSubmitButton } from "@/components/ButtonComponent";
 // import QuillEditor from "./components/QuillEditer";
 // import QuillEditorWrap from "./components/QuillEditerWrap";
 
-export default function Page({
-  params,
-}: {
-  params: { id: string; productid: string };
-}) {
+export default function Page({ params }: { params: { productid: string } }) {
   //
   const [sectionType, setSectionType] = useState("mobile");
   const [product, setProduct] = useState<any>();
@@ -197,7 +193,7 @@ export default function Page({
 
   const reload = async () => {
     setLoading(true);
-    const id = Number(params.id);
+    const id = Number(params.productid);
     if (isNaN(id)) {
       notFound();
     }

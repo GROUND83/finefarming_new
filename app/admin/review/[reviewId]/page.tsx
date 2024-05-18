@@ -13,10 +13,11 @@ import moment from "moment";
 import { Button } from "@/components/ui/button";
 import { AlertButton, DeleteButton } from "@/components/ButtonComponent";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
+
 export default function Page({ params }: { params: { reviewId: string } }) {
   const router = useRouter();
-  const { toast } = useToast();
+
   const [updateLoading, setUpdateLoading] = React.useState(false);
   const [deleteLoading, setDeleteLoading] = React.useState(false);
   const [detail, setDetail] = React.useState<any>("");
@@ -42,12 +43,7 @@ export default function Page({ params }: { params: { reviewId: string } }) {
       reviewId: Number(params.reviewId),
       visible: visible,
     });
-    toast({
-      duration: 3000,
-      variant: "default",
-      title: "수정완료",
-      description: "수정이 완료되었습니다.",
-    });
+    toast.success("수정이 완료되었습니다.");
     detailData();
     setUpdateLoading(false);
     // router.push("/admin/review");

@@ -19,8 +19,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
+
 import { changePasswrod } from "./_component/actions";
+import { toast } from "sonner";
 
 const findPasswordSchema = z.object({
   password: z.string().min(1, { message: "비밀번호를 입력하세요." }),
@@ -55,16 +56,11 @@ export default function Page() {
         console.log(result);
         if (result?.error) {
           form.reset();
-          return toast({
-            variant: "destructive",
-            title: result.error,
-          });
+          return toast.error(result.error);
         }
 
         if (result?.message) {
-          toast({
-            title: "비밀번호가 성공적으로 변경되었습니다.",
-          });
+          toast.success("비밀번호가 성공적으로 변경되었습니다.");
           // router.refresh();
           router.push("/admin/farm");
         }

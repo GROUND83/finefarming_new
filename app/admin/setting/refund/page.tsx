@@ -5,17 +5,7 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { useToast } from "@/components/ui/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import {
   Form,
   FormControl,
@@ -32,19 +22,11 @@ import { refundSchema, refundSchemaType } from "./_compoents/editSchema";
 import { Switch } from "@/components/ui/switch";
 import SubSectionWrap from "@/app/admin/_component/subSectionWrap";
 import { FormTitle, FormWrap } from "@/app/admin/_component/form/form";
-
-export const dynamic = "force-static";
-export const dynamicParams = false;
+import { toast } from "sonner";
 
 export default function Page({ params }: { params: { id: string } }) {
-  const [parkingFeeAvail, setParkingFeeAvail] = useState(false);
-
-  //
-
   const [loading, setLoading] = useState(false);
   const [updateloading, setUpdateLoading] = useState(false);
-
-  const { toast } = useToast();
 
   const form = useForm<refundSchemaType>({
     resolver: zodResolver(refundSchema),
@@ -80,20 +62,11 @@ export default function Page({ params }: { params: { id: string } }) {
     try {
       const result = await updateData(formData);
       if (result) {
-        toast({
-          duration: 3000,
-          title: "수정완료",
-          description: "데이터 수정이 완료 되었습니다.",
-        });
+        toast.success("데이터 수정이 완료 되었습니다.");
       }
     } catch (e: any) {
       console.log(e);
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      toast.error(`${e}`);
     } finally {
       // await new Promise((resolve) => setTimeout(resolve, 1000));
       setUpdateLoading(false);

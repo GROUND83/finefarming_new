@@ -10,10 +10,28 @@ import {
 } from "./_components/mainImageWrap";
 import Footer from "../../components/footerWrap";
 import Subscrip from "./_components/subscrip";
-export const dynamic = "force-dynamic";
-export default function Page() {
+import MainBanner from "./_components/mainBanner";
+import db from "@/lib/db";
+import { notFound } from "next/navigation";
+
+//
+async function getBanner() {
+  const banners = await db.banner.findMany({
+    where: {
+      visible: true,
+    },
+  });
+  return banners;
+}
+export default async function Page() {
+  const banners = await getBanner();
+  if (!banners) {
+    return notFound();
+  }
+  console.log("banners", banners);
   return (
     <section className="flex w-full flex-col items-start">
+      {banners.length > 0 && <MainBanner banners={banners} />}
       <article className="grid grid-cols-2 w-full    gap-12 mt-12 lg:container lg:mx-auto">
         <div className="flex flex-col items-start justify-center col-span-2 lg:col-span-1 gap-9 px-6 lg:px-0 py-6 lg:py-12 ">
           <header className="font-semibold text-primary text-pretty text-4xl lg:text-5xl tracking-normal flex flex-col items-start gap-2 w-full">
@@ -41,7 +59,6 @@ export default function Page() {
             alt="article1"
             fill
             className="object-cover"
-            priority={true}
             sizes="100%"
           />
         </div>
@@ -61,7 +78,6 @@ export default function Page() {
               alt="section1"
               className="object-cover"
               fill
-              priority={true}
               sizes="100%"
             />
           </ImageWrap>
@@ -111,7 +127,6 @@ export default function Page() {
               alt="section1"
               className="  object-cover"
               fill
-              priority={true}
               sizes="100%"
             />
           </ImageWrap>
@@ -171,7 +186,6 @@ export default function Page() {
               alt="section2"
               className="  object-cover"
               fill
-              priority={true}
               sizes="100%"
             />
           </ImageWrap>
@@ -231,7 +245,6 @@ export default function Page() {
               alt="section3"
               className="object-cover"
               fill
-              priority={true}
               sizes="100%"
             />
           </ImageWrap>
@@ -291,7 +304,6 @@ export default function Page() {
               alt="section1"
               className="object-cover"
               fill
-              priority={true}
               sizes="100%"
             />
           </ImageWrap>
@@ -488,14 +500,12 @@ export default function Page() {
               }
               alt="section10"
               fill
-              priority={true}
               className=" object-cover"
               sizes="100%"
             />
           </div>
         </div>
       </article>
-      <Footer />
     </section>
   );
 }

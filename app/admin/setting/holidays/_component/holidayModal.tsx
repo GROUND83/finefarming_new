@@ -13,9 +13,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import moment from "moment";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
+
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 //
 type ListYearType = {
   dateName: string;
@@ -32,7 +32,7 @@ export default function HolidayModal({ reload }: { reload: () => void }) {
   const [yearRange, setYearRange] = React.useState<string[]>([]);
   const [selectYear, setSelectYear] = React.useState<string>("");
   const [listYear, setListYear] = React.useState<ListYearType[]>([]);
-  const { toast } = useToast();
+
   React.useEffect(() => {
     let newData = [];
     newData.push(moment().format("YYYY"));
@@ -48,12 +48,7 @@ export default function HolidayModal({ reload }: { reload: () => void }) {
       console.log(result);
       setListYear(result);
     } else {
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "ERROR",
-        description: "잠시 후 다시 시도하세요.",
-      });
+      toast.error("잠시 후 다시 시도하세요.");
     }
     setGetLoading(false);
   };
@@ -75,12 +70,7 @@ export default function HolidayModal({ reload }: { reload: () => void }) {
         console.log(e);
       }
     } else {
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "ERROR",
-        description: "공휴일 리스트가 없습니다.",
-      });
+      toast.error("공휴일 리스트가 없습니다.");
     }
   };
   React.useEffect(() => {

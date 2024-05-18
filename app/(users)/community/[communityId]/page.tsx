@@ -2,7 +2,7 @@ import { UserLinkPreview } from "@/components/linktoHtml";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import db from "@/lib/db";
-
+import type { Metadata, ResolvingMetadata } from "next";
 import {
   ArrowLeftCircleIcon,
   ArrowLeftIcon,
@@ -37,7 +37,13 @@ async function getCommunity(id: number) {
   });
   return community;
 }
-
+type Props = {
+  params: { communityId: string };
+};
+export const metadata: Metadata = {
+  title: "자세히보기 | 커뮤니티 ",
+  description: "파인파밍의 소식과 고객과의 커뮤니티 공간입니다.",
+};
 export default async function Page({
   params,
 }: {

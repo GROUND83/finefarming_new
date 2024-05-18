@@ -73,6 +73,18 @@ export default function LayOut({ children }: { children: React.ReactNode }) {
             <p> 도구복장</p>
           </div>
         </Link>
+        <Link
+          href={"/admin/setting/banner"}
+          className={
+            pathname.includes("/admin/setting/banner")
+              ? "bg-primary text-white px-3 py-1 rounded-md font-light text-sm"
+              : "bg-neutral-100 text-neutral-500 px-3 py-1 rounded-md border text-sm"
+          }
+        >
+          <div className="flex flex-row items-center gap-2">
+            <p>배너관리</p>
+          </div>
+        </Link>
       </div>
       <div className=" flex flex-col items-start w-full  flex-1 mt-[140px] ">
         {children}

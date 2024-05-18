@@ -27,9 +27,9 @@ export function MobileUserComponet() {
   const [user, setUser] = React.useState<any>("");
   const { data: session } = useSession();
 
-  React.useEffect(() => {
-    console.log("session", session);
-  }, [session]);
+  // React.useEffect(() => {
+  //   console.log("session", session);
+  // }, [session]);
   return (
     <div className="flex flex-row items-center gap-3 ">
       <Drawer.Root direction="right" open={open}>
@@ -174,9 +174,9 @@ export function UserComponet() {
   const [user, setUser] = React.useState<any>("");
   const { data: session } = useSession();
 
-  React.useEffect(() => {
-    console.log("session", session);
-  }, [session]);
+  // React.useEffect(() => {
+  //   console.log("session", session);
+  // }, [session]);
   return (
     <div className="flex flex-row items-center gap-3  ">
       {session?.user ? (

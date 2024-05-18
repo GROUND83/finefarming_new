@@ -105,8 +105,8 @@ export const NestedImage = ({ nestIndex, control, setValue }: nestedProps) => {
                         src={value}
                         alt="농장이미지"
                         fill
-                        priority
                         style={{ objectFit: "cover" }}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     )}
                     <div className="  flex flex-col items-center justify-center w-full h-full">

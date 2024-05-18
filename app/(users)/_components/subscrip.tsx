@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/form";
 import React from "react";
 import { updateSubscriper } from "./actions";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
+
 export const subScriberSchema = z.object({
   email: z.string(),
 });
@@ -36,17 +37,10 @@ export default function Subscrip() {
         let JsonData = JSON.stringify(data);
         let result = await updateSubscriper(JsonData);
         console.log("result", result);
-        toast({
-          variant: "default",
-          title: "이메일 등록에 성공하였습니다.",
-          description: "새로운 소식을 빨리 전해드리겠습니다.",
-        });
+        toast.success("이메일 등록에 성공하였습니다.");
       } catch (e) {
         // console.log(e);
-        toast({
-          variant: "destructive",
-          title: "이미 등록된 이메일입니다.",
-        });
+        toast.error("이미 등록된 이메일입니다.");
       } finally {
         form.reset();
         // reload();

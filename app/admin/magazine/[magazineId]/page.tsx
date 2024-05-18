@@ -45,6 +45,7 @@ import { toast } from "sonner";
 import { updateMagazine } from "./actions";
 import { useRouter } from "next/navigation";
 import ModalPcComponent from "./_component/modalPcComponent";
+
 export default function Page({ params }: { params: { magazineId: string } }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -166,6 +167,7 @@ export default function Page({ params }: { params: { magazineId: string } }) {
       title: "",
       sections: [] as any,
       suggestion: data.suggestion as any,
+      visible: data.visible,
     };
     if (data) {
       if (data.image.file) {
@@ -479,9 +481,9 @@ export default function Page({ params }: { params: { magazineId: string } }) {
                                       src={value.image}
                                       alt="농장이미지"
                                       fill
-                                      priority
                                       style={{ objectFit: "cover" }}
                                       className="z-0"
+                                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
                                   )}
                                   {!value?.image && (
@@ -503,7 +505,7 @@ export default function Page({ params }: { params: { magazineId: string } }) {
                                         className="hidden"
                                         name="mainImage"
                                         onChange={onMainImageChange}
-                                      />{" "}
+                                      />
                                       <FormMessage />
                                     </div>
                                   )}
@@ -776,10 +778,10 @@ export default function Page({ params }: { params: { magazineId: string } }) {
                                   <Image
                                     src={form.getValues("image").image}
                                     fill
-                                    priority
                                     alt="작가 배경이미지"
                                     style={{ objectFit: "cover" }}
                                     className="brightness-50"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                   />
                                 )}
                               </div>

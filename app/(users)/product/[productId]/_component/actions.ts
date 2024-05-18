@@ -10,6 +10,11 @@ export async function getProductDetail(productId: number) {
     include: {
       subProduct: true,
       farm: true,
+      event: {
+        where: {
+          visible: true,
+        },
+      },
     },
   });
   return products;

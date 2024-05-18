@@ -13,34 +13,18 @@ import { Input } from "@/components/ui/input";
 import { LoadingEditSubmitButton } from "@/components/ButtonComponent";
 import { useToast } from "@/components/ui/use-toast";
 import { FormTitle } from "../../_component/form/form";
+import { toast } from "sonner";
 
 export default function Page() {
   const [farmItems, setFarmItems] = React.useState<any[]>([]);
-  const [content, setContent] = React.useState("");
+
   const [updateloading, setUpdateLoading] = React.useState(false);
-  const { toast } = useToast();
+
   const getFarmItemsdata = async () => {
     //
     let result: any = await getFarmItems();
     console.log(result);
     setFarmItems(result);
-    // if (result.length > 0) {
-    //   setRefundData(result[0]);
-    //   setContent(result[0].content);
-    // }
-  };
-  const clickUpdate = async () => {
-    //
-    // console.log("content", content, refundData);
-    // if (refundData) {
-    //   //
-    //   let formData = new FormData();
-    //   formData.append("id", refundData.id);
-    //   formData.append("content", content);
-    //   let result = await updateBaseServicePolicy(formData);
-    // } else {
-    //   let result = await createBaseServicePolicy(content);
-    // }
   };
 
   React.useEffect(() => {
@@ -74,14 +58,9 @@ export default function Page() {
       //   title: "수정완료",
       //   description: "데이터 수정이 완료 되었습니다.",
       // });
-    } catch (e) {
+    } catch (e: any) {
       //
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      toast.error(`${e}`);
     } finally {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setUpdateLoading(false);
@@ -105,11 +84,7 @@ export default function Page() {
         "form.formState.isSubmitSuccessful",
         form.formState.isSubmitSuccessful
       );
-      toast({
-        duration: 3000,
-        title: "수정완료",
-        description: "데이터 수정이 완료 되었습니다.",
-      });
+      toast.success("데이터 수정이 완료 되었습니다.");
       reload();
       console.log("done");
       // window.location.reload();

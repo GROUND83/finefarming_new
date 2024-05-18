@@ -34,8 +34,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { productNewSchema, productNewSchemaType } from "./newSchema";
-import { useToast } from "@/components/ui/use-toast";
+
 import { productCreateData } from "./actions";
+import { toast } from "sonner";
 const toolData = [
   {
     id: "recents",
@@ -69,7 +70,7 @@ type productModalProps = {
 export default function NewProductModal({ farmId }: productModalProps) {
   const [updateloading, setUpdateLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const { toast } = useToast();
+
   console.log(farmId);
   //
   const form = useForm<productNewSchemaType>({
@@ -96,20 +97,11 @@ export default function NewProductModal({ farmId }: productModalProps) {
     try {
       const result = await productCreateData(formData);
       if (result) {
-        toast({
-          duration: 3000,
-          title: "수정완료",
-          description: "데이터 수정이 완료 되었습니다.",
-        });
+        toast.success("데이터 수정이 완료 되었습니다.");
       }
     } catch (e: any) {
       console.log(e);
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      toast.error(e);
     } finally {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setUpdateLoading(false);

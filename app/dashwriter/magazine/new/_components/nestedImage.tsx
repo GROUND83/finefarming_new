@@ -40,6 +40,7 @@ export const NestedImage = ({ nestIndex, control, setValue }: nestedProps) => {
     if (success) {
       const { id, uploadURL } = result;
 
+      //
       setValue(
         event.target.name,
         {

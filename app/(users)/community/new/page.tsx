@@ -1,14 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { Button } from "@/components/ui/button";
 import { Loader2, XIcon } from "lucide-react";
 import { PlusIcon } from "@heroicons/react/24/outline";
@@ -18,7 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { toast } from "@/components/ui/use-toast";
+
 import {
   Form,
   FormControl,
@@ -37,8 +29,6 @@ const FormSchema = z.object({
 export default function Page() {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [content, setContent] = React.useState("");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

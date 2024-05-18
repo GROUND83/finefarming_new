@@ -1,7 +1,4 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
-
 import {
   ChatBubbleLeftEllipsisIcon,
   PlusIcon,
@@ -9,39 +6,30 @@ import {
 import { DataTable } from "./_component/table/table";
 import React from "react";
 import { getCommunity } from "./_component/table/actions";
-import EmptyData from "@/components/emptyData";
-import moment from "moment";
-import { Badge } from "@/components/ui/badge";
-
-import { useSession } from "next-auth/react";
+import type { Metadata } from "next";
 import { MobileTable } from "./_component/table/mobileTable";
-import NewCommunity from "./_component/newModal";
-import Footer from "@/components/footerWrap";
 import Link from "next/link";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
+import { isMobile } from "@/lib/isMobile";
 
-export default function Page() {
-  const [community, setCommunity] = React.useState<any[]>([]);
-  const { data: session } = useSession();
-  // const journals = await getJournal();
-  // console.log("journals", journals);
-  const getData = async () => {
-    let result = await getCommunity({ pageIndex: 0, pageSize: 7 });
-    console.log(result);
-    setCommunity(result.rows);
-  };
-  const getUser = async () => {};
-  React.useEffect(() => {
-    // getUser()
-    getData();
-    console.log("session", session);
-  }, [session]);
+export const metadata: Metadata = {
+  title: "커뮤니티",
+  description: "파인파밍의 소식과 고객과의 커뮤니티 공간입니다.",
+};
+
+export default async function Page() {
+  const session = await getServerSession(authOptions);
+  const userAgent = headers().get("user-agent") || "";
+  const mobileCheck = isMobile(userAgent);
   return (
-    <div className="w-full bg-white">
-      <div className="w-full relative lg:container lg:mx-auto mt-3 px-3 lg:px-0 min-h-screen">
+    <article className="w-full bg-white">
+      <section className="w-full relative lg:container lg:mx-auto mt-3 px-3 lg:px-0 min-h-screen">
         <div className="w-full border-b lg:border-none px-6 py-3 flex flex-row items-center justify-between ">
           <div className="flex flex-row gap-2 items-center">
             <ChatBubbleLeftEllipsisIcon className="size-6" />
-            <p className="text-lg lg:text-xl font-semibold">커뮤니티</p>
+            <h1 className="text-lg lg:text-xl font-semibold">커뮤니티</h1>
           </div>
           {session && (
             <div>
@@ -57,15 +45,16 @@ export default function Page() {
             </div>
           )}
         </div>
-
-        <div className="mt-3 xs:hidden sm:hidden md:hidden">
-          <DataTable />
-        </div>
-        <div className="mt-3 lg:hidden">
-          <MobileTable />
-        </div>
-      </div>
-      <Footer />
-    </div>
+        {mobileCheck ? (
+          <div className="mt-3 lg:hidden">
+            <MobileTable />
+          </div>
+        ) : (
+          <div className="mt-3 xs:hidden sm:hidden md:hidden">
+            <DataTable />
+          </div>
+        )}
+      </section>
+    </article>
   );
 }

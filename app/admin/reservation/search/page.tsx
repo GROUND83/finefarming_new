@@ -22,10 +22,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { XCircle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+
 import React from "react";
 import { SearchTable } from "./searchTable";
 import searchDatabase from "./searchActions";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   search: z.string().min(2, { message: "2자 이상 입력하세요." }),
@@ -33,7 +34,6 @@ const formSchema = z.object({
 });
 
 export default function Page() {
-  const { toast } = useToast();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [searchData, setSearchData] = React.useState<
     {
@@ -89,19 +89,11 @@ export default function Page() {
     // do your logic here
     if (form.formState.errors.search) {
       console.log(form.formState.errors);
-      toast({
-        variant: "destructive",
-        title: "검색 필드가 잘못되었습니다.",
-        description: `${form.formState.errors.search?.message}`,
-      });
+      toast.error(`${form.formState.errors.search?.message}`);
     }
     if (form.formState.errors.type) {
       console.log(form.formState.errors);
-      toast({
-        variant: "destructive",
-        title: "검색 필드가 잘못되었습니다.",
-        description: `${form.formState.errors.type?.message}`,
-      });
+      toast.error(`${form.formState.errors.type?.message}`);
     }
   }, [form.formState.errors]);
   return (

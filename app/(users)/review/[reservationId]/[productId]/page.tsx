@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { LoadingEditSubmitButton } from "@/components/ButtonComponent";
-import { useToast } from "@/components/ui/use-toast";
+
 import ImageUploadComponent from "@/app/admin/_component/imageUploadComponent";
 import FormImageUpload from "@/components/form/FormImageUpload";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { getUploadUrl } from "@/lib/uploadUrl";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { toast } from "sonner";
 
 const myStyles = {
   itemShapes: RoundedStar,
@@ -46,7 +47,6 @@ export default function Page({
   const [product, setProduct] = React.useState<any>();
   const [loading, setLoading] = React.useState(false);
   const [updateloading, setUpdateLoading] = React.useState(false);
-  const { toast } = useToast();
 
   const getReview = async () => {
     //
@@ -85,11 +85,7 @@ export default function Page({
     console.log("data", data);
 
     if (!data.image.image) {
-      toast({
-        variant: "destructive",
-        title: "후기 사진이 없습니다.",
-        description: "후기사진을 첨부하세요.",
-      });
+      toast.error("후기사진을 첨부하세요.");
       return;
     }
 

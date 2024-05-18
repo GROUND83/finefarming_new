@@ -15,7 +15,7 @@ import { notFound, useRouter } from "next/navigation";
 import { EditType, editSchema } from "../components/new/editSchema";
 import Input from "@/components/input";
 import Image from "next/image";
-import { useToast } from "@/components/ui/use-toast";
+
 import {
   deleteData,
   getDeatailData,
@@ -36,6 +36,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import moment from "moment";
 import Link from "next/link";
+import { toast } from "sonner";
 
 //
 export default function Page({ params }: { params: { id: string } }) {
@@ -52,7 +53,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [created_at, setCreated] = useState<any>("");
   const [file, setFile] = useState<File | null>(null);
   const maimImageRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
+
   const {
     register,
     handleSubmit,
@@ -174,22 +175,12 @@ export default function Page({ params }: { params: { id: string } }) {
     try {
       const result = await updateData(formData);
       if (result) {
-        toast({
-          duration: 3000,
-          title: "수정완료",
-          description: "데이터 수정이 완료 되었습니다.",
-        });
+        toast.success("데이터 수정이 완료 되었습니다.");
       }
     } catch (e: any) {
       console.log(e);
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      toast.error(e);
     } finally {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       setUpdateLoading(false);
       window.location.reload();
     }
@@ -207,18 +198,11 @@ export default function Page({ params }: { params: { id: string } }) {
       formData.append("id", params.id);
       const result = await deleteData(formData);
       if (result) {
-        toast({
-          title: "삭제 완료",
-          description: "삭제 완료 되었습니다.",
-        });
+        toast.success("삭제 완료 되었습니다.");
         router.push("/admin/farmer");
       }
-    } catch (e) {
-      toast({
-        variant: "destructive",
-        title: "삭제 ERROR",
-        description: `${e}`,
-      });
+    } catch (e: any) {
+      toast.error(e);
     }
     setDeleteLoading(false);
   };

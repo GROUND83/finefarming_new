@@ -40,7 +40,7 @@ export async function updateMagazine(jsonData: string) {
         image: parserData.image,
         sections: parserData.sections,
         suggestion: parserData.suggestion,
-
+        visible: parserData.visible,
         updated_at: getDateTime(),
       },
     });

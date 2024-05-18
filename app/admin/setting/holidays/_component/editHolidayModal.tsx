@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import moment from "moment";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
+
 import { useRouter } from "next/navigation";
 //
 
@@ -47,12 +47,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { toast } from "@/components/ui/use-toast";
+
 import { Input } from "@/components/ui/input";
 import {
   DeleteButton,
   LoadingEditSubmitButton,
 } from "@/components/ButtonComponent";
+import { toast } from "sonner";
 type ListYearType = {
   id: number;
   dateName: string;
@@ -79,7 +80,6 @@ export default function EditHolidayModal({
   const [deleteLoading, setDeleteLoading] = React.useState(false);
   const [editLoading, setEditLoading] = React.useState(false);
   const [modalOpen, setModalOpen] = React.useState(false);
-  const { toast } = useToast();
 
   React.useEffect(() => {
     console.log(modalOpen);
@@ -118,12 +118,7 @@ export default function EditHolidayModal({
       let result = await editHolidays(jsonstring);
     } catch (e: any) {
       console.log(e);
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      toast.error(`${e}`);
     } finally {
       form.reset();
       await reload();
@@ -153,12 +148,7 @@ export default function EditHolidayModal({
       let result = await deleteHoliday(holiday.id);
     } catch (e: any) {
       console.log(e);
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      toast.error(`${e}`);
     } finally {
       form.reset();
       await reload();

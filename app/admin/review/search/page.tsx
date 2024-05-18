@@ -17,15 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { XCircle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+
 import React from "react";
 import { SearchTable } from "./searchTable";
 import searchDatabase from "./searchActions";
@@ -37,6 +29,7 @@ import {
 } from "@/components/ui/popover";
 
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 const formSchema = z.object({
   username: z.string(),
   minPoint: z.number().min(0).max(5),
@@ -46,7 +39,6 @@ const formSchema = z.object({
 });
 
 export default function Page() {
-  const { toast } = useToast();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [searchData, setSearchData] = React.useState<
     {
@@ -77,19 +69,11 @@ export default function Page() {
     console.log("values", values);
     if (values.minPoint > values.maxPoint) {
       console.log(form.formState.errors);
-      toast({
-        variant: "destructive",
-        title: "리뷰 점수 범위가 잘못되었습니다.",
-        description: "최소점수는 최대점수 보다 작아야됩니다.",
-      });
+      toast.error("최소점수는 최대점수 보다 작아야됩니다.");
     }
     if (moment(values.minDate).isAfter(moment(values.maxDate))) {
       console.log(form.formState.errors);
-      toast({
-        variant: "destructive",
-        title: "작성일 범위가 잘못되었습니다.",
-        description: "최소일자는 최대일자 보다 작아야됩니다.",
-      });
+      toast.error("최소일자는 최대일자 보다 작아야됩니다.");
     }
     let newString = JSON.stringify(values);
     let response: any = await searchDatabase(newString);
@@ -101,11 +85,7 @@ export default function Page() {
         setSearchData(response);
         setModalOpen(true);
       } else {
-        toast({
-          variant: "destructive",
-          title: "검색결과.",
-          description: "검색결과가 없습니다.",
-        });
+        toast.info("검색결과가 없습니다.");
         setSearchData([]);
         setModalOpen(true);
       }
@@ -116,19 +96,11 @@ export default function Page() {
     // do your logic here
     if (form.formState.errors.username) {
       console.log(form.formState.errors);
-      toast({
-        variant: "destructive",
-        title: "검색 필드가 잘못되었습니다.",
-        description: `${form.formState.errors.username?.message}`,
-      });
+      toast.error(`${form.formState.errors.username?.message}`);
     }
     if (form.formState.errors.minDate) {
       console.log(form.formState.errors);
-      toast({
-        variant: "destructive",
-        title: "검색 필드가 잘못되었습니다.",
-        description: `${form.formState.errors.minDate?.message}`,
-      });
+      toast.error(`${form.formState.errors.minDate?.message}`);
     }
   }, [form.formState.errors]);
   return (

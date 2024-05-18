@@ -213,6 +213,7 @@ model Product {
   farmId Int  // 상품
   reviews Review[]
   magazines Magazine[]
+  event Event[]
 }
 enum ProductType {
   MANDATORY
@@ -450,4 +451,29 @@ model Subscriber{
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   email String @unique
+}
+model Banner{
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  type String @default("event")
+  title String
+  description String
+  detailDescription String
+  period String
+  visible Boolean @default(false)
+  image String
+}
+model Event {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+ 
+  title String
+  description String
+ 
+  visible Boolean @default(false)
+  image String?
+  product Product @relation(fields: [productId], references: [id],onDelete: Cascade) 
+  productId Int 
 }

@@ -60,6 +60,18 @@ export default function LayOut({ children, params }: farmDetailProps) {
                 >
                   상세페이지
                 </Link>
+                <Link
+                  href={`/admin/farm/${params.id}/product/${params.productid}/event`}
+                  className={`px-3 py-1 rounded-sm  transition-colors ${
+                    pathname.includes(
+                      `/admin/farm/${params.id}/product/${params.productid}/event`
+                    )
+                      ? "bg-primary text-white hover:bg-primary/80"
+                      : "bg-white  hover:bg-neutral-100"
+                  }`}
+                >
+                  이벤트
+                </Link>
               </div>
             </div>
           </div>

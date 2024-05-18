@@ -30,14 +30,11 @@ async function getMagazine(magazineId: number) {
 type Props = {
   params: { magazineId: string };
 };
+
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // read route params
-  const id = params.magazineId;
-
-  // fetch data
   const product = await getMagazine(Number(params.magazineId));
   console.log("product", product);
   // optionally access and extend (rather than replace) parent metadata
@@ -51,7 +48,6 @@ export async function generateMetadata(
     title: product?.title,
     openGraph: {
       title: product?.title,
-      description: "The React Framework for the Web",
       url: `https://www.finefarming.co.kr/magazine/${product?.id!}`,
       siteName: "파인파밍",
       images: [
@@ -66,6 +62,7 @@ export async function generateMetadata(
     },
   };
 }
+
 export default async function Page({ params }: Props) {
   const id = Number(params.magazineId);
   if (isNaN(id)) {
@@ -77,22 +74,21 @@ export default async function Page({ params }: Props) {
   }
   console.log("magazine", magazine);
   return (
-    <div className="w-full  relative ">
-      <div className=" relative  flex flex-col lg:items-center items-start justify-center ">
+    <article className="w-full  relative ">
+      <section className=" relative  flex flex-col lg:items-center items-start justify-center ">
         <div className="w-full  aspect-video lg:aspect-[16/4] relative">
           <Image
             src={magazine.image}
             alt={magazine.title}
             fill
-            priority
             className="object-cover   brightness-50"
             sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
           />
         </div>
 
-        <p className="text-xl lg:text-3xl font-semibold lg:text-white lg:absolute  relative px-6  pt-6 ">
+        <h1 className="text-xl lg:text-3xl font-semibold lg:text-white lg:absolute  relative px-6  pt-6 ">
           {magazine.title}
-        </p>
+        </h1>
         <div className="flex flex-row items-center gap-3 h-4 text-neutral-500 lg:text-white text-sm lg:absolute  relative  lg:bottom-6 px-6 ">
           <div>
             <p>{magazine.author.username}</p>
@@ -102,19 +98,19 @@ export default async function Page({ params }: Props) {
             <p>{moment(magazine.created_at).format("YYYY.MM.DD")}</p>
           </div>
         </div>
-      </div>
+      </section>
       <div className="bg-white py-6 px-3 flex flex-col items-start gap-2">
         <div className="w-full  container mx-auto">
           <div className="bg-white  px-3 flex flex-col items-start gap-2 border-b mt-3 ">
             {magazine.sections.length > 0 &&
               magazine.sections.map((section: any, sectionIndex) => {
                 return (
-                  <div key={sectionIndex}>
+                  <section key={sectionIndex}>
                     {section && (
                       <div className="mt-6">
-                        <p className=" font-semibold text-lg lg:text-2xl">
+                        <h2 className=" font-semibold text-lg lg:text-2xl">
                           {section?.title}
-                        </p>
+                        </h2>
                         {section.subtitle && (
                           <p className=" font-semibold text-md lg:text-lg text-primary underline-offset-[-5px]    underline  decoration-[10px] decoration-primary/20 mt-6 ">
                             {section?.subtitle}
@@ -150,7 +146,6 @@ export default async function Page({ params }: Props) {
                                       src={image}
                                       alt={section?.title}
                                       fill
-                                      priority
                                       className=" object-cover"
                                       sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                                     />
@@ -162,17 +157,17 @@ export default async function Page({ params }: Props) {
                         )}
                       </div>
                     )}
-                  </div>
+                  </section>
                 );
               })}
           </div>
           <div className="bg-white py-6 px-3 flex flex-col items-start gap-2 mt-3 w-full">
             {magazine.suggestion.length > 0 && (
               <div className="w-full flex flex-col items-start gap-2">
-                <p className="text-lg font-semibold">
+                <h2 className="text-lg font-semibold">
                   체험을 추천 하는 <span className="text-primary">세가지</span>{" "}
                   이유
-                </p>
+                </h2>
                 {magazine.suggestion.map((suggest: any, suggestIndex: any) => {
                   return (
                     <div
@@ -191,13 +186,12 @@ export default async function Page({ params }: Props) {
           </div>
         </div>
       </div>
-      <div className=" flex flex-col items-start gap-2 mt-3 w-full pb-24">
+      <section className=" flex flex-col items-start gap-2 mt-3 w-full pb-24">
         <div className=" relative w-full aspect-square lg:aspect-[16/4] flex flex-col items-center justify-center ">
           <Image
             src={magazine.image}
             alt={magazine.title}
             fill
-            priority
             className="object-cover brightness-50  "
             sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
           />
@@ -230,8 +224,8 @@ export default async function Page({ params }: Props) {
             </div>
           )}
         </div>
-      </div>
-      <div className="flex flex-col items-center fixed bottom-6 right-6 w-[100px] h-[100px]">
+      </section>
+      <section className="flex flex-col items-center fixed bottom-6 right-6 w-[100px] h-[100px]">
         <Button
           asChild
           className="w-[100px] h-[100px] flex flex-col items-center justify-center text-center"
@@ -240,7 +234,7 @@ export default async function Page({ params }: Props) {
             체험상품 <br /> 자세히보기
           </Link>
         </Button>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 }

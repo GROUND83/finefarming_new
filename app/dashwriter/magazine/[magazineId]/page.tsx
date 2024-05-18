@@ -1,5 +1,5 @@
 "use client";
-import { useToast } from "@/components/ui/use-toast";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -66,7 +66,7 @@ export default function Page({ params }: { params: { magazineId: string } }) {
   >([]);
   const [sectionType, setSectionType] = useState("mobile");
   const [updateloading, setUpdateLoading] = useState(false);
-  const { toast } = useToast();
+
   const imageRef = useRef<any>(null);
   const { data: session } = useSession();
   //

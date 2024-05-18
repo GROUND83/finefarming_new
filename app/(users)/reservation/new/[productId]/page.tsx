@@ -27,7 +27,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { toast } from "@/components/ui/use-toast";
+
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon, Loader2 } from "lucide-react";
@@ -47,6 +47,7 @@ import {
 } from "@/app/admin/farm/[id]/reservation/_compoents/actions";
 import { z } from "zod";
 import { getFarmImages } from "@/app/admin/farm/[id]/image/_components/actions";
+import { toast } from "sonner";
 
 const FormSchema = z.object({
   checkInDate: z.union([
@@ -108,6 +109,7 @@ type nationalholidayType = {
   month: string;
   year: string;
 };
+
 export default function Page({ params }: { params: { productId: string } }) {
   const pathname = usePathname();
   const [updating, setUpdating] = React.useState(false);
@@ -253,19 +255,12 @@ export default function Page({ params }: { params: { productId: string } }) {
       if (detail) {
         if (totalPrice <= 0) {
           //
-          toast({
-            variant: "destructive",
-            title: "예약이 불가합니다.",
-            description: "결제 예정금액이 0원 이상이여야 합니다.",
-          });
+          toast.error("결제 예정금액이 0원 이상이여야 합니다.");
           return;
         }
         if (!data.checkInDate) {
           //
-          toast({
-            variant: "destructive",
-            title: "방문일자를 선택하세요.",
-          });
+          toast.error("방문일자를 선택하세요.");
           return;
         }
         let priceType = detail.priceType;
@@ -488,29 +483,29 @@ export default function Page({ params }: { params: { productId: string } }) {
     if (detail) {
       let getDay = new Date(date).getDay();
       // console.log(monday); 모두 한국시간
-      console.log(
-        "min",
-        dayjs(date).format("YYYY-MM-DD"),
-        new Date(
-          dayjs()
-            .add(detail?.farm.reservationMin, "day")
-            .hour(0)
-            .minute(0)
-            .second(0)
-            .format()
-        ),
-        date <=
-          new Date(
-            dayjs()
-              .add(detail?.farm.reservationMin, "day")
-              .hour(0)
-              .minute(0)
-              .second(0)
-              .format()
-          )
-      );
+      // console.log(
+      //   "min",
+      //   dayjs(date).format("YYYY-MM-DD"),
+      //   new Date(
+      //     dayjs()
+      //       .add(detail?.farm.reservationMin, "day")
+      //       .hour(0)
+      //       .minute(0)
+      //       .second(0)
+      //       .format()
+      //   ),
+      //   date <=
+      //     new Date(
+      //       dayjs()
+      //         .add(detail?.farm.reservationMin, "day")
+      //         .hour(0)
+      //         .minute(0)
+      //         .second(0)
+      //         .format()
+      //     )
+      // );
       if (
-        date <=
+        date <
         new Date(
           dayjs()
             .add(detail?.farm.reservationMin, "day")

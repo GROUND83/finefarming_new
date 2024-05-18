@@ -5,16 +5,9 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Loader2, PlusIcon, XIcon } from "lucide-react";
 import React from "react";
 import { getPublicHoldays, updateHolidays } from "./actions";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import moment from "moment";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
+
 import { useRouter } from "next/navigation";
 //
 
@@ -42,8 +35,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { toast } from "@/components/ui/use-toast";
+
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 type ListYearType = {
   dateName: string;
   locdate: string;
@@ -71,7 +65,7 @@ export default function AddHolidayModal({
   const [yearRange, setYearRange] = React.useState<string[]>([]);
   const [selectYear, setSelectYear] = React.useState<string>("");
   const [listYear, setListYear] = React.useState<ListYearType[]>([]);
-  const { toast } = useToast();
+
   React.useEffect(() => {
     let newData = [];
     newData.push(moment().format("YYYY"));
@@ -80,22 +74,6 @@ export default function AddHolidayModal({
     setYearRange(newData);
   }, []);
 
-  // const onClickHolidayGet = async (year: string) => {
-  //   setGetLoading(true);
-  //   let result = await getPublicHoldays(year);
-  //   if (!result?.error) {
-  //     console.log(result);
-  //     setListYear(result);
-  //   } else {
-  //     toast({
-  //       duration: 3000,
-  //       variant: "destructive",
-  //       title: "ERROR",
-  //       description: "잠시 후 다시 시도하세요.",
-  //     });
-  //   }
-  //   setGetLoading(false);
-  // };
   const clickUpdate = async () => {
     //
     if (listYear.length > 0) {
@@ -112,12 +90,7 @@ export default function AddHolidayModal({
         console.log(e);
       }
     } else {
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "ERROR",
-        description: "공휴일 리스트가 없습니다.",
-      });
+      toast.warning("공휴일 리스트가 없습니다.");
     }
   };
   React.useEffect(() => {
@@ -163,22 +136,14 @@ export default function AddHolidayModal({
       }
     } catch (e: any) {
       console.log(e);
-      toast({
-        duration: 3000,
-        variant: "destructive",
-        title: "수정 ERROR",
-        description: `${e}`,
-      });
+      toast.error(`${e}`);
     } finally {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
       // setUpdateLoading(false);
       // window.location.reload();
     }
   }
-  // console.log(
-  //   moment(year).subtract(1, "year").endOf("year").format("YYYY-MM-DD"),
-  //   moment(year).endOf("year").format("YYYY-MM-DD")
-  // );
+
   return (
     <div>
       <Dialog open={modalOpen}>

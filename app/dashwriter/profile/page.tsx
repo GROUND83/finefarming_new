@@ -20,12 +20,13 @@ import {
 import { LoadingEditSubmitButton } from "@/components/ButtonComponent";
 import Image from "next/image";
 import { PlusIcon } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getUploadUrl } from "@/lib/uploadUrl";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 // async function getUserData() {
 //   const user = await getWriter();
@@ -71,7 +72,7 @@ export default function Page() {
   const [loading, setLoading] = React.useState(false);
   const [updateloading, setUpdateLoading] = React.useState(false);
   const imageRef = useRef<any>(null);
-  const { toast } = useToast();
+
   const { data: session } = useSession();
 
   //
@@ -161,11 +162,7 @@ export default function Page() {
       let result = await updateUser(formData);
       console.log(result);
       if (result) {
-        toast({
-          variant: "default",
-          title: "업데이트",
-          description: "업데이트 성공하였습니다.",
-        });
+        toast.success("업데이트 성공하였습니다.");
         reload();
       }
     }

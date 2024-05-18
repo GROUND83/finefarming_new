@@ -16,9 +16,9 @@ import { signIn } from "next-auth/react";
 import { formSchema } from "../loginSchema";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
+
 import { Input } from "@/components/ui/input";
-import Logo from "../../../../public/logocolor.svg";
+
 import React from "react";
 import { Loader2 } from "lucide-react";
 import LogoWrap from "@/components/logowrap";

@@ -42,6 +42,7 @@ import {
 import AddHolidayModal from "./_component/addHolidayModal";
 import EditHolidayModal from "./_component/editHolidayModal";
 import SubSectionWrap from "../../_component/subSectionWrap";
+import { toast } from "sonner";
 
 type listDataType = {
   id: number;
@@ -57,7 +58,6 @@ export default function Page({
 }: {
   params: { id: string; productid: string };
 }) {
-  const { toast } = useToast();
   const [loading, setLoading] = React.useState(false);
   const [yearRange, setYearRange] = React.useState<string[]>([]);
   const [selectYear, setSelectYear] = React.useState<string>(
@@ -70,46 +70,6 @@ export default function Page({
     defaultValues: {
       holidays: [{ dateName: "", year: "", month: "", day: "" }],
     },
-  });
-  const { fields, append, remove, prepend } = useFieldArray({
-    control: form.control,
-    name: "holidays",
-  });
-
-  const onSubmit = form.handleSubmit(async (data: holidaySchemaType) => {
-    // 업로드 이미지
-    // console.log("etdata", data);
-    // // if (!file) {
-    // //   return;
-    // // }
-    // setUpdateLoading(true);
-    // let newData = JSON.stringify(data.optionProduct);
-    // // console.log("data.approve", data.approve, typeof data.approve);
-    // const formData = new FormData();
-    // formData.append("newData", newData);
-    // formData.append("productId", params.productid.toString());
-    // try {
-    //   let result = await upDateOptionProduct(formData);
-    //   if (result) {
-    //     // toast({
-    //     //   duration: 3000,
-    //     //   title: "수정완료",
-    //     //   description: "데이터 수정이 완료 되었습니다.",
-    //     // });
-    //   }
-    // } catch (e: any) {
-    //   console.log(e);
-    //   toast({
-    //     duration: 3000,
-    //     variant: "destructive",
-    //     title: "수정 ERROR",
-    //     description: `${e}`,
-    //   });
-    // } finally {
-    //   await new Promise((resolve) => setTimeout(resolve, 1000));
-    //   setUpdateLoading(false);
-    //   // window.location.reload();
-    // }
   });
 
   const reload = async () => {
@@ -127,11 +87,7 @@ export default function Page({
         "form.formState.isSubmitSuccessful",
         form.formState.isSubmitSuccessful
       );
-      toast({
-        duration: 3000,
-        title: "수정완료",
-        description: "데이터 수정이 완료 되었습니다.",
-      });
+      toast.success("데이터 수정이 완료 되었습니다.");
       reload();
       console.log("done");
       // window.location.reload();

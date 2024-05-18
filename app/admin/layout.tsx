@@ -253,6 +253,12 @@ export const adminMenu = [
         link: "setting/farmitem",
         disable: false,
       },
+      {
+        title: "배너관리",
+        icon: <BookOpenIcon className="size-4" />,
+        link: "setting/banner",
+        disable: false,
+      },
     ],
     icon: <Cog6ToothIcon className="size-4" />,
     link: "farmer",
