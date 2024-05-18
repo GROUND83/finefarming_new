@@ -21,13 +21,14 @@ export async function GET(request: NextRequest) {
   // 각 농장 방송
   // post 포스트맨으로 테스트
 
-  let koreanSelectDay = dayjs().minute(0).second(0).toISOString(); // utc
-  let plusDay = dayjs().add(1, "day").toISOString();
+  let koreanSelectDay = dayjs().tz().format("YYYY-MM-DD");
+
+  let plusDay = dayjs(koreanSelectDay).tz().add(1, "day").format();
   console.log("koreanSelectDay", koreanSelectDay, "plusDay", plusDay);
   let reservations = await db.reservation.findMany({
     where: {
       status: "complete",
-      checkInDate: { gte: koreanSelectDay, lt: plusDay },
+      sendDate: koreanSelectDay,
     },
     include: {
       farm: {
@@ -44,5 +45,6 @@ export async function GET(request: NextRequest) {
       },
     },
   });
+
   return NextResponse.json({ message: reservations }, { status: 200 });
 }

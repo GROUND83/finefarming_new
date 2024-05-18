@@ -5,6 +5,7 @@ import adminChangStatusTemplet from "@/lib/mailtemplate/adminChangeStatusTemplet
 import adminDoneTemplet from "@/lib/mailtemplate/adminDoneTemplet";
 import sendMail from "@/lib/sendMail/sendMail";
 import { Prisma, ReservationStatus } from "@prisma/client";
+import { connect } from "http2";
 import moment from "moment";
 import nodemailer from "nodemailer";
 
@@ -73,7 +74,25 @@ export async function changeComplete(reservationId: number) {
       },
     },
   });
-  console.log("result", result);
+  let product = await db.product.findUnique({
+    where: {
+      id: result.productId,
+    },
+    include: {
+      event: {
+        where: {
+          visible: true,
+        },
+        select: {
+          visible: true,
+          image: true,
+        },
+      },
+    },
+  });
+  console.log("result", result, product);
+  console.log("product", product);
+
   let user = result.user;
 
   let username = user.username;
@@ -122,17 +141,39 @@ export async function changeComplete(reservationId: number) {
     title,
     subTitle,
   });
-  const mailData: any = {
-    to: to,
-    subject: subject,
-    from: from,
-    html: html,
-    //	attachments 옵션으로 첨부파일도 전송 가능함
-    //	attachments : [첨부파일]
-  };
-  let sendResult = await sendMail(mailData);
-  console.log("sendResult", sendResult);
-  return result;
+  if (product?.event && product?.event.length > 0) {
+    const mailData: any = {
+      to: to,
+      subject: subject,
+      from: from,
+      html: html,
+      attachments: [
+        {
+          filename: "event.png",
+          path: product?.event[0].image,
+          cid: "event.png",
+        },
+      ],
+      //	attachments 옵션으로 첨부파일도 전송 가능함
+      //	attachments : [첨부파일]
+    };
+    let sendResult = await sendMail(mailData);
+    console.log("sendResult", sendResult);
+    return result;
+  } else {
+    const mailData: any = {
+      to: to,
+      subject: subject,
+      from: from,
+      html: html,
+
+      //	attachments 옵션으로 첨부파일도 전송 가능함
+      //	attachments : [첨부파일]
+    };
+    let sendResult = await sendMail(mailData);
+    console.log("sendResult", sendResult);
+    return result;
+  }
 }
 
 export async function changeStatus({
@@ -266,6 +307,7 @@ export async function changeStatus({
           title,
           subTitle,
         });
+
         const mailData: any = {
           to: to,
           subject: subject,

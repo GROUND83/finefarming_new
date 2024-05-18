@@ -1,5 +1,4 @@
 "use client";
-import getSession from "@/lib/session";
 
 import { createReview, getReviews } from "./_components/actions";
 import React from "react";
@@ -30,6 +29,8 @@ import { getUploadUrl } from "@/lib/uploadUrl";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const myStyles = {
   itemShapes: RoundedStar,
@@ -47,22 +48,23 @@ export default function Page({
   const [product, setProduct] = React.useState<any>();
   const [loading, setLoading] = React.useState(false);
   const [updateloading, setUpdateLoading] = React.useState(false);
-
+  const { data: session } = useSession();
+  const router = useRouter();
   const getReview = async () => {
     //
-    let user = await getSession();
-    if (user) {
-      setUserId(user.id);
+
+    if (session?.user) {
+      let data = {
+        reservationId: Number(params.reservationId),
+        productId: Number(params.productId),
+        userId: Number(session?.user.id),
+      };
+      let result = await getReviews(JSON.stringify(data));
+      console.log("reviews", result);
+      setReviews(result.reviews);
+      setReservation(result.reservation);
+      setProduct(result.product);
     }
-    let result = await getReviews({
-      reservationId: Number(params.reservationId),
-      productId: Number(params.productId),
-      userId: Number(user.id),
-    });
-    console.log("reviews", result);
-    setReviews(result.reviews);
-    setReservation(result.reservation);
-    setProduct(result.product);
   };
 
   const form = useForm<reviewSchemType>({
@@ -105,7 +107,7 @@ export default function Page({
       }
 
       let newData = {
-        userId,
+        userId: session?.user.id,
         productId: Number(params.productId),
         reservationId: Number(params.reservationId),
         image: `${data.image.downUrl}/public`,
@@ -118,6 +120,8 @@ export default function Page({
       try {
         const result = await createReview(newString);
         console.log(result);
+        toast.success("리뷰 작성을 완료 했습니다.");
+        router.push("/profile");
       } catch (e: any) {
         // console.log(e);
       } finally {
@@ -208,14 +212,14 @@ export default function Page({
   //
   React.useEffect(() => {
     getReview();
-  }, [params.productId]);
+  }, [session?.user]);
   //
   const onValid = async () => {
     await onSubmit();
   };
   return (
     <div className="w-full bg-white h-full p-3">
-      {reviews.length > 0 && (
+      {/* {reviews.length > 0 && (
         <div className="px-6 w-full">
           <div className=" px-3 w-full flex flex-row items-center gap-1 bg-neutral-100 text-black border py-3 rounded-md  justify-center">
             <div className="flex flex-row items-center gap-1 flex-1">
@@ -224,11 +228,14 @@ export default function Page({
               <p>개 있습니다.</p>
             </div>
             <Button asChild size={"sm"}>
-              <Link href={`/review/mylist/${userId}`}> 리뷰 확인</Link>
+              <Link href={`/review/mylist/${session?.user.id}`}>
+                {" "}
+                리뷰 확인
+              </Link>
             </Button>
           </div>
         </div>
-      )}
+      )} */}
       <div className="w-full   relative  grid grid-cols-12 gap-6 bg-white ">
         <div className="p-6 flex-1   flex flex-col items-start justify-between w-full   col-span-12 gap-6">
           {product && (

@@ -2,32 +2,26 @@
 import db from "@/lib/db";
 import { Prisma } from "@prisma/client";
 
-export async function getReviews({
-  reservationId,
-  productId,
-  userId,
-}: {
-  reservationId: number;
-  productId: number;
-  userId: number;
-}) {
+export async function getReviews(data: string) {
   //
+
+  let newData = JSON.parse(data);
 
   let reviews = await db.review.findMany({
     where: {
-      reservationId: reservationId,
-      productId: productId,
-      userId: userId,
+      reservationId: newData.reservationId,
+      productId: newData.productId,
+      userId: newData.userId,
     },
   });
   let reservation = await db.reservation.findUnique({
     where: {
-      id: reservationId,
+      id: newData.reservationId,
     },
   });
   let product = await db.product.findUnique({
     where: {
-      id: productId,
+      id: newData.productId,
     },
   });
   console.log("result", reviews);

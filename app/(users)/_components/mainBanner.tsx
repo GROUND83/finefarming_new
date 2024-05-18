@@ -33,7 +33,7 @@ export default function MainBanner({ banners }: { banners: any }) {
                   className="object-cover  brightness-75"
                   sizes="100%"
                 />
-                <div className=" absolute bg-white lg:right-24 w-[80%] lg:w-[300px]  flex flex-col items-center justify-center p-12 gap-6">
+                <div className=" absolute bg-white lg:right-24 w-[80%] lg:w-[300px]  flex flex-col items-center justify-center  p-6 lg:p-12 gap-3 lg:gap-6">
                   <p className="text-lg font-semibold text-primary">EVENT</p>
                   <p className="text-2xl text-pretty">{banner.title}</p>
                   <p className="text-sm text-pretty">{banner.period}</p>

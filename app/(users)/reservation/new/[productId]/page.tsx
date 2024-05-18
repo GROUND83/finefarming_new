@@ -329,8 +329,12 @@ export default function Page({ params }: { params: { productId: string } }) {
 
         let jsonData = JSON.stringify(newdata);
         // formData.append("newData", string);
-        let result = await makeReservation(jsonData);
-        console.log(result);
+        try {
+          let result = await makeReservation(jsonData);
+          console.log(result);
+        } catch (e) {
+          console.log("e", e);
+        }
       }
     }
     setUpdating(false);

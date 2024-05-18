@@ -50,7 +50,7 @@ export async function generateMetadata(
   const { result, images } = await getProductsDetailData(
     Number(params.productId)
   );
-
+  console.log("result", result);
   return {
     metadataBase: new URL("https://www.finefarming.co.kr"),
     alternates: {
@@ -64,7 +64,7 @@ export async function generateMetadata(
       siteName: "파인파밍",
       images: [
         {
-          url: result?.detail.image!, // Must be an absolute URL
+          url: result?.detail?.image ? result?.detail.image : result.mainImage, // Must be an absolute URL
           width: 800,
           height: 600,
         },

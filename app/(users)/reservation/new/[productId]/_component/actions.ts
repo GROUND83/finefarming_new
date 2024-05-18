@@ -313,7 +313,7 @@ export async function makeReservation(jsonData: string) {
         farm: { initail, id, reservationMin },
       } = product;
       let sendDate = dayjs(result.checkInDate)
-        .subtract(Number(reservationMin) - 1)
+        .subtract(Number(reservationMin) - 1, "day")
         .format("YYYY-MM-DD");
       let createReservation = await db.reservation.create({
         data: {
