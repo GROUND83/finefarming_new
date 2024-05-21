@@ -58,7 +58,16 @@ export default async function Page({
                     </div>
                     <div className="flex flex-col items-start flex-1 gap-1">
                       <div className="flex flex-row items-center gap-2 text-neutral-500">
-                        <p>{review.user.username}</p>
+                        {review.user.username.length > 2 ? (
+                          <p>
+                            {review.user.username.slice(0, 1) +
+                              "0" +
+                              review.user.username.slice(2, 3)}
+                          </p>
+                        ) : (
+                          <p>{review.user.username.slice(0, 1) + "0"}</p>
+                        )}
+
                         <p>{dayjs(review.created_at).format("YYYY-MM-DD")}</p>
                       </div>
                       <div className=" flex flex-col items-start ">

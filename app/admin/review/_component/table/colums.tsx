@@ -64,14 +64,14 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "title",
     header: ({ column }) => {
       return (
-        <div className="w-[300px]">
+        <div className="w-[260px] ">
           <p>리뷰</p>
         </div>
       );
     },
     cell: ({ row }) => {
       return (
-        <div className=" text-left">
+        <div className=" text-left line-clamp-1">
           <p>{row.getValue("title")}</p>
         </div>
       );
@@ -118,10 +118,10 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "visible",
     header: ({ column }) => {
       return (
-        <div>
+        <div className="w-[100px] ">
           <Button
             variant="ghost"
-            className=" p-0"
+            className="p-0"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             공개
