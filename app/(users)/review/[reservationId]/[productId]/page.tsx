@@ -6,17 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { reviewSchem, reviewSchemType } from "./_components/reviewSchema";
 import { Rating, ThinStar, RoundedStar } from "@smastrom/react-rating";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { LoadingEditSubmitButton } from "@/components/ButtonComponent";
-
 import ImageUploadComponent from "@/app/admin/_component/imageUploadComponent";
 import FormImageUpload from "@/components/form/FormImageUpload";
 import { Input } from "@/components/ui/input";
