@@ -7,19 +7,29 @@ import { ExclamationCircleIcon, PhoneIcon } from "@heroicons/react/24/outline";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-
+import { Rating, ThinStar, RoundedStar } from "@smastrom/react-rating";
 import { ProductTitleWrap } from "../_components/ProductTitleWrap";
 import Map from "@/components/map";
 import type { Metadata, ResolvingMetadata } from "next";
 import ImageSlider from "@/components/imageSlider";
 import AddressCopy from "../_components/addressCopy";
 import EventWrap from "../_components/eventWrap";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { empty_avatar_url } from "@/lib/constants";
+import dayjs from "dayjs";
 //
+import "@smastrom/react-rating/style.css";
+const myStyles = {
+  itemShapes: RoundedStar,
+  activeFillColor: "#17A34A",
+  inactiveFillColor: "#AAF3C4",
+};
 async function getProductsDetailData(productId: number) {
   //
   //   await new Promise((resolve) => setTimeout(resolve, 10000));
   let result: any = await getProductDetail(productId);
   let newImage = [...result.images];
+
   if (result.mainImage) {
     let images = [result.mainImage, ...newImage];
     // console.log("images", images);
@@ -50,7 +60,7 @@ export async function generateMetadata(
   const { result, images } = await getProductsDetailData(
     Number(params.productId)
   );
-  console.log("result", result);
+  // console.log("result", result);
   return {
     metadataBase: new URL("https://www.finefarming.co.kr"),
     alternates: {
@@ -87,7 +97,7 @@ export default async function Page({
     return notFound();
   }
   //
-  console.log("result", result);
+  console.log("result", result.reviews);
 
   return (
     <article className="w-full bg-white  ">
@@ -125,6 +135,12 @@ export default async function Page({
                 </TabsTrigger>
                 <TabsTrigger value="farm" className="text-sm lg:text-lg">
                   농장 정보
+                </TabsTrigger>
+                <TabsTrigger value="reviews" className="">
+                  <div className="flex flex-row items-center gap-2">
+                    <p className="text-sm lg:text-lg">체험 후기</p>
+                    <p className=" font-normal">{result.reviews.length}</p>
+                  </div>
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="product">
@@ -600,6 +616,67 @@ export default async function Page({
                       <section className="w-full">
                         <Map address={result.farm.address} />
                       </section>
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+              <TabsContent value="reviews">
+                <div className="p-3  flex flex-col items-start gap-3">
+                  <div className=" p-3 w-full flex flex-col items-start gap-3 text-sm">
+                    <div className="flex flex-col gap-4 w-full">
+                      <div className="flex flex-col items-start gap-1 text-sm ">
+                        {result.reviews.length > 0 ? (
+                          <>
+                            {result.reviews.map((review: any, index: any) => {
+                              return (
+                                <Link
+                                  href={`/product/${params.productId}/reviews`}
+                                  className=" flex flex-row items-center gap-3 border p-3 w-full rounded-md"
+                                  key={index}
+                                >
+                                  <div className="flex flex-col items-start flex-1 gap-1">
+                                    <div className="flex flex-row items-center gap-2 text-neutral-500">
+                                      <p>{review.user.username}</p>
+                                      <p>
+                                        {dayjs(review.created_at).format(
+                                          "YYYY-MM-DD"
+                                        )}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <Rating
+                                        readOnly
+                                        value={review.point}
+                                        // onChange={onChange}
+                                        style={{ width: 120, height: 20 }}
+                                        itemStyles={myStyles}
+                                        // className="flex flex-row items-center"
+                                      />
+                                    </div>
+                                    <div>
+                                      <p className=" whitespace-pre-wrap line-clamp-3  ">
+                                        {review.title}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="w-[100px]  aspect-square relative">
+                                    <Image
+                                      src={review.image}
+                                      fill
+                                      alt={`review-${index}`}
+                                      className=" object-cover"
+                                    />
+                                  </div>
+                                </Link>
+                              );
+                            })}
+                          </>
+                        ) : (
+                          <div className="flex w-full flex-col items-center justify-center text-neutral-500 h-[500px]">
+                            <p>체험 후기가 아직 없습니다.</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
