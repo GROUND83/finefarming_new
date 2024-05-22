@@ -72,9 +72,11 @@ export async function GET(request: NextRequest) {
 
   for (const [key, value] of Object.entries(newObj) as any) {
     let farmName = "";
+    let title = "";
     for (const [reservationCheckinTime, reservationDatas] of Object.entries(
       value
     ) as any) {
+      title = dayjs(reservationDatas[0].checkInDate).format("YYYY년MM월DD일");
       let string = `<!doctype html> <html><body style="width:500px;padding:20px;">
       <div>
       <img
@@ -88,7 +90,9 @@ export async function GET(request: NextRequest) {
       width: 100%;
       marging-top:10px;
     ">
-      <p style="font-size:22px; font-weight:bold;">${koreanSelectDay} ${reservationDatas[0].farm.name} 예약내역</p>
+      <p style="font-size:22px; font-weight:bold;">${dayjs(
+        reservationDatas[0].checkInDate
+      ).format("YYYY년MM월DD일")} ${reservationDatas[0].farm.name} 예약내역</p>
       </div>
         </div>
         `;
@@ -274,7 +278,7 @@ export async function GET(request: NextRequest) {
       let to = `${key}`;
       const mailData: any = {
         to: to,
-        subject: `${koreanSelectDay} ${farmName} 예약내역`,
+        subject: `${title} ${farmName} 예약내역`,
         from: "info@finefarming.co.kr",
         html: string,
       };
