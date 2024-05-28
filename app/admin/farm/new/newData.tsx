@@ -144,7 +144,7 @@ export default function NewFarm() {
       </Button>
       <Dialog open={open}>
         {farmers.length > 0 ? (
-          <DialogContent className="max-w-[90vw] rounded-md p-3 ">
+          <DialogContent className="max-w-[90vw] h-[90vh]  overflow-y-auto rounded-md p-3 ">
             <div className="w-full p-3 ">
               <div className="w-full flex flex-col items-end py-3">
                 <Button
