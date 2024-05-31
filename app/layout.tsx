@@ -45,6 +45,16 @@ export default async function RootLayout({
   return (
     <ReactQueryClientProvider>
       <html lang="ko">
+        <head>
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              style="display:none"
+              src="https://www.facebook.com/tr?id=4129010167376389&ev=PageView&noscript=1"
+            />
+          </noscript>
+        </head>
         <body
           className={cn(notoSansKr.className, roboto.variable)}
           style={{ fontSize: 16, margin: 0, padding: 0 }}
