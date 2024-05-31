@@ -21,7 +21,7 @@ export default function Layout({
             `}
       </Script>
       <Script
-        id=""
+        id="fb-pixel"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
