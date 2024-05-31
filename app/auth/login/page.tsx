@@ -41,10 +41,10 @@ function Login() {
         </Link>
       </section>
 
-      {/* <section className=" w-full p-6 flex flex-col items-center gap-6">
+      <section className=" w-full p-6 flex flex-col items-center gap-6">
         <span className="text-neutral-500 text-sm">또는</span>
-        <SocialLogin redirect={redirectStr ? redirectStr : ""} />
-      </section> */}
+        <SocialLogin redirect={"/"} />
+      </section>
       <section className="flex flex-row items-center gap-3 px-6 mt-16">
         <Link
           href={"/othersAuth/farmer/login"}

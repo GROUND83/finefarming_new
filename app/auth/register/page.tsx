@@ -360,7 +360,7 @@ export default function Page() {
             </Button>
           </form>
         </Form>
-        {/* <SocialLogin redirect="/" /> */}
+        <SocialLogin redirect="/" />
         <div className="flex flex-row items-center gap-3 ">
           <span>이미 계정이 있나요?</span>
           <Link href={"/auth/login"} className="text-primary font-bold">
