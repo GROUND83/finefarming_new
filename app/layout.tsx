@@ -10,6 +10,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import AuthProvider from "@/lib/next-auth";
 import { cn } from "@/lib/utils";
+import Head from "next/head";
 dayjs.locale("ko");
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -45,16 +46,19 @@ export default async function RootLayout({
   return (
     <ReactQueryClientProvider>
       <html lang="ko">
-        <head>
-          <noscript>
-            <img
-              height="1"
-              width="1"
-              style="display:none"
-              src="https://www.facebook.com/tr?id=4129010167376389&ev=PageView&noscript=1"
-            />
-          </noscript>
-        </head>
+        <Head>
+          <noscript
+            dangerouslySetInnerHTML={{
+              __html: ` <img
+            height="1"
+            width="1"
+            style="display:none"
+            src="https://www.facebook.com/tr?id=4129010167376389&ev=PageView&noscript=1"
+          />
+            `,
+            }}
+          ></noscript>
+        </Head>
         <body
           className={cn(notoSansKr.className, roboto.variable)}
           style={{ fontSize: 16, margin: 0, padding: 0 }}
