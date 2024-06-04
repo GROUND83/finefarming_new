@@ -67,16 +67,20 @@ export default function RootLayout({
         {children}
       </main>
       <Footer />
-      <Script type="text/javascript" src="//wcs.naver.net/wcslog.js" />
-      <Script id="common" strategy="afterInteractive">
+      <Script
+        type="text/javascript"
+        src="//wcs.naver.net/wcslog.js"
+        strategy="beforeInteractive"
+      />
+      <Script id="common" strategy="beforeInteractive">
         {`
           if (!wcs_add) var wcs_add={};
           wcs_add["wa"] = "s_4e5f6329aa9e";
           if (!_nasa) var _nasa={};
           if(window.wcs){
-          wcs.inflow("finefarmin.co.kr");
+          wcs.inflow("finefarming.co.kr");
           wcs_do(_nasa);
-}
+      }
         `}
       </Script>
     </div>
