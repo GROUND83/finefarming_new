@@ -45,6 +45,11 @@ export default function Page() {
             console.log("newData", newData);
             setUser(newData);
             if (newData.reservation.length > 0) {
+              newData.reservation.sort((a: any, b: any) => {
+                let dateA = new Date(a.created_at).getTime();
+                let dateB = new Date(b.created_at).getTime();
+                return dateA < dateB ? 1 : -1;
+              });
               setReservation(newData.reservation);
               setDoneReservation(
                 newData.reservation.filter(
@@ -293,7 +298,7 @@ export default function Page() {
           )}
         </div>
       )}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
