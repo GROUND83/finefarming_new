@@ -18,7 +18,8 @@ import { Loader2 } from "lucide-react";
 import Footer from "../../../components/footerWrap";
 import { EnvelopeIcon } from "@heroicons/react/24/solid";
 import ProviderIcon from "@/components/providerIcon";
-
+import dayjs from "dayjs";
+dayjs.locale("ko");
 export default function Page() {
   const [loading, setLoading] = React.useState(false);
   const [user, setUser] = React.useState<any>("");
@@ -188,7 +189,7 @@ export default function Page() {
                               <div className="flex flex-row items-center justify-between w-full">
                                 <p>방문일</p>
                                 <p>
-                                  {moment(reservation.checkInDate).format(
+                                  {dayjs(reservation.checkInDate).format(
                                     "YYYY년 MM월 DD일"
                                   )}{" "}
                                   {reservation.checkInTime}
@@ -197,9 +198,9 @@ export default function Page() {
                               <div className="flex flex-row items-center justify-between w-full">
                                 <p>예약일시</p>
                                 <p>
-                                  {moment(reservation.created_at).format(
-                                    "YYYY년 MM월 DD일"
-                                  )}
+                                  {dayjs(reservation.created_at)
+                                    .subtract(9, "hour")
+                                    .format("YYYY년 MM월 DD일 HH:mm")}
                                 </p>
                               </div>
                               <div className="flex flex-row items-center justify-between w-full mt-3">

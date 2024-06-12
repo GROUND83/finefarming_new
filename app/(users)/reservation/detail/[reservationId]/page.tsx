@@ -11,6 +11,7 @@ import Link from "next/link";
 import { getSession } from "next-auth/react";
 import { Badge } from "@/components/ui/badge";
 import { AlertButton } from "@/components/ButtonComponent";
+import dayjs from "dayjs";
 
 // async function getIsOwner(authorId: number) {
 //   const session = await getSession();
@@ -54,12 +55,11 @@ export default function Page({
     let min = newDate.product.farm.reservationMin;
     let today = moment().format("YYYY-MM-DD");
     let reservationData = moment(newDate.reservation.checkInDate)
-      .subtract(min, "day")
+      .subtract(min - 1, "day")
       .format("YYYY-MM-DD");
     console.log(
       min,
       today,
-
       reservationData,
       moment(today).isBefore(reservationData)
     );
@@ -127,9 +127,9 @@ export default function Page({
               </div>
               <div className=" col-span-8">
                 <p>
-                  {moment(reservationDetail.created_at).format(
-                    "YYYY년 MM월 DD일"
-                  )}
+                  {dayjs(reservationDetail.created_at)
+                    .subtract(9, "hour")
+                    .format("YYYY년 MM월 DD일")}
                 </p>
               </div>
               {reservationDetail.priceType === "PERSONAL" && (
