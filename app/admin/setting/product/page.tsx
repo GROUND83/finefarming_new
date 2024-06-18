@@ -1,8 +1,7 @@
 "use client";
 import { FormTitle } from "../../_component/form/form";
 import { DataTableComponent } from "@/components/table/tableComponent";
-import { getMoreData } from "./table/actions";
-import { columns } from "./table/colums";
+
 import { notFound } from "next/navigation";
 import { getProducts, updateProductOrder } from "./_actions/actions";
 import Image from "next/image";
