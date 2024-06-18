@@ -214,6 +214,7 @@ model Product {
   reviews Review[]
   magazines Magazine[]
   event Event[]
+  order Int @default(10)
 }
 enum ProductType {
   MANDATORY
@@ -352,6 +353,7 @@ model Magazine {
   image String
   sections Json[]
   suggestion Json[]
+  order Int @default(10)
 }
 model Holiday {
   id Int @id @default(autoincrement())

@@ -60,7 +60,7 @@ export async function generateMetadata(
   const { result, images } = await getProductsDetailData(
     Number(params.productId)
   );
-  // console.log("result", result);
+  console.log("result", result);
   return {
     metadataBase: new URL("https://www.finefarming.co.kr"),
     alternates: {
@@ -497,17 +497,19 @@ export default async function Page({
                             )}
                           </div>
                         </section>
-                        <section className="flex flex-row items-center w-full gap-2 border p-3 justify-between ">
-                          <h2 className=" lg:text-base text-sm">주차 시설</h2>
-                          {result.farm.parking === "free" ? (
-                            <p>무료</p>
-                          ) : result.farm.parking === "paid" ? (
-                            <div className="flex flex-col items-start gap-2">
-                              <Badge>유료</Badge>
-                              <p>{result.farm.parkinngFee}</p>
-                            </div>
-                          ) : null}
-                        </section>
+                        {result.farm.parking !== "noPark" && (
+                          <section className="flex flex-row items-center w-full gap-2 border p-3 justify-between ">
+                            <h2 className=" lg:text-base text-sm">주차 시설</h2>
+                            {result.farm.parking === "free" ? (
+                              <p>무료</p>
+                            ) : result.farm.parking === "paid" ? (
+                              <div className="flex flex-col items-start gap-2">
+                                <Badge>유료</Badge>
+                                <p>{result.farm.parkinngFee}</p>
+                              </div>
+                            ) : null}
+                          </section>
+                        )}
                       </div>
 
                       {result.farm.pet && (

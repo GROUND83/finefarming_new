@@ -5,10 +5,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import SubTop from "@/components/subTop";
 
 export default function LayOut({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
   return (
-    <div className="flex flex-col items-start   relative w-full  h-full  ">
-      <div className="w-full  relative  top-0 left-0">
+    <div className="flex flex-col items-stretch   relative w-full  h-full  ">
+      <div className="w-full  relative  top-0 left-0 z-50">
         <SubTop
           title="사이트 관리"
           sub=" 체험품종,교육주제,구비시설,도구복장,정책관련 데이터를 관리합니다."
@@ -18,7 +17,17 @@ export default function LayOut({ children }: { children: React.ReactNode }) {
         />
       </div>
 
-      <div className="  px-3  w-full  h-[70px] flex flex-row  items-center justify-start top-[70px]  fixed border-b  bg-white gap-3">
+      {/* <div className="px-3  w-full  h-[70px] flex flex-row  items-center justify-start top-[70px]  fixed border-b  bg-white gap-3">
+        <Link
+          href={"/admin/setting/product"}
+          className={
+            pathname.includes("/admin/setting/product")
+              ? "bg-primary text-white px-3 py-1 rounded-md font-light text-sm"
+              : "bg-neutral-100 text-neutral-500 px-3 py-1 rounded-md border text-sm"
+          }
+        >
+          체험상품 순서
+        </Link>
         <Link
           href={"/admin/setting/holidays"}
           className={
@@ -85,10 +94,8 @@ export default function LayOut({ children }: { children: React.ReactNode }) {
             <p>배너관리</p>
           </div>
         </Link>
-      </div>
-      <div className=" flex flex-col items-start w-full  flex-1 mt-[140px] ">
-        {children}
-      </div>
+      </div> */}
+      <div className=" w-full  flex-1 mt-[70px]  ">{children}</div>
     </div>
   );
 }

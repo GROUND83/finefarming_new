@@ -23,6 +23,9 @@ async function getMagazine() {
         },
       },
     },
+    orderBy: {
+      order: "asc",
+    },
   });
   return magazines;
 }
@@ -68,9 +71,9 @@ export default async function Page({
                     />
                     <div className="bg-white z-20 absolute w-[70%] h-[70%] p-6  flex flex-col items-center justify-center gap-3">
                       <header className="flex flex-col items-center">
-                        <p className="text-xl text-neutral-400">
+                        {/* <p className="text-xl text-neutral-400">
                           #{magazine.id}
-                        </p>
+                        </p> */}
                         <h2 className="text-md text-center">
                           {magazine.title}
                         </h2>

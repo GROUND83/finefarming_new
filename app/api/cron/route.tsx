@@ -189,7 +189,7 @@ export async function GET(request: NextRequest) {
             let startAge = personalPrice.startAge;
             let endAge = personalPrice.endAge;
             let isFree = personalPrice.isFree;
-            let amount = personalPrice.Amount;
+            let amount = personalPrice.amount;
             string += `<div
             style="
               padding-left: 10px;
@@ -207,7 +207,7 @@ export async function GET(request: NextRequest) {
           }
           for (const product of reservationData.subProduct) {
             let essentailtitle = product.title;
-            let essentailprice = product.tipricetle;
+
             string += `<div
             style="
               padding-left: 10px;
@@ -224,9 +224,9 @@ export async function GET(request: NextRequest) {
             );
             for (const selectProduct of selectProducts) {
               let selectProductTitle = selectProduct.title;
-              let selectProductdescription = selectProduct.description;
+
               let selectProductamount = selectProduct.amount;
-              let selectProductprice = selectProduct.price;
+
               string += `<div
               style="
                 padding-left: 10px;

@@ -109,6 +109,18 @@ export const superAdminMenu = [
     title: "사이트 관리",
     subMenu: [
       {
+        title: "체험상품 순서",
+        icon: <BookOpenIcon className="size-4" />,
+        link: "setting/product",
+        disable: false,
+      },
+      {
+        title: "매거진 순서",
+        icon: <BookOpenIcon className="size-4" />,
+        link: "setting/magazine",
+        disable: false,
+      },
+      {
         title: "공휴일 관리",
         icon: <BookOpenIcon className="size-4" />,
         link: "setting/holidays",
@@ -224,6 +236,18 @@ export const adminMenu = [
     title: "사이트 관리",
     subMenu: [
       {
+        title: "체험상품 순서",
+        icon: <BookOpenIcon className="size-4" />,
+        link: "setting/product",
+        disable: false,
+      },
+      {
+        title: "매거진 순서",
+        icon: <BookOpenIcon className="size-4" />,
+        link: "setting/magazine",
+        disable: false,
+      },
+      {
         title: "공휴일 관리",
         icon: <BookOpenIcon className="size-4" />,
         link: "setting/holidays",
@@ -295,7 +319,7 @@ export default function AdminLayOut({
               <ManagerAuth />
             </div>
           </div>
-          <div className="w-full p-3   overflow-y-scroll  h-[calc(100vh-220px)]">
+          <div className="w-full p-3   overflow-y-auto  h-[calc(100vh-220px)]">
             <div className=" pb-12">
               {user?.role === "manager" ? (
                 <div className="flex flex-col items-start gap-2  text-black  font-light text-sm w-full">
@@ -412,7 +436,7 @@ export default function AdminLayOut({
           </div>
         </div>
       </div>
-      <div className="  w-[calc(100vw-220px)]   absolute top-0 right-0 h-full ">
+      <div className="  w-[calc(100vw-220px)] absolute top-0 right-0 h-full   overflow-y-auto">
         {children}
       </div>
     </div>

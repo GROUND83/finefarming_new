@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Magazine" ADD COLUMN     "order" INTEGER NOT NULL DEFAULT 10;

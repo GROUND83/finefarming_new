@@ -652,8 +652,8 @@ export default function Page({ params }: { params: { productid: string } }) {
                                 <div className="flex flex-row items-start gap-2">
                                   <CheckCircleIcon className="size-4 text-primary" />
                                   <p className="text-sm text-neutral-500">
-                                    농장 체험은 하우스에 입장하는 그룹을
-                                    기준으로 산정됩니다.
+                                    농장 체험은 입장하는 인원을 기준으로
+                                    산정됩니다.
                                   </p>
                                 </div>
                                 <div className="flex flex-col items-start mt-2 text-neutral-500">

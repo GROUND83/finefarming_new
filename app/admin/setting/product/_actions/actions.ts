@@ -20,6 +20,7 @@ export async function getProducts() {
         },
       },
       educationSubject: true,
+      order: true,
     },
     where: {
       visible: true,
@@ -29,6 +30,23 @@ export async function getProducts() {
     },
     orderBy: {
       order: "asc",
+    },
+  });
+  return products;
+}
+export async function updateProductOrder({
+  productId,
+  value,
+}: {
+  productId: number;
+  value: number;
+}) {
+  const products = await db.product.update({
+    where: {
+      id: productId,
+    },
+    data: {
+      order: value,
     },
   });
   return products;
