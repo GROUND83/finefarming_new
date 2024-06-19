@@ -219,7 +219,7 @@ model Product {
   reservationMin Int @default(2)
   slot Json[] @default(["{ \"type\": false ,\"visible\": true ,\"startTime\": \"9:00\" ,\"amount\": 3}"])
   // reserVationDates ReserVationDate[]
-  reservation Reservation[]
+  // reservation Reservation[]
 }
 enum ProductType {
   MANDATORY
@@ -309,7 +309,7 @@ model Reservation {
   farmName String?
   user User @relation(fields: [userId], references: [id], onDelete:Cascade)
   userId Int
-  product Product @relation(fields: [productId], references: [id], onDelete:Cascade)
+  // product Product @relation(fields: [productId], references: [id], onDelete:Cascade)
   productId Int
   visitor String?
   visitorPhone String?
