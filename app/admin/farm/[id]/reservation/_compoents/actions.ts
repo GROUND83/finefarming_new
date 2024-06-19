@@ -323,6 +323,7 @@ export async function updateCalender(formData: FormData) {
           // 날짜 별 검색후 모두 삭제
           let deleteReservation = await db.reserVationDate.deleteMany({
             where: {
+              farmId: Number(farmId),
               AND: [
                 {
                   date: { gte: newKoreanDate },
