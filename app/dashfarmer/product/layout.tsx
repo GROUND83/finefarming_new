@@ -1,11 +1,9 @@
 "use client";
 
-import DefaultLayOut from "@/app/admin/_component/defaultLayOut";
-import SubTop from "@/components/subTop";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
-import NewFarm from "./new/newData";
+
 import NewProductModal from "./new/newProductModla";
 
 export default function LayOut({ children }: { children: React.ReactNode }) {

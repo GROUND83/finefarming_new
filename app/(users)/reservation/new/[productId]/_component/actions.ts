@@ -9,6 +9,70 @@ import sendMail from "@/lib/sendMail/sendMail";
 import getDateTime from "@/lib/getDateTime";
 import userNewReservationTemplte from "@/lib/mailtemplate/userNewReservationTemplte copy";
 
+export async function getNationalHoliday() {
+  let year = moment().format("YYYY");
+  let nationalHoliday = await db.holiday.findMany({
+    where: {
+      year,
+    },
+    select: {
+      id: true,
+      dateName: true,
+      day: true,
+      locdate: true,
+      month: true,
+      year: true,
+    },
+  });
+  return nationalHoliday;
+}
+export async function getHolidays(productid: number) {
+  let product = await db.product.findUnique({
+    where: {
+      id: productid,
+    },
+  });
+  let farmdata = await db.farm.findUnique({
+    where: {
+      id: product?.farmId,
+    },
+    select: {
+      id: true,
+      mondayOpen: true,
+      mondayStart: true,
+      mondayEnd: true,
+      tuesdayOpen: true,
+      tuesdayStart: true,
+      tuesdayEnd: true,
+      wednesdayOpen: true,
+      wednesdayStart: true,
+      wednesdayEnd: true,
+      thursdayOpen: true,
+      thursdayStart: true,
+      thursdayEnd: true,
+      fridayOpen: true,
+      fridayStart: true,
+      fridayEnd: true,
+      saturdayOpen: true,
+      saturdayStart: true,
+      saturdayEnd: true,
+      sundayOpen: true,
+      sundayStart: true,
+      sundayEnd: true,
+      holidayOpen: true,
+      holidayStart: true,
+      holidayEnd: true,
+    },
+  });
+
+  // console.log("reserVationDate", farmdata);
+
+  if (farmdata) {
+    return farmdata;
+  } else {
+    return null;
+  }
+}
 export async function getProductDetail(productId: number) {
   const products = await db.product.findUnique({
     where: {

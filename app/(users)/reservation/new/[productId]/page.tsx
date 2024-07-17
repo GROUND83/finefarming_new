@@ -3,6 +3,8 @@ import { notFound, usePathname, useRouter } from "next/navigation";
 import React from "react";
 import {
   getFarmImpossibe,
+  getHolidays,
+  getNationalHoliday,
   getProductDetail,
   getReservationDate,
   makeReservation,
@@ -40,11 +42,7 @@ import { GroupNumberInput, NumberInput } from "@/components/form/NumberInput";
 import { SelectProductField } from "./_component/selectProductField";
 import dayjs from "dayjs";
 import { getSession, useSession } from "next-auth/react";
-import {
-  farmPossibleDay,
-  getHolidays,
-  getNationalHoliday,
-} from "@/app/admin/farm/[id]/reservation/_compoents/actions";
+
 import { z } from "zod";
 import { getFarmImages } from "@/app/admin/farm/[id]/image/_components/actions";
 import { toast } from "sonner";
@@ -458,7 +456,7 @@ export default function Page({ params }: { params: { productId: string } }) {
     let nationalholiday = await getNationalHoliday();
     console.log("nationalholiday", nationalholiday);
     setNationalHoliday(nationalholiday);
-    let holidays = await getHolidays(detail.farmId);
+    let holidays = await getHolidays(Number(params.productId));
     console.log("holidays", holidays);
     setFarmHoliday(holidays);
     let resultdata = await getFarmImpossibe(Number(detail.farmId));

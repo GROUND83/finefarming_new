@@ -164,7 +164,7 @@ export default function Page({ params }: { params: { productid: string } }) {
       const result = await deleteProduct(formData);
       if (result) {
         toast.success("삭제 완료 되었습니다.");
-        router.push(`/admin/farm/${params.id}/product`);
+        router.push(`/dashfarmer/product`);
       }
     } catch (e: any) {
       toast.error(e);
