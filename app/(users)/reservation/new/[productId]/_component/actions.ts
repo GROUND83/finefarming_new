@@ -327,6 +327,9 @@ export async function makeReservation(jsonData: string) {
             connect: { id: result.userId },
           },
           subProduct: result.subProduct,
+          product: {
+            connect: { id: productId },
+          },
           productId: productId,
           visitor: result.visitor,
           visitorPhone: result.visitorPhone,
