@@ -26,7 +26,7 @@ export default function LayOut({ children, params }: farmDetailProps) {
   const pathname = usePathname();
   return (
     <div className="relative  flex flex-col items-start flex-1  h-full w-full ">
-      <div className=" border-b  bg-white  w-full   px-6 py-3 flex flex-row items-center justify-between  gap-4 h-[45px]  ">
+      {/* <div className=" border-b  bg-white  w-full   px-6 py-3 flex flex-row items-center justify-between  gap-4 h-[45px]  ">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -60,8 +60,8 @@ export default function LayOut({ children, params }: farmDetailProps) {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-      </div>
-      <div className=" border-b  bg-white  w-full   px-6  flex flex-col items-start gap-4 h-[45px] ">
+      </div> */}
+      <div className=" border-b  bg-white  w-full   px-6  flex flex-col items-start gap-4 h-[50px] ">
         <div className="flex flex-row items-center gap-2 text-sm h-full">
           <Link
             href={`/admin/farm/${params.id}/base`}
@@ -103,7 +103,7 @@ export default function LayOut({ children, params }: farmDetailProps) {
           >
             운영정보
           </Link>
-          <Link
+          {/* <Link
             href={`/admin/farm/${params.id}/product`}
             className={`px-3 py-1 rounded-sm  transition-colors ${
               pathname.includes(`/admin/farm/${params.id}/product`)
@@ -112,8 +112,8 @@ export default function LayOut({ children, params }: farmDetailProps) {
             }`}
           >
             상품리스트
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
             href={`/admin/farm/${params.id}/reservation`}
             className={`px-3 py-1 rounded-sm  transition-colors ${
               pathname === `/admin/farm/${params.id}/reservation`
@@ -122,7 +122,7 @@ export default function LayOut({ children, params }: farmDetailProps) {
             }`}
           >
             예약정보
-          </Link>
+          </Link> */}
           <Link
             href={`/admin/farm/${params.id}/policy`}
             className={`px-3 py-1 rounded-sm  transition-colors ${
@@ -135,7 +135,7 @@ export default function LayOut({ children, params }: farmDetailProps) {
           </Link>
         </div>
       </div>
-      <ScrollArea className="flex flex-col items-start w-full  h-[calc(100vh-160px)]  ">
+      <ScrollArea className="flex flex-col items-start w-full  max-h-[calc(100vh-120px)]  ">
         {children}
       </ScrollArea>
     </div>

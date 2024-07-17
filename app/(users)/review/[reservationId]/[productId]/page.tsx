@@ -173,10 +173,10 @@ export default function Page({
     }
     const file = files[0];
     console.log(file);
-    if (file.size > 2000000) {
-      alert("이미지 사이즈가 2mb를 초과 하였습니다.");
-      return;
-    }
+    // if (file.size > 2000000) {
+    //   alert("이미지 사이즈가 2mb를 초과 하였습니다.");
+    //   return;
+    // }
 
     const url = URL.createObjectURL(file);
     console.log(url);
@@ -209,23 +209,6 @@ export default function Page({
   };
   return (
     <div className="w-full bg-white h-full p-3">
-      {/* {reviews.length > 0 && (
-        <div className="px-6 w-full">
-          <div className=" px-3 w-full flex flex-row items-center gap-1 bg-neutral-100 text-black border py-3 rounded-md  justify-center">
-            <div className="flex flex-row items-center gap-1 flex-1">
-              <p>이미 작성한 리뷰가</p>
-              <p className="text-primary font-semibold">{reviews.length}</p>
-              <p>개 있습니다.</p>
-            </div>
-            <Button asChild size={"sm"}>
-              <Link href={`/review/mylist/${session?.user.id}`}>
-                {" "}
-                리뷰 확인
-              </Link>
-            </Button>
-          </div>
-        </div>
-      )} */}
       <div className="w-full   relative  grid grid-cols-12 gap-6 bg-white ">
         <div className="p-6 flex-1   flex flex-col items-start justify-between w-full   col-span-12 gap-6">
           {product && (

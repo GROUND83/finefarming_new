@@ -110,7 +110,7 @@ export default async function Page() {
           </ArticleDescription>
         </div>
       </article>
-      <article className="grid grid-cols-2 w-full   container mx-auto gap-12">
+      {/* <article className="grid grid-cols-2 w-full   container mx-auto gap-12">
         <ArticleHeader title="Target">
           <p className="font-bold tracking-widest text-base lg:text-3xl text-pretty text-center">
             파인파밍은 고객 연령대별 <br className="lg:hidden" /> 맞춤농장을
@@ -356,7 +356,7 @@ export default async function Page() {
             </Link>
           </ArticleDescription>
         </div>
-      </article>
+      </article> */}
       <article className="grid grid-cols-2 w-full   container mx-auto ">
         <ArticleHeader title="Value">
           <p className="font-bold tracking-widest text-base lg:text-3xl text-pretty text-center">

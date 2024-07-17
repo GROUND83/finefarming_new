@@ -167,7 +167,7 @@ model Farm {
   reservationMax Int @default(60)
   reservationMin Int @default(2)
   slot Json[] @default(["{ \"type\": false ,\"visible\": true ,\"startTime\": \"9:00\" ,\"amount\": 3}"])
-  reserVationDates ReserVationDate[]
+  // reserVationDates ReserVationDate[]
   reservation Reservation[]
   magazines Magazine[]
   reivews Review[]
@@ -218,8 +218,16 @@ model Product {
   reservationMax Int @default(60)
   reservationMin Int @default(2)
   slot Json[] @default(["{ \"type\": false ,\"visible\": true ,\"startTime\": \"9:00\" ,\"amount\": 3}"])
-  // reserVationDates ReserVationDate[]
-  // reservation Reservation[]
+  reserVationDates ReserVationDate[]
+  reservation Reservation[]
+  farmerId Int?
+  status ProductStatusType @default(POSSIBLE)
+}
+enum ProductStatusType {
+  POSSIBLE
+  FINISHED
+  TESTING
+  
 }
 enum ProductType {
   MANDATORY
@@ -292,10 +300,10 @@ model ReserVationDate {
   date DateTime 
   startTime String
   amount Int
-  farm Farm @relation(fields: [farmId], references: [id], onDelete:Cascade)
-  farmId Int 
-  // product Product @relation(fields: [productId], references: [id], onDelete:Cascade)
-  // productId Int @default()
+  // farm Farm @relation(fields: [farmId], references: [id], onDelete:Cascade)
+  // farmId Int 
+  product Product @relation(fields: [productId], references: [id], onDelete:Cascade)
+  productId Int 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
@@ -306,10 +314,11 @@ model Reservation {
   reservationNumber String  // 
   farm Farm @relation(fields: [farmId], references: [id], onDelete:Cascade)
   farmId Int
+  farmerId Int?
   farmName String?
   user User @relation(fields: [userId], references: [id], onDelete:Cascade)
   userId Int
-  // product Product @relation(fields: [productId], references: [id], onDelete:Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete:Cascade)
   productId Int
   visitor String?
   visitorPhone String?

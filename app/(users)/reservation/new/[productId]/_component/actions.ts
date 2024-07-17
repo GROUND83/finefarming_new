@@ -91,7 +91,7 @@ export async function getReservationDate({
     },
   });
   let farmId = product?.farm.id;
-
+  console.log("farmId", farmId);
   //
   const farm = await db.farm.findUnique({
     where: {
@@ -113,7 +113,7 @@ export async function getReservationDate({
   // 특정일 예약 슬롯 가져오기
   const reservationDate = await db.reserVationDate.findMany({
     where: {
-      farmId: farmId,
+      productId: productId,
       visible: true,
       date: { gte: newKoreanDate, lt: plusDay },
     },
@@ -128,7 +128,7 @@ export async function getReservationDate({
   const reservation = await db.reservation.groupBy({
     by: ["checkInTime"],
     where: {
-      farmId: farmId,
+      productId: productId,
       checkInDate: {
         gte: newKoreanDate,
         lt: plusDay,
@@ -239,10 +239,10 @@ export async function getReservationDate({
     return { result: sortArray, type: "slot" };
   }
 }
-export async function getFarmImpossibe(farmId: number) {
+export async function getFarmImpossibe(productId: number) {
   const reservationDates = await db.reserVationDate.findMany({
     where: {
-      farmId: farmId,
+      productId: productId,
     },
   });
 

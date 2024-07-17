@@ -66,25 +66,25 @@ export default async function Page({
                       src={magazine.image}
                       fill
                       alt={magazine.title}
-                      className="z-10 bg-cover brightness-50"
+                      className="z-10 bg-cover brightness-75"
                       sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                     />
-                    <div className="bg-white z-20 absolute w-[70%] h-[70%] p-6  flex flex-col items-center justify-center gap-3">
+                    <div className="backdrop-blur-md bg-black/10 z-20 absolute w-[70%] h-[40%] p-6  flex flex-col items-center justify-center gap-3">
                       <header className="flex flex-col items-center">
                         {/* <p className="text-xl text-neutral-400">
                           #{magazine.id}
                         </p> */}
-                        <h2 className="text-md text-center">
+                        <h2 className="text-md text-center text-white">
                           {magazine.title}
                         </h2>
                       </header>
-                      <div className="flex flex-row items-center gap-3 mt-6 text-xs">
+                      <div className="flex flex-row items-center gap-3 mt-6 text-xs text-white">
                         {magazine.author.avatar && (
                           <Avatar>
                             <AvatarImage src={magazine.author?.avatar} />
                           </Avatar>
                         )}
-                        <div className="text-neutral-500">
+                        <div className="text-white">
                           <p>{magazine.author.username}</p>
                           <p>{magazine.author.intruduceTitle}</p>
                         </div>

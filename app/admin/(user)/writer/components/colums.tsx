@@ -24,7 +24,7 @@ export const columns: ColumnDef<any>[] = [
       return (
         <Button
           variant="ghost"
-          className="text-xs"
+          className=""
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           이름
@@ -36,7 +36,7 @@ export const columns: ColumnDef<any>[] = [
       let { avatar } = row.original;
       let avaterCheck = Boolean(avatar);
       return (
-        <div className="text-xs flex flex-row items-center gap-3">
+        <div className=" flex flex-row items-center gap-3">
           {avaterCheck ? (
             <Avatar>
               <AvatarImage src={`${avatar}`} />
@@ -57,7 +57,7 @@ export const columns: ColumnDef<any>[] = [
       return (
         <Button
           variant="ghost"
-          className="text-xs"
+          className=""
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           전화번호
@@ -66,7 +66,7 @@ export const columns: ColumnDef<any>[] = [
       );
     },
     cell: ({ row }) => {
-      return <div className="text-left text-xs">{row.getValue("phone")}</div>;
+      return <div className="text-left ">{row.getValue("phone")}</div>;
     },
   },
   {
@@ -75,7 +75,7 @@ export const columns: ColumnDef<any>[] = [
       return (
         <Button
           variant="ghost"
-          className="text-xs"
+          className=""
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           이메일
@@ -83,7 +83,7 @@ export const columns: ColumnDef<any>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="text-xs">{row.getValue("email")}</div>,
+    cell: ({ row }) => <div className="">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "approve",
@@ -91,7 +91,7 @@ export const columns: ColumnDef<any>[] = [
       return (
         <Button
           variant="ghost"
-          className="text-xs"
+          className=""
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           승인
@@ -100,16 +100,13 @@ export const columns: ColumnDef<any>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="text-xs">
+      <div className="">
         {row.getValue("approve") ? (
-          <Badge variant={"primary"} className="  text-xs font-light">
+          <Badge variant={"primary"} className="   font-light">
             승인
           </Badge>
         ) : (
-          <Badge
-            variant="outline"
-            className="text-neutral-400  text-xs font-light"
-          >
+          <Badge variant="outline" className="text-neutral-400   font-light">
             미승인
           </Badge>
         )}
@@ -122,7 +119,7 @@ export const columns: ColumnDef<any>[] = [
       return (
         <Button
           variant="ghost"
-          className="text-xs"
+          className=""
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           가입일
@@ -132,7 +129,7 @@ export const columns: ColumnDef<any>[] = [
     },
     cell: ({ row }) => {
       return (
-        <div className="text-xs">
+        <div className="">
           {dayjs(row.getValue("created_at")).format("YYYY/MM/DD")}
         </div>
       );
@@ -144,7 +141,7 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const manger = row.original;
       return (
-        <div className="text-xs text-right">
+        <div className=" text-right">
           <Link href={`/admin/writer/${manger.id}`}>
             <Button variant="outline" size="icon">
               <MagnifyingGlassIcon className="size-4" />

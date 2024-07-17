@@ -11,6 +11,7 @@ export async function getProducts() {
       description: true,
       visible: true,
       subProduct: true,
+      status: true,
       farm: {
         select: {
           name: true,

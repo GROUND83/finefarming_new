@@ -160,6 +160,33 @@ export function MobileUserComponet() {
                       <span>커뮤니티</span>
                     </Button>
                   </div>
+                  <div className="w-full flex flex-col items-start ">
+                    <Button
+                      onClick={() => {
+                        router.push("/recommand");
+                        setOpen(false);
+                      }}
+                      variant={"outline"}
+                      className="w-full flex flex-row items-center justify-start gap-2"
+                    >
+                      <ChatBubbleLeftEllipsisIcon className="size-4" />
+                      <span>월별 체험</span>
+                    </Button>
+                  </div>
+
+                  <div className="w-full flex flex-col items-start ">
+                    <Button
+                      onClick={() => {
+                        router.push("/match");
+                        setOpen(false);
+                      }}
+                      variant={"outline"}
+                      className="w-full flex flex-row items-center justify-start gap-2"
+                    >
+                      <ChatBubbleLeftEllipsisIcon className="size-4" />
+                      <span>체험 매칭</span>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -190,6 +217,8 @@ export function UserComponet() {
               ? "/admin/farm"
               : session?.user.role === "writer"
               ? "/dashwriter"
+              : session?.user.role === "farmer"
+              ? "/dashfarmer"
               : "/"
           }
           className="  flex flex-row items-center gap-3  "

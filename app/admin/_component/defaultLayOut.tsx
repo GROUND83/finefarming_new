@@ -17,7 +17,7 @@ export default function DefaultLayOut({
 }) {
   return (
     <div className="flex flex-col items-start   relative w-full  h-full  ">
-      <div className="w-full  relative  top-0 left-0">
+      <div className="w-full  relative  top-0 left-0 z-50">
         <SubTop
           title={title}
           sub={sub}

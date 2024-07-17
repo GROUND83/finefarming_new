@@ -697,17 +697,29 @@ export default async function Page({
             </Tabs>
           </div>
           <section className=" fixed bottom-0 container mx-auto bg-white border col-span-12 px-6 z-50">
-            <div className="w-full p-3 flex flex-row items-center  justify-between">
-              <div>
-                <p>{result.title}</p>
-                <p className="text-neutral-500 text-sm">{result.farm.name}</p>
+            {result.status === "POSSIBLE" && (
+              <div className="w-full p-3 flex flex-row items-center  justify-between">
+                <div>
+                  <p>{result.title}</p>
+                  <p className="text-neutral-500 text-sm">{result.farm.name}</p>
+                </div>
+                <Button asChild>
+                  <Link href={`/reservation/new/${params.productId}`}>
+                    예약하기
+                  </Link>
+                </Button>
               </div>
-              <Button asChild>
-                <Link href={`/reservation/new/${params.productId}`}>
-                  예약하기
-                </Link>
-              </Button>
-            </div>
+            )}
+            {result.status === "FINISHED" && (
+              <div className="w-full p-3 flex flex-row items-center  justify-center">
+                <p>예약이 불가 합니다.</p>
+              </div>
+            )}
+            {result.status === "TESTING" && (
+              <div className="w-full p-3 flex flex-row items-center  justify-center">
+                <p>예약이 불가 합니다.</p>
+              </div>
+            )}
           </section>
         </div>
       )}

@@ -21,6 +21,7 @@ async function getProductsData() {
 
 export default async function Page() {
   const products = await getProductsData();
+  console.log("products", products);
   if (!products) {
     return notFound();
   }
@@ -33,13 +34,13 @@ export default async function Page() {
             체험농장을 추천 합니다.
           </h1>
         </header>
-        <div className="w-full grid grid-cols-12 gap-3  p-3 mt-3  ">
+        <div className="w-full grid grid-cols-12 gap-12  p-3 mt-3  ">
           {products.length > 0 &&
             products.map((item: any, index: any) => {
               return (
                 <section
                   key={index}
-                  className="col-span-12  lg:col-span-6 grid grid-cols-2 gap-3 overflow-hidden  "
+                  className="col-span-12  lg:col-span-6 grid grid-cols-2  overflow-hidden border  "
                 >
                   <div className="col-span-2 lg:col-span-1 aspect-[4/3] lg:aspect-square relative   ">
                     {item.mainImage ? (
@@ -56,40 +57,60 @@ export default async function Page() {
                     ) : (
                       <div className="col-span-2 h-full bg-neutral-100"></div>
                     )}
+                    <div className="z-40 absolute top-3 left-0">
+                      {item.status === "POSSIBLE" && (
+                        <p className="bg-yellow-400 text-black px-3 py-1 text-sm  ">
+                          예약가능
+                        </p>
+                      )}
+                      {item.status === "FINISHED" && (
+                        <p className="bg-neutral-800 text-white px-3 py-1 text-sm ">
+                          예약종료
+                        </p>
+                      )}
+                      {item.status === "TESTING" && (
+                        <p className="bg-neutral-800 text-white px-3 py-1 text-sm ">
+                          테스트
+                        </p>
+                      )}
+                    </div>
+                    <div className="z-40 absolute bottom-0 left-0 right-0 flex flex-col items-start bg-white/30 p-2 bg-opacity-10 backdrop-blur-xl ">
+                      <div className=" ">
+                        <p className="text-sm font-semibold text-black">
+                          {item.farm.name}
+                        </p>
+                        <p className="text-xs text-black line-clamp-1">
+                          {item.farm.sido} {item.farm.sigungu}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="col-span-2 lg:col-span-1 lg:px-3 py-3 lg:py-0 flex flex-col items-start justify-start ">
+                  <div className="col-span-2 lg:col-span-1 lg:px-3 py-3 px-3 lg:py-3 flex flex-col items-start justify-start bg-neutral-50 ">
                     <div className="flex flex-col items-start flex-1 gap-2 ">
                       <p className=" font-semibold text-lg">{item.title}</p>
+                      <p className=" text-neutral-500 text-sm text-pretty w-full flex-1 line-clamp-3">
+                        {item.description}
+                      </p>
                       {item.educationSubject.length > 0 && (
                         <div className="flex flex-row items-center gap-2 flex-wrap">
                           {item.educationSubject.map(
                             (item: any, index: any) => {
                               return (
                                 <div key={index}>
-                                  <Badge className="text-xs">{item.tag}</Badge>
+                                  <Badge className="" variant={"outline"}>
+                                    {item.tag}
+                                  </Badge>
                                 </div>
                               );
                             }
                           )}
                         </div>
                       )}
-                      <p className=" text-neutral-500 text-sm text-pretty w-full flex-1">
-                        {item.description}
-                      </p>
                     </div>
 
                     <div className="w-full flex flex-col gap-1 mt-3">
-                      <div className="flex flex-col items-start ">
-                        <p className="text-sm font-semibold ">
-                          {item.farm.name}
-                        </p>
-                        <p className="text-xs text-neutral-500 line-clamp-1">
-                          {item.farm.sido} {item.farm.sigungu}
-                        </p>
-                      </div>
-
                       <Button asChild variant={"outline"} className="w-full">
-                        <Link href={`/product/${item.id}`}>체험상품 보기</Link>
+                        <Link href={`/product/${item.id}`}>자세히 보기</Link>
                       </Button>
                     </div>
                   </div>

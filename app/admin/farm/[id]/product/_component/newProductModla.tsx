@@ -37,33 +37,7 @@ import { productNewSchema, productNewSchemaType } from "./newSchema";
 
 import { productCreateData } from "./actions";
 import { toast } from "sonner";
-const toolData = [
-  {
-    id: "recents",
-    label: "삽 등 수확도구",
-  },
-  {
-    id: "home",
-    label: "Home",
-  },
-  {
-    id: "applications",
-    label: "Applications",
-  },
-  {
-    id: "desktop",
-    label: "Desktop",
-  },
-  {
-    id: "downloads",
-    label: "Downloads",
-  },
-  {
-    id: "documents",
-    label: "Documents",
-  },
-] as const;
-//
+
 type productModalProps = {
   farmId: string;
 };

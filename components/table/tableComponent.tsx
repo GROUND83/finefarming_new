@@ -26,6 +26,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export function DataTableComponent({
   getdata,
@@ -39,7 +41,7 @@ export function DataTableComponent({
     pageSize: 10,
   });
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const dataQuery = useQuery(
+  const { data } = useQuery(
     ["table", pagination],
     async () => await getdata(pagination)
     // { keepPreviousData: true }
@@ -47,9 +49,9 @@ export function DataTableComponent({
 
   const defaultData = React.useMemo(() => [], []);
   const table = useReactTable({
-    data: dataQuery.data?.rows ?? defaultData,
+    data: data?.rows ?? defaultData,
     columns: columns as any,
-    pageCount: dataQuery.data?.pageCount ?? 7,
+    pageCount: data?.pageCount ?? 7,
     onSortingChange: setSorting,
     state: {
       sorting,
@@ -65,11 +67,12 @@ export function DataTableComponent({
 
   return (
     <div className="w-full ">
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-neutral-500  ">
-          총 {dataQuery.data?.pageCount}개의 데이터가 있습니다.
+      <div className="flex flex-row items-center justify-end space-x-2  h-[70px]  px-3">
+        <div className="flex-1 text-sm text-neutral-500 flex flex-row items-center gap-2 ">
+          <p> 총 {data?.pageCount}개의 데이터가 있습니다.</p>
         </div>
         <div className="flex flex-row items-center">
+          {/* <Label>테이블 ROW</Label> */}
           <Select
             value={table.getState().pagination.pageSize.toString()}
             onValueChange={(value) => {
@@ -88,7 +91,8 @@ export function DataTableComponent({
             </SelectContent>
           </Select>
         </div>
-        {dataQuery.data?.pageCount && dataQuery.data?.pageCount > 7 ? (
+        {data?.pageCount &&
+        data?.pageCount > table.getState().pagination.pageSize ? (
           <div className="space-x-2 flex flex-row items-center gap-2">
             <Button
               variant="outline"
@@ -96,14 +100,14 @@ export function DataTableComponent({
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              이전
+              <ChevronLeft />
+              {/* <MoveLeft /> */}
             </Button>
 
             <p className="border px-6 py-2 rounded-md text-sm text-neutral-500">
-              {pagination.pageIndex + 1} /{" "}
+              {pagination.pageIndex + 1} /
               {Math.ceil(
-                dataQuery.data?.pageCount! /
-                  table.getState().pagination.pageSize
+                data?.pageCount! / table.getState().pagination.pageSize
               )}
             </p>
 
@@ -112,66 +116,69 @@ export function DataTableComponent({
               size="sm"
               onClick={() => table.nextPage()}
               disabled={
-                Math.round(
-                  dataQuery.data?.pageCount! /
-                    table.getState().pagination.pageSize
-                ) <= pagination.pageIndex
+                // !table.getCanNextPage()
+                Math.ceil(
+                  data?.pageCount! / table.getState().pagination.pageSize
+                ) <=
+                pagination.pageIndex + 1
               }
             >
-              다음
+              <ChevronRight />
             </Button>
           </div>
         ) : null}
       </div>
-      <div className="rounded-md border bg-white  w-full">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+      <div className="w-full">
+        <ScrollArea className=" bg-white  w-full max-h-[calc(100vh-70px)] ">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  데이터가 없습니다.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    데이터가 없습니다.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </ScrollArea>
       </div>
     </div>
   );

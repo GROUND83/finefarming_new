@@ -142,6 +142,7 @@ export default function Page({ params }: { params: { productId: string } }) {
     // setDate(date);
     // let result = await getProductDetail(Number(params.productId));
     let productId = params.productId;
+    console.log("productId", productId);
     if (productId) {
       try {
         setCalenderLoading(true);
@@ -157,6 +158,7 @@ export default function Page({ params }: { params: { productId: string } }) {
         getProductsDetailData();
       } catch (e) {
         //
+        console.log(e);
         notFound();
       } finally {
         setCalenderLoading(false);

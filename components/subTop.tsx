@@ -29,7 +29,7 @@ export default function SubTop({
 }) {
   let pathname = usePathname();
   return (
-    <div className="flex flex-col border-b h-[70px] justify-center fixed   w-[calc(100vw-220px)] bg-white">
+    <div className="flex flex-col border-b h-[70px] justify-center fixed   w-[calc(100vw-220px)] bg-white z-50">
       <div className="flex flex-row  items-center justify-between   px-3   w-full ">
         <div className=" ">
           <h1 className="font-semibold  text-md">{title}</h1>
@@ -62,23 +62,6 @@ export default function SubTop({
               <Link href={"/admin/community/new"}>+ 커뮤니티</Link>
             </Button>
           )}
-
-          {/* {pathname === "/admin/magazine" && <NewMagazineModal />} */}
-          {/* {newbutton && (
-            <div>
-              <Button
-                asChild
-                size={"sm"}
-                className="flex flex-row items-center justify-center gap-3 "
-              >
-                <Link href={`/admin/${url}/new`}>
-                  <PlusIcon className="size-4" />
-
-                  {url === "community" && "커뮤니티"}
-                </Link>
-              </Button>
-            </div>
-          )} */}
         </div>
       </div>
     </div>
