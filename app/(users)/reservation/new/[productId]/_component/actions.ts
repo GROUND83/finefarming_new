@@ -394,7 +394,7 @@ export async function makeReservation(jsonData: string) {
           product: {
             connect: { id: productId },
           },
-          productId: productId,
+
           visitor: result.visitor,
           visitorPhone: result.visitorPhone,
           groupPrice: result.groupPrice ? result.groupPrice : null,
@@ -435,6 +435,7 @@ export async function makeReservation(jsonData: string) {
       // 메일보내기 관리자,농장주,고객
       if (createReservation) {
         //
+        console.log("createReservation", createReservation);
         let username = createReservation.user.username;
         let farmName = createReservation.farm.name;
         let farmAddress = createReservation.farm.address;
