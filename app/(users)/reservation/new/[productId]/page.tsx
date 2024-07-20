@@ -175,11 +175,11 @@ export default function Page({ params }: { params: { productId: string } }) {
     }
     let result: any = await getProductDetail(productId);
     let newdata = JSON.parse(result);
-    console.log("result", newdata);
+    console.log("newdataresult", newdata);
     setDetail(newdata);
     let reservationMax = newdata.reservationMax;
     let reservationMin = newdata.reservationMin;
-    let slot = newdata.farm.slot;
+    let slot = newdata.slot;
 
     console.log("getProductDetail", reservationMax, reservationMin, slot);
 
@@ -459,7 +459,8 @@ export default function Page({ params }: { params: { productId: string } }) {
     let holidays = await getHolidays(Number(params.productId));
     console.log("holidays", holidays);
     setFarmHoliday(holidays);
-    let resultdata = await getFarmImpossibe(Number(detail.farmId));
+    let resultdata = await getFarmImpossibe(Number(params.productId));
+    console.log("resultdata", resultdata);
     setPossibleDay(resultdata);
     console.log("result", resultdata);
   };
@@ -470,97 +471,284 @@ export default function Page({ params }: { params: { productId: string } }) {
   }, [detail]);
   //
   const checkDisable = (date: any) => {
-    // console.log(date);
+    console.log("detail", detail, date);
     // 1.특정일 슬롯에 모두 없거나 하나라도 있는경우
-
+    console.log("possibleDay - reservationDate", possibleDay);
     if (Object.keys(possibleDay).length > 0) {
       // console.log(possibleDay[dayjs(date).format("YYYY-MM-DD")]);
       if (possibleDay[dayjs(date).format("YYYY-MM-DD")] !== undefined) {
         if (possibleDay[dayjs(date).format("YYYY-MM-DD")]) {
-          // return false;
+          if (detail) {
+            console.log("detaildetail", detail);
+            let getDay = new Date(date).getDay();
+
+            // );
+            if (
+              date <
+              new Date(
+                dayjs()
+                  .add(detail?.reservationMin, "day")
+                  .hour(0)
+                  .minute(0)
+                  .second(0)
+                  .format()
+              )
+            ) {
+              return true;
+            }
+
+            if (
+              date >=
+              new Date(
+                dayjs()
+                  .add(detail?.reservationMax, "day")
+                  .hour(0)
+                  .minute(0)
+                  .second(0)
+                  .format()
+              )
+            ) {
+              return true;
+            }
+            if (farmHoliday) {
+              if (!farmHoliday.mondayOpen) {
+                if (getDay === 1) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.tuesdayOpen) {
+                if (getDay === 2) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.wednesdayOpen) {
+                if (getDay === 3) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.thursdayOpen) {
+                if (getDay === 4) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.fridayOpen) {
+                if (getDay === 5) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.saturdayOpen) {
+                if (getDay === 6) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.sundayOpen) {
+                if (getDay === 0) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.holidayOpen) {
+                if (nationalholiday.length > 0) {
+                  //
+                  let checkday = dayjs(date).format("YYYYMMDD");
+                  let check = nationalholiday.some(
+                    (item) => item.locdate === checkday
+                  );
+                  // console.log("check", check);
+                  if (check) {
+                    return true;
+                  }
+                }
+              }
+            }
+          }
         } else {
-          return true;
+          if (detail) {
+            console.log("detaildetail", detail);
+            let getDay = new Date(date).getDay();
+
+            // );
+            if (
+              date <
+              new Date(
+                dayjs()
+                  .add(detail?.reservationMin, "day")
+                  .hour(0)
+                  .minute(0)
+                  .second(0)
+                  .format()
+              )
+            ) {
+              return true;
+            }
+
+            if (
+              date >=
+              new Date(
+                dayjs()
+                  .add(detail?.reservationMax, "day")
+                  .hour(0)
+                  .minute(0)
+                  .second(0)
+                  .format()
+              )
+            ) {
+              return true;
+            }
+            if (farmHoliday) {
+              if (!farmHoliday.mondayOpen) {
+                if (getDay === 1) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.tuesdayOpen) {
+                if (getDay === 2) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.wednesdayOpen) {
+                if (getDay === 3) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.thursdayOpen) {
+                if (getDay === 4) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.fridayOpen) {
+                if (getDay === 5) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.saturdayOpen) {
+                if (getDay === 6) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.sundayOpen) {
+                if (getDay === 0) {
+                  return true;
+                }
+              }
+              if (!farmHoliday.holidayOpen) {
+                if (nationalholiday.length > 0) {
+                  //
+                  let checkday = dayjs(date).format("YYYYMMDD");
+                  let check = nationalholiday.some(
+                    (item) => item.locdate === checkday
+                  );
+                  // console.log("check", check);
+                  if (check) {
+                    return true;
+                  }
+                }
+              }
+              if (detail.slot.length > 0) {
+                //
+                let filterArray = detail.slot.filter(
+                  (item: any) => item.visible === false
+                );
+                if (filterArray.length >= detail.slot.length) {
+                  return true;
+                } else {
+                  return false;
+                }
+              }
+            }
+          }
         }
       } else {
-      }
-    }
-    if (detail) {
-      let getDay = new Date(date).getDay();
+        if (detail) {
+          console.log("detaildetail", detail);
+          let getDay = new Date(date).getDay();
 
-      // );
-      if (
-        date <
-        new Date(
-          dayjs()
-            .add(detail?.reservationMin, "day")
-            .hour(0)
-            .minute(0)
-            .second(0)
-            .format()
-        )
-      ) {
-        return true;
-      }
+          // );
+          if (
+            date <
+            new Date(
+              dayjs()
+                .add(detail?.reservationMin, "day")
+                .hour(0)
+                .minute(0)
+                .second(0)
+                .format()
+            )
+          ) {
+            return true;
+          }
 
-      if (
-        date >=
-        new Date(
-          dayjs()
-            .add(detail?.reservationMax, "day")
-            .hour(0)
-            .minute(0)
-            .second(0)
-            .format()
-        )
-      ) {
-        return true;
-      }
-      if (farmHoliday) {
-        if (!farmHoliday.mondayOpen) {
-          if (getDay === 1) {
+          if (
+            date >=
+            new Date(
+              dayjs()
+                .add(detail?.reservationMax, "day")
+                .hour(0)
+                .minute(0)
+                .second(0)
+                .format()
+            )
+          ) {
             return true;
           }
-        }
-        if (!farmHoliday.tuesdayOpen) {
-          if (getDay === 2) {
-            return true;
-          }
-        }
-        if (!farmHoliday.wednesdayOpen) {
-          if (getDay === 3) {
-            return true;
-          }
-        }
-        if (!farmHoliday.thursdayOpen) {
-          if (getDay === 4) {
-            return true;
-          }
-        }
-        if (!farmHoliday.fridayOpen) {
-          if (getDay === 5) {
-            return true;
-          }
-        }
-        if (!farmHoliday.saturdayOpen) {
-          if (getDay === 6) {
-            return true;
-          }
-        }
-        if (!farmHoliday.sundayOpen) {
-          if (getDay === 0) {
-            return true;
-          }
-        }
-        if (!farmHoliday.holidayOpen) {
-          if (nationalholiday.length > 0) {
-            //
-            let checkday = dayjs(date).format("YYYYMMDD");
-            let check = nationalholiday.some(
-              (item) => item.locdate === checkday
-            );
-            // console.log("check", check);
-            if (check) {
-              return true;
+          if (farmHoliday) {
+            if (!farmHoliday.mondayOpen) {
+              if (getDay === 1) {
+                return true;
+              }
+            }
+            if (!farmHoliday.tuesdayOpen) {
+              if (getDay === 2) {
+                return true;
+              }
+            }
+            if (!farmHoliday.wednesdayOpen) {
+              if (getDay === 3) {
+                return true;
+              }
+            }
+            if (!farmHoliday.thursdayOpen) {
+              if (getDay === 4) {
+                return true;
+              }
+            }
+            if (!farmHoliday.fridayOpen) {
+              if (getDay === 5) {
+                return true;
+              }
+            }
+            if (!farmHoliday.saturdayOpen) {
+              if (getDay === 6) {
+                return true;
+              }
+            }
+            if (!farmHoliday.sundayOpen) {
+              if (getDay === 0) {
+                return true;
+              }
+            }
+            if (!farmHoliday.holidayOpen) {
+              if (nationalholiday.length > 0) {
+                //
+                let checkday = dayjs(date).format("YYYYMMDD");
+                let check = nationalholiday.some(
+                  (item) => item.locdate === checkday
+                );
+                // console.log("check", check);
+                if (check) {
+                  return true;
+                }
+              }
+            }
+            if (detail.slot.length > 0) {
+              //
+              let filterArray = detail.slot.filter(
+                (item: any) => item.visible === false
+              );
+              if (filterArray.length >= detail.slot.length) {
+                return true;
+              } else {
+                return false;
+              }
             }
           }
         }
