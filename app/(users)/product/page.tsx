@@ -34,7 +34,7 @@ export default async function Page() {
             체험농장을 추천 합니다.
           </h1>
         </header>
-        <div className="w-full grid grid-cols-12 gap-12  p-3 mt-3  ">
+        <div className="w-full grid grid-cols-12 gap-3 lg:gap-4 p-3 mt-3  ">
           {products.length > 0 &&
             products.map((item: any, index: any) => {
               return (

@@ -177,8 +177,8 @@ export default function Page({ params }: { params: { productId: string } }) {
     let newdata = JSON.parse(result);
     console.log("result", newdata);
     setDetail(newdata);
-    let reservationMax = newdata.farm.reservationMax;
-    let reservationMin = newdata.farm.reservationMin;
+    let reservationMax = newdata.reservationMax;
+    let reservationMin = newdata.reservationMin;
     let slot = newdata.farm.slot;
 
     console.log("getProductDetail", reservationMax, reservationMin, slot);
@@ -486,33 +486,13 @@ export default function Page({ params }: { params: { productId: string } }) {
     }
     if (detail) {
       let getDay = new Date(date).getDay();
-      // console.log(monday); 모두 한국시간
-      // console.log(
-      //   "min",
-      //   dayjs(date).format("YYYY-MM-DD"),
-      //   new Date(
-      //     dayjs()
-      //       .add(detail?.farm.reservationMin, "day")
-      //       .hour(0)
-      //       .minute(0)
-      //       .second(0)
-      //       .format()
-      //   ),
-      //   date <=
-      //     new Date(
-      //       dayjs()
-      //         .add(detail?.farm.reservationMin, "day")
-      //         .hour(0)
-      //         .minute(0)
-      //         .second(0)
-      //         .format()
-      //     )
+
       // );
       if (
         date <
         new Date(
           dayjs()
-            .add(detail?.farm.reservationMin, "day")
+            .add(detail?.reservationMin, "day")
             .hour(0)
             .minute(0)
             .second(0)
@@ -526,7 +506,7 @@ export default function Page({ params }: { params: { productId: string } }) {
         date >=
         new Date(
           dayjs()
-            .add(detail?.farm.reservationMax, "day")
+            .add(detail?.reservationMax, "day")
             .hour(0)
             .minute(0)
             .second(0)

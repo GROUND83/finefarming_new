@@ -152,6 +152,7 @@ export async function getReservationDate({
           id: true,
         },
       },
+      slot: true,
     },
   });
   let farmId = product?.farm.id;
@@ -165,9 +166,9 @@ export async function getReservationDate({
       slot: true,
     },
   });
-  let newFarm = JSON.stringify(farm);
-  let resutFarm = JSON.parse(newFarm);
-  const slotarray = resutFarm?.slot;
+  let newproduct = JSON.stringify(product);
+  let resutproduct = JSON.parse(newproduct);
+  const slotarray = resutproduct?.slot;
   let newSlot = slotarray.filter((item: any) => item.visible === true);
   const slot = newSlot;
 
