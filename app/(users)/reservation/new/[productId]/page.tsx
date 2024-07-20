@@ -562,100 +562,101 @@ export default function Page({ params }: { params: { productId: string } }) {
             }
           }
         } else {
-          if (detail) {
-            console.log("detaildetail", detail);
-            let getDay = new Date(date).getDay();
+          // if (detail) {
+          //   console.log("detaildetail", detail);
+          //   let getDay = new Date(date).getDay();
 
-            // );
-            if (
-              date <
-              new Date(
-                dayjs()
-                  .add(detail?.reservationMin, "day")
-                  .hour(0)
-                  .minute(0)
-                  .second(0)
-                  .format()
-              )
-            ) {
-              return true;
-            }
+          //   // );
+          //   if (
+          //     date <
+          //     new Date(
+          //       dayjs()
+          //         .add(detail?.reservationMin, "day")
+          //         .hour(0)
+          //         .minute(0)
+          //         .second(0)
+          //         .format()
+          //     )
+          //   ) {
+          //     return true;
+          //   }
 
-            if (
-              date >=
-              new Date(
-                dayjs()
-                  .add(detail?.reservationMax, "day")
-                  .hour(0)
-                  .minute(0)
-                  .second(0)
-                  .format()
-              )
-            ) {
-              return true;
-            }
-            if (farmHoliday) {
-              if (!farmHoliday.mondayOpen) {
-                if (getDay === 1) {
-                  return true;
-                }
-              }
-              if (!farmHoliday.tuesdayOpen) {
-                if (getDay === 2) {
-                  return true;
-                }
-              }
-              if (!farmHoliday.wednesdayOpen) {
-                if (getDay === 3) {
-                  return true;
-                }
-              }
-              if (!farmHoliday.thursdayOpen) {
-                if (getDay === 4) {
-                  return true;
-                }
-              }
-              if (!farmHoliday.fridayOpen) {
-                if (getDay === 5) {
-                  return true;
-                }
-              }
-              if (!farmHoliday.saturdayOpen) {
-                if (getDay === 6) {
-                  return true;
-                }
-              }
-              if (!farmHoliday.sundayOpen) {
-                if (getDay === 0) {
-                  return true;
-                }
-              }
-              if (!farmHoliday.holidayOpen) {
-                if (nationalholiday.length > 0) {
-                  //
-                  let checkday = dayjs(date).format("YYYYMMDD");
-                  let check = nationalholiday.some(
-                    (item) => item.locdate === checkday
-                  );
-                  // console.log("check", check);
-                  if (check) {
-                    return true;
-                  }
-                }
-              }
-              if (detail.slot.length > 0) {
-                //
-                let filterArray = detail.slot.filter(
-                  (item: any) => item.visible === false
-                );
-                if (filterArray.length >= detail.slot.length) {
-                  return true;
-                } else {
-                  return false;
-                }
-              }
-            }
-          }
+          //   if (
+          //     date >=
+          //     new Date(
+          //       dayjs()
+          //         .add(detail?.reservationMax, "day")
+          //         .hour(0)
+          //         .minute(0)
+          //         .second(0)
+          //         .format()
+          //     )
+          //   ) {
+          //     return true;
+          //   }
+          //   if (farmHoliday) {
+          //     if (!farmHoliday.mondayOpen) {
+          //       if (getDay === 1) {
+          //         return true;
+          //       }
+          //     }
+          //     if (!farmHoliday.tuesdayOpen) {
+          //       if (getDay === 2) {
+          //         return true;
+          //       }
+          //     }
+          //     if (!farmHoliday.wednesdayOpen) {
+          //       if (getDay === 3) {
+          //         return true;
+          //       }
+          //     }
+          //     if (!farmHoliday.thursdayOpen) {
+          //       if (getDay === 4) {
+          //         return true;
+          //       }
+          //     }
+          //     if (!farmHoliday.fridayOpen) {
+          //       if (getDay === 5) {
+          //         return true;
+          //       }
+          //     }
+          //     if (!farmHoliday.saturdayOpen) {
+          //       if (getDay === 6) {
+          //         return true;
+          //       }
+          //     }
+          //     if (!farmHoliday.sundayOpen) {
+          //       if (getDay === 0) {
+          //         return true;
+          //       }
+          //     }
+          //     if (!farmHoliday.holidayOpen) {
+          //       if (nationalholiday.length > 0) {
+          //         //
+          //         let checkday = dayjs(date).format("YYYYMMDD");
+          //         let check = nationalholiday.some(
+          //           (item) => item.locdate === checkday
+          //         );
+          //         // console.log("check", check);
+          //         if (check) {
+          //           return true;
+          //         }
+          //       }
+          //     }
+          //     if (detail.slot.length > 0) {
+          //       //
+          //       let filterArray = detail.slot.filter(
+          //         (item: any) => item.visible === false
+          //       );
+          //       if (filterArray.length >= detail.slot.length) {
+          //         return true;
+          //       } else {
+          //         return false;
+          //       }
+          //     }
+          //   }
+          // }
+          return true;
         }
       } else {
         if (detail) {
