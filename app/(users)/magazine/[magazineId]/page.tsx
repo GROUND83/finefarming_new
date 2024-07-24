@@ -23,6 +23,7 @@ async function getMagazine(magazineId: number) {
           intruduce: true,
         },
       },
+      product: true,
     },
   });
   return magazines;
@@ -225,16 +226,18 @@ export default async function Page({ params }: Props) {
           )}
         </div>
       </section>
-      <section className="flex flex-col items-center fixed bottom-6 right-6 w-[100px] h-[100px]">
-        <Button
-          asChild
-          className="w-[100px] h-[100px] flex flex-col items-center justify-center text-center"
-        >
-          <Link href={`/product/${magazine.productId}`}>
-            체험상품 <br /> 자세히보기
-          </Link>
-        </Button>
-      </section>
+      {magazine.product.status !== "FINISHED" && (
+        <section className="flex flex-col items-center fixed bottom-6 right-6 w-[100px] h-[100px]">
+          <Button
+            asChild
+            className="w-[100px] h-[100px] flex flex-col items-center justify-center text-center"
+          >
+            <Link href={`/product/${magazine.productId}`}>
+              체험상품 <br /> 자세히보기
+            </Link>
+          </Button>
+        </section>
+      )}
     </article>
   );
 }
