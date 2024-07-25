@@ -92,7 +92,7 @@ export default async function Page({ params }: Props) {
             <h1 className="text-2xl lg:text-3xl font-semibold">
               파인파밍에서 <br />
               <span className="text-primary">
-                {magazines[0].farm.name}
+                {magazines[0].farm?.name}
               </span>의 <br />
               매거진을 소개 합니다.
             </h1>
