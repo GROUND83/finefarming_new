@@ -226,7 +226,7 @@ export default async function Page({ params }: Props) {
           )}
         </div>
       </section>
-      {magazine.product.status !== "FINISHED" && (
+      {magazine.productId && (
         <section className="flex flex-col items-center fixed bottom-6 right-6 w-[100px] h-[100px]">
           <Button
             asChild

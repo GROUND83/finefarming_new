@@ -47,40 +47,59 @@ export async function createMagazine(jsonData: string) {
   if (jsonData) {
     let parserData = JSON.parse(jsonData);
     console.log("parserData", parserData);
-    let product = await db.product.findUnique({
-      where: {
-        id: Number(parserData.productId),
-      },
-      select: {
-        farmId: true,
-      },
-    });
+    if (parserData.productId !== "없음") {
+      let product = await db.product.findUnique({
+        where: {
+          id: Number(parserData.productId),
+        },
+        select: {
+          farmId: true,
+        },
+      });
 
-    let result = await db.magazine.create({
-      data: {
-        product: {
-          connect: {
-            id: Number(parserData.productId),
+      let result = await db.magazine.create({
+        data: {
+          product: {
+            connect: {
+              id: Number(parserData.productId),
+            },
           },
-        },
-        author: {
-          connect: {
-            id: Number(parserData.authorId),
+          author: {
+            connect: {
+              id: Number(parserData.authorId),
+            },
           },
-        },
-        farm: {
-          connect: {
-            id: Number(product?.farmId),
+          farm: {
+            connect: {
+              id: Number(product?.farmId),
+            },
           },
+          title: parserData.title,
+          image: parserData.image,
+          sections: parserData.sections,
+          suggestion: parserData.suggestion,
+          created_at: getDateTime(),
+          updated_at: getDateTime(),
         },
-        title: parserData.title,
-        image: parserData.image,
-        sections: parserData.sections,
-        suggestion: parserData.suggestion,
-        created_at: getDateTime(),
-        updated_at: getDateTime(),
-      },
-    });
+      });
+    } else {
+      let result = await db.magazine.create({
+        data: {
+          author: {
+            connect: {
+              id: Number(parserData.authorId),
+            },
+          },
+
+          title: parserData.title,
+          image: parserData.image,
+          sections: parserData.sections,
+          suggestion: parserData.suggestion,
+          created_at: getDateTime(),
+          updated_at: getDateTime(),
+        },
+      });
+    }
     return true;
   }
 }

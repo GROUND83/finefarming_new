@@ -74,7 +74,6 @@ export default function Page() {
       title: "",
       sections: [],
       suggestion: [],
-
       productId: "",
     },
   });
@@ -140,6 +139,13 @@ export default function Page() {
       let result = await getInitData(userId);
       if (result) {
         setUser(result.user);
+        let data = {
+          farm: { id: 14, name: "팔당 유기농 딸기나라" },
+          farmId: 14,
+          id: 11,
+          title: "(예약종료) 딸기 수확체험",
+        };
+        console.log("result.products", result.products);
         setProducts(result.products);
       }
     }
@@ -153,7 +159,7 @@ export default function Page() {
     let checkData = {
       image: "",
       authorId: user?.id,
-      productId: data.productId,
+      productId: data.productId ? data.productId : "",
       title: "",
       sections: [] as any,
       suggestion: data.suggestion as any,
@@ -298,6 +304,7 @@ export default function Page() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
+                                <SelectItem value={"없음"}>없음</SelectItem>
                                 {products?.length > 0 &&
                                   products?.map((product, productIndex) => {
                                     return (

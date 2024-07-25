@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Magazine" ALTER COLUMN "farmId" DROP NOT NULL,
+ALTER COLUMN "productId" DROP NOT NULL;

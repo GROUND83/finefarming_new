@@ -257,7 +257,9 @@ export default function Page({ params }: { params: { magazineId: string } }) {
         title: parserData.title,
         //   sections: data.sections,
         suggestion: parserData.suggestion,
-        productId: parserData.productId.toString(),
+        productId: parserData.productId
+          ? parserData.productId.toString()
+          : "없음",
         sections: [] as any,
         author: parserData.author,
         authorId: parserData.authorId.toString(),
@@ -295,7 +297,10 @@ export default function Page({ params }: { params: { magazineId: string } }) {
       console.log("newdata", newdata);
       form.reset(newdata);
       form.resetField("authorId", parserData.authorId.toString());
-      form.resetField("productId", parserData.productId.toString());
+      form.resetField(
+        "productId",
+        parserData.productId ? parserData.productId.toString() : "없음"
+      );
       setLoading(false);
     }
   };
@@ -375,6 +380,7 @@ export default function Page({ params }: { params: { magazineId: string } }) {
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
+                                  <SelectItem value={"없음"}>없음</SelectItem>
                                   {products?.length > 0 &&
                                     products?.map((product, productIndex) => {
                                       return (

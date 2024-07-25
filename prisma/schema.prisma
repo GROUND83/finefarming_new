@@ -362,10 +362,10 @@ model Magazine {
   visible Boolean @default(false)
   author Writer @relation(fields: [authorId], references: [id],onDelete: Cascade)
   authorId Int
-  farm  Farm @relation(fields: [farmId], references: [id],onDelete: Cascade)
-  farmId Int
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int
+  farm  Farm? @relation(fields: [farmId], references: [id],onDelete: Cascade)
+  farmId Int?
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int? 
   title String
   image String
   sections Json[]
