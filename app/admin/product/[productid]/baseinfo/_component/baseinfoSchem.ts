@@ -5,21 +5,22 @@ export const baseInfoSchem = z.object({
   description: z.string().nullable(),
   visible: z.boolean(),
   status: z.string(),
-  mainImage: z.object({
-    image: z.string().nullable(),
-    uploadUrl: z.string().nullable(),
-    downUrl: z.string().nullable(),
-    file: z.any(),
-  }),
+  mainImage: z
+    .object({
+      image: z.string().optional(),
+      uploadUrl: z.string().optional(),
+      downUrl: z.string().optional(),
+      file: z.instanceof(File).optional(),
+    })
+    .optional(),
   images: z.array(
     z.object({
-      image: z.string(),
-      uploadUrl: z.string(),
-      downUrl: z.string().nullable(),
-      file: z.any(),
+      image: z.string().optional(),
+      uploadUrl: z.string().optional(),
+      downUrl: z.string().optional(),
+      file: z.instanceof(File).optional(),
     })
   ),
-
   process: z.array(z.object({ title: z.string().nullable() })),
   processNotice: z.string().nullable(),
   priceType: z.string(),

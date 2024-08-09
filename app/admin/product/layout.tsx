@@ -10,8 +10,8 @@ import NewProductModal from "./_components/newProductModla";
 export default function LayOut({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col items-start   relative w-full  h-full  ">
-      <div className="w-full  relative  top-0 left-0">
-        <div className="flex flex-col border-b h-[70px] justify-center fixed   w-[calc(100vw-220px)] bg-white">
+      <div className="w-full  relative ">
+        <div className="flex flex-col border-b h-[70px] justify-center   ] bg-white">
           <div className="flex flex-row  items-center justify-between   px-3   w-full ">
             <div className=" ">
               <h1 className="font-semibold  text-md">상품 관리</h1>
@@ -51,9 +51,7 @@ export default function LayOut({ children }: { children: React.ReactNode }) {
         </div>
       </div>
 
-      <div className=" flex flex-col items-start w-full  flex-1 mt-[70px] ">
-        {children}
-      </div>
+      <div className=" flex flex-col items-start w-full  ">{children}</div>
     </div>
   );
 }

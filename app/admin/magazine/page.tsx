@@ -7,7 +7,11 @@ export default function Page() {
   return (
     <div className="w-full p-3">
       <div>
-        <DataTableComponent getdata={getMoreData} columns={columns} />
+        <DataTableComponent
+          getdata={getMoreData}
+          columns={columns}
+          height="h-[calc(100vh-120px)]"
+        />
       </div>
     </div>
   );

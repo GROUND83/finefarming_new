@@ -4,8 +4,10 @@ import removeImports from "next-remove-imports";
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    loader: "custom",
+    loaderFile: "./supabase-image-loader.ts",
+    // imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     remotePatterns: [
       { hostname: "imagedelivery.net" },
       { hostname: "k.kakaocdn.net" },
@@ -14,6 +16,7 @@ const nextConfig = {
       { hostname: "finefarming-pq31y3od4-wonchangkims-projects.vercel.app" },
       { hostname: "dapi.kakao.com" },
       { hostname: "www.privacy.go.kr" },
+      { hostname: "tbucqnuyvwwhuqebboev.supabase.co" },
     ],
   },
   webpack: (config) => {

@@ -16,20 +16,16 @@ export default function DefaultLayOut({
   url: string | undefined;
 }) {
   return (
-    <div className="flex flex-col items-start   relative w-full  h-full  ">
-      <div className="w-full  relative  top-0 left-0 z-50">
-        <SubTop
-          title={title}
-          sub={sub}
-          newbutton={newbutton || false}
-          searchbutton={searchbutton || false}
-          url={url}
-        />
-      </div>
+    <div className="w-full  h-full">
+      <SubTop
+        title={title}
+        sub={sub}
+        newbutton={newbutton || false}
+        searchbutton={searchbutton || false}
+        url={url}
+      />
 
-      <div className=" flex flex-col items-start w-full  flex-1 mt-[70px] ">
-        {children}
-      </div>
+      <div className="w-full">{children}</div>
     </div>
   );
 }

@@ -16,6 +16,7 @@ export default function ImageUploadComponent({
               fill
               priority
               alt="업체이미지"
+              className=""
               style={{ objectFit: "cover" }}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
@@ -29,7 +30,7 @@ export default function ImageUploadComponent({
                   {
                     image: "",
                     uploadUrl: "",
-                    file: "",
+                    file: undefined,
                     downUrl: "",
                   },
                   { shouldTouch: true, shouldDirty: true }
@@ -44,7 +45,7 @@ export default function ImageUploadComponent({
       ) : (
         <label
           htmlFor="mainImage"
-          className="text-neutral-400 text-sm flex flex-col items-center gap-2 w-[200px] aspect-[4/3] justify-center"
+          className="text-neutral-400 text-sm flex flex-col items-center gap-2 w-[200px] aspect-[4/3] justify-center border"
         >
           <PhotoIcon className="w-12" />
           <p className="text-xs">사진을 추가해주세요.</p>

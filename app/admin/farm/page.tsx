@@ -6,8 +6,12 @@ import { columns } from "./_components/table/colums";
 
 export default function FarmerList() {
   return (
-    <div className="w-full h-full  p-3">
-      <DataTableComponent getdata={getMoreData} columns={columns} />
+    <div className="w-full h-full">
+      <DataTableComponent
+        getdata={getMoreData}
+        columns={columns}
+        height="h-[calc(100vh-120px)]"
+      />
     </div>
   );
 }

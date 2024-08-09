@@ -32,7 +32,11 @@ export default function Page() {
         </Button>
       </div>
       <div className="w-full h-full  p-3">
-        <DataTableComponent getdata={getMoreData} columns={columns} />
+        <DataTableComponent
+          getdata={getMoreData}
+          columns={columns}
+          height="h-[calc(100vh-120px)]"
+        />
       </div>
     </div>
   );

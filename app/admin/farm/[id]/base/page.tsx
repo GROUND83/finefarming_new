@@ -34,7 +34,6 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import DaumPostcodeEmbed, { Address } from "react-daum-postcode";
 
-import { baseSchem, baseSchemType } from "./baseSchema";
 import {
   deleteFarm,
   getBaseData,
@@ -54,10 +53,42 @@ import {
 import SubSectionWrap from "@/app/admin/_component/subSectionWrap";
 import { Textarea } from "@/components/ui/textarea";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { z } from "zod";
+import ImageUploadComponent from "@/app/admin/_component/imageUploadComponent";
+import { UploadFileClient } from "@/lib/fileUploaderClient";
 
 // export const dynamic = "force-static";
 // export const dynamicParams = false;
 //
+
+const baseSchem = z.object({
+  id: z.number(),
+  name: z.string(),
+  visible: z.boolean(),
+  initail: z.string(),
+  companyNumber: z.string().nullable(),
+  address: z.string(),
+  mainPhone: z.string(),
+  resevationManager: z.string(),
+  resevationPhone: z.string(),
+  farmerId: z.string(),
+  farmerName: z.string(),
+  farmerPhone: z.string(),
+  introduction: z.string(),
+  lat: z.string(),
+  lang: z.string(),
+  sigungu: z.string(),
+  sido: z.string(),
+  mainImage: z
+    .object({
+      image: z.string().optional(),
+      uploadUrl: z.string().optional(),
+      downUrl: z.string().optional(),
+      file: z.instanceof(File).optional(),
+    })
+    .optional(),
+});
+
 interface farmersType {
   id: number;
   username: string;
@@ -74,7 +105,7 @@ export default function Page({ params }: { params: { id: string } }) {
   //
   const initailData = async () => {
     let defaultData: any = await getBaseData(Number(params.id));
-    // console.log("defaultData", defaultData);
+    console.log("defaultData", defaultData);
     let farmers = await getFarmers();
     setFarmers(farmers);
     return {
@@ -95,71 +126,80 @@ export default function Page({ params }: { params: { id: string } }) {
       lang: defaultData?.lang ?? "",
       sido: defaultData?.sido ?? "",
       sigungu: defaultData?.sigungu ?? "",
+      mainImage: {
+        image: defaultData.mainImage,
+        uploadUrl: "",
+        downUrl: defaultData.mainImage,
+        file: undefined,
+      },
     };
   };
 
-  const form = useForm<baseSchemType>({
+  const form = useForm<z.infer<typeof baseSchem>>({
     resolver: zodResolver(baseSchem),
-    defaultValues: {
-      id: undefined,
-      name: "",
-      visible: false,
-      initail: "",
-      companyNumber: "",
-      address: "",
-      mainPhone: "",
-      resevationManager: "",
-      resevationPhone: "",
-      farmerId: "",
-      farmerName: "",
-      farmerPhone: "",
-      introduction: "",
-      lat: "",
-      lang: "",
-      sigungu: "",
-      sido: "",
-    },
+    defaultValues: {},
   });
 
-  const onSubmit = form.handleSubmit(async (data: baseSchemType) => {
-    // baseSchemType 채크
-    console.log("etdata", data);
+  const onSubmit = form.handleSubmit(
+    async (data: z.infer<typeof baseSchem>) => {
+      // baseSchemType 채크
+      console.log("etdata", data);
 
-    setUpdateLoading(true);
+      setUpdateLoading(true);
 
-    // console.log("data.approve", data.approve, typeof data.approve);
-    const formData = new FormData();
-    formData.append("id", params.id);
-    formData.append("name", data.name);
-    formData.append("visible", data.visible.toString());
-    formData.append("initail", data.initail);
-    formData.append("companyNumber", data.companyNumber ?? "");
-    formData.append("address", data.address);
-    formData.append("mainPhone", data.mainPhone);
-    formData.append("resevationManager", data.resevationManager);
-    formData.append("resevationPhone", data.resevationPhone);
-    formData.append("farmerId", data.farmerId.toString());
-    formData.append("farmerName", data.farmerName);
-    formData.append("farmerPhone", data.farmerPhone);
-    formData.append("introduction", data.introduction);
-    formData.append("lat", data.lat ?? "");
-    formData.append("lang", data.lang ?? "");
-    formData.append("sido", data.sido ?? "");
-    formData.append("sigungu", data.sigungu ?? "");
-    try {
-      const result = await updateData(formData);
-      console.log("result", result);
-    } catch (e: any) {
-      console.log("e", e);
-      // toast.error(e);
-    } finally {
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
-      toast.success("수정이 완료 되었습니다.");
-      setUpdateLoading(false);
-      reload();
-      // router.push(`/admin/farm/${params.id}/base`);
+      // console.log("data.approve", data.approve, typeof data.approve);
+      const formData = new FormData();
+      formData.append("id", params.id);
+      formData.append("name", data.name);
+      formData.append("visible", data.visible.toString());
+      formData.append("initail", data.initail);
+      formData.append("companyNumber", data.companyNumber ?? "");
+      formData.append("address", data.address);
+      formData.append("mainPhone", data.mainPhone);
+      formData.append("resevationManager", data.resevationManager);
+      formData.append("resevationPhone", data.resevationPhone);
+      formData.append("farmerId", data.farmerId.toString());
+      formData.append("farmerName", data.farmerName);
+      formData.append("farmerPhone", data.farmerPhone);
+      formData.append("introduction", data.introduction);
+      formData.append("lat", data.lat ?? "");
+      formData.append("lang", data.lang ?? "");
+      formData.append("sido", data.sido ?? "");
+      formData.append("sigungu", data.sigungu ?? "");
+
+      if (data.mainImage?.file) {
+        //
+        let file = data.mainImage.file;
+        let res = await UploadFileClient({ file, folderName: "farm" });
+        if (res?.location) {
+          console.log(res.location);
+          // const formData = new FormData();
+          // formData.append("id", params.id);
+          formData.append("mainImage", res.location);
+          // const result = await farmImageUpload(formData);
+        }
+      } else {
+        // image 가 없을때
+        if (!data.mainImage?.image) {
+          //
+        }
+      }
+      //
+      try {
+        const result = await updateData(formData);
+        console.log("result", result);
+      } catch (e: any) {
+        console.log("e", e);
+        // toast.error(e);
+      } finally {
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
+        toast.success("수정이 완료 되었습니다.");
+        setUpdateLoading(false);
+        reload();
+        // router.push(`/admin/farm/${params.id}/base`);
+      }
     }
-  });
+  );
 
   const deleteItem = async () => {
     //
@@ -233,6 +273,39 @@ export default function Page({ params }: { params: { id: string } }) {
   React.useEffect(() => {
     reload();
   }, []);
+
+  //
+  const onMainImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    console.log(event.target, event.target.name);
+    const {
+      target: { files },
+    } = event;
+    if (!files) {
+      return;
+    }
+    const file = files[0];
+    console.log(file);
+    if (file.size > 50000000) {
+      alert("이미지 사이즈가 50mb를 초과 하였습니다.");
+      return;
+    }
+
+    const url = URL.createObjectURL(file);
+    console.log(url);
+
+    form.setValue(
+      "mainImage",
+      {
+        image: url,
+        uploadUrl: "",
+        downUrl: "",
+        file: file,
+      },
+      { shouldDirty: true }
+    );
+  };
 
   return (
     <div className=" w-full flex    flex-1 ">
@@ -448,6 +521,35 @@ export default function Page({ params }: { params: { id: string } }) {
                         </DialogContent>
                       </Dialog>
                     </div>
+                    <div className=" col-span-2">
+                      <div className="col-span-9 grid grid-cols-2 gap-6 ">
+                        <div className="col-span-2 ">
+                          <FormField
+                            control={form.control}
+                            name="mainImage"
+                            render={({
+                              field: { onChange, onBlur, value, ref },
+                            }) => {
+                              let images = form.getValues("mainImage.image");
+                              // console.log("images", images);
+                              return (
+                                <FormItem className="flex flex-col items-start gap-2">
+                                  <FormLabel className="">
+                                    농장 대표사진
+                                  </FormLabel>
+                                  <ImageUploadComponent
+                                    image={images}
+                                    setValue={form.setValue}
+                                    onMainImageChange={onMainImageChange}
+                                  />
+                                </FormItem>
+                              );
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="col-span-2 ">
                       <FormField
                         control={form.control}

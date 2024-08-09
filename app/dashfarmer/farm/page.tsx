@@ -26,7 +26,11 @@ export default function FarmerList() {
   }, [session?.user.id]);
   return (
     <div className="w-full h-full  ">
-      <DataTableComponent getdata={getMoreData} columns={columns} />
+      <DataTableComponent
+        getdata={getMoreData}
+        columns={columns}
+        height="h-[calc(100vh-120px)]"
+      />
     </div>
   );
 }

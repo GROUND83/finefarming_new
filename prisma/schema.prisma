@@ -22,6 +22,7 @@ model SuperManager {
   avatar String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt 
+  recent_at DateTime @default(now())
   role String @default("superAdmin")
   approve Boolean @default(true)
   provider ProviderType @default(email)
@@ -39,6 +40,7 @@ model Manager {
   avatar String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt 
+  recent_at DateTime @default(now())
   provider ProviderType @default(email)
   role String @default("manager")
   approve Boolean @default(false)
@@ -56,6 +58,7 @@ model User {
   avatar String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  recent_at DateTime @default(now())
   reservation Reservation[]
   kakaoId String? @unique
   naverId String? @unique
@@ -66,6 +69,7 @@ model User {
   personlaPolicy Boolean @default(false)
   overForteen Boolean @default(false)
   reviews Review[]
+  matching Matching[]
  
 }
 // 라이터
@@ -78,6 +82,7 @@ model Writer {
   avatar String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  recent_at DateTime @default(now())
   magazines Magazine[]
   intruduceTitle String?
   intruduce String?
@@ -105,6 +110,7 @@ model Farmer {
   farm Farm[] // 농장
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  recent_at DateTime @default(now())
   role String @default("farmer")
   approve Boolean @default(false)
   provider ProviderType @default(email)
@@ -196,6 +202,7 @@ model Product {
   processNotice String? //상품진행설명 노트스
   mainImage String? //메인이미지
   images String[] // 추가이미지
+  wholeImages String[] // 전체이미지
   priceType PriceType @default(GROUP)
   groupLimit Int @default(5)// 그룹제한
   groupPrice Int @default(10000)// 그룹요금
@@ -222,6 +229,8 @@ model Product {
   reservation Reservation[]
   farmerId Int?
   status ProductStatusType @default(POSSIBLE)
+  monthly Monthly? @relation(fields: [monthlyId], references: [id],onDelete: Cascade) // 상품
+  monthlyId Int?  // 상품
 }
 enum ProductStatusType {
   POSSIBLE
@@ -495,4 +504,26 @@ model Event {
   image String?
   product Product @relation(fields: [productId], references: [id],onDelete: Cascade) 
   productId Int 
+}
+
+
+model Monthly {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  products Product[]
+  month String
+  image String?
+}
+
+model Matching {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  title String
+  description String?
+  region String?
+  endDate DateTime @default(now())
+  user User @relation(fields: [userId], references: [id],onDelete: Cascade) // 상품
+  userId Int   
 }

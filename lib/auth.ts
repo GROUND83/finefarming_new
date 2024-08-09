@@ -7,6 +7,8 @@ import db from "@/lib/db";
 import { Prisma } from "@prisma/client";
 import getDateTime from "@/lib/getDateTime";
 import { NextAuthOptions } from "next-auth";
+
+//
 function exclude(user: any, keys: any) {
   for (let key of keys) {
     delete user[key];

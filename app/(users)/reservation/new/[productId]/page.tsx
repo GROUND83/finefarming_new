@@ -44,7 +44,7 @@ import dayjs from "dayjs";
 import { getSession, useSession } from "next-auth/react";
 
 import { z } from "zod";
-import { getFarmImages } from "@/app/admin/farm/[id]/image/_components/actions";
+
 import { toast } from "sonner";
 
 const FormSchema = z.object({

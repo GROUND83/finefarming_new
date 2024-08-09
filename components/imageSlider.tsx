@@ -27,7 +27,6 @@ export default function ImageSlider({ images }: { images: any }) {
                     alt={`image-${index}`}
                     fill
                     className="object-cover "
-                    sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                   />
                 </div>
               </SwiperSlide>

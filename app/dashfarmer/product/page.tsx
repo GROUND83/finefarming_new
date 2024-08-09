@@ -16,7 +16,11 @@ import dayjs from "dayjs";
 export default function FarmerList() {
   return (
     <div className="w-full h-full  p-3">
-      <DataTableComponent getdata={getMoreData} columns={columns} />
+      <DataTableComponent
+        getdata={getMoreData}
+        columns={columns}
+        height="h-[calc(100vh-120px)]"
+      />
     </div>
   );
 }

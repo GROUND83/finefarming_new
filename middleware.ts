@@ -1,29 +1,31 @@
 import { getToken } from "next-auth/jwt";
 import { getSession } from "next-auth/react";
+import { NextURL } from "next/dist/server/web/next-url";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, URLPattern } from "next/server";
 
-interface Routes {
-  [key: string]: boolean;
-}
-const publicOnlyUrls: Routes = {
-  "/": true,
-  "/auth/login": true,
-  "/auth/naver/start": true,
-  "/auth/naver/complete": true,
-  "/auth/kakao/start": true,
-  "/auth/kakao/complete": true,
-  "/login": true,
-  "/sms": true,
-  "/register": true,
-  "/github/start": true,
-  "/github/complete": true,
-  "/auth/error": true,
-};
+// interface Routes {
+//   [key: string]: boolean;
+// }
+// const publicOnlyUrls: Routes = {
+//   "/": true,
+//   "/auth/login": true,
+//   "/auth/naver/start": true,
+//   "/auth/naver/complete": true,
+//   "/auth/kakao/start": true,
+//   "/auth/kakao/complete": true,
+//   "/login": true,
+//   "/sms": true,
+//   "/register": true,
+//   "/github/start": true,
+//   "/github/complete": true,
+//   "/auth/error": true,
+// };
 const secret = process.env.NEXTAUTH_SECRET;
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
+
   // console.log("pathname", pathname);
   const session = await getToken({ req, secret, raw: false });
   //
@@ -145,6 +147,42 @@ export async function middleware(req: NextRequest) {
       );
     }
   }
+
+  // if (pathname.startsWith("/match")) {
+  //   // console.log("session", session);
+  //   if (req.url) {
+  //     let splitUrl = req.url.split("/match/");
+  //     console.log("splitUrl", splitUrl);
+  //     if (splitUrl[1]) {
+  //       //
+  //       console.log("splitUrl", splitUrl);
+  //       if (session) {
+  //         if (session.id && session.role) {
+  //           if (session.role === "user" || session.role === "manager") {
+  //             console.log("session", session);
+  //             return NextResponse.next();
+  //           } else if (session.role === "superAdmin") {
+  //             return NextResponse.next();
+  //           } else {
+  //             return NextResponse.redirect(new URL("/", req.url));
+  //           }
+  //           //
+  //         } else {
+  //           // console.log("session", session);
+  //           return NextResponse.redirect(
+  //             new URL("/othersAuth/manager/login", req.url)
+  //           );
+  //         }
+  //       } else {
+  //         return NextResponse.redirect(
+  //           new URL("/othersAuth/manager/login", req.url)
+  //         );
+  //       }
+  //     } else {
+  //       //
+  //     }
+  //   }
+  // }
   // if (pathname.startsWith("/reservation/new")) {
   //   if (session) {
   //     console.log("session writer", session, session.role, session.id);
@@ -171,7 +209,7 @@ export async function middleware(req: NextRequest) {
 export const config = {
   //   matcher: ["/", "/profile", "auth/:path*"], // 미들웨어 실행할 path
   matcher: [
-    // "/reservaton/:path*",
+    "/match/:path*",
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.svg$).*)", //제외
   ], // 미들웨어 실행할 path
 };

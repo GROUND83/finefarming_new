@@ -2,7 +2,7 @@
 import db from "@/lib/db";
 
 import { redirect } from "next/navigation";
-import { editSchema } from "../baseSchema";
+
 import getDateTime from "@/lib/getDateTime";
 
 export async function getFarmers() {
@@ -42,6 +42,7 @@ export async function getBaseData(id: number) {
       lang: true,
       sido: true,
       sigungu: true,
+      mainImage: true,
       owner: {
         select: {
           username: true,
@@ -60,105 +61,97 @@ export async function getBaseData(id: number) {
 
 export async function updateData(formData: FormData) {
   const data = {
-    id: Number(formData.get("id")),
-    name: formData.get("name"),
+    id: Number(formData.get("id")) as number,
+    name: formData.get("name") as string,
     visible: formData.get("visible") === "true" ? true : false,
-    initail: formData.get("initail"),
-    companyNumber: formData.get("companyNumber"),
-    address: formData.get("address"),
-    mainPhone: formData.get("mainPhone"),
-    resevationManager: formData.get("resevationManager"),
-    resevationPhone: formData.get("resevationPhone"),
-    farmerId: formData.get("farmerId"),
-    farmerName: formData.get("farmerName"),
-    farmerPhone: formData.get("farmerPhone"),
-    introduction: formData.get("introduction"),
-    lat: formData.get("lat"),
-    lang: formData.get("lang"),
-    sigungu: formData.get("sigungu"),
-    sido: formData.get("sido"),
+    initail: formData.get("initail") as string,
+    companyNumber: formData.get("companyNumber") as string,
+    address: formData.get("address") as string,
+    mainPhone: formData.get("mainPhone") as string,
+    resevationManager: formData.get("resevationManager") as string,
+    resevationPhone: formData.get("resevationPhone") as string,
+    farmerId: formData.get("farmerId") as string,
+    farmerName: formData.get("farmerName") as string,
+    farmerPhone: formData.get("farmerPhone") as string,
+    introduction: formData.get("introduction") as string,
+    lat: formData.get("lat") as string,
+    lang: formData.get("lang") as string,
+    sigungu: formData.get("sigungu") as string,
+    sido: formData.get("sido") as string,
+    mainImage: formData.get("mainImage") as string,
   };
   console.log("data", data);
-  const result = await editSchema.safeParseAsync(data);
-  console.log(result);
-  if (!result.success) {
-    console.log(result.error.flatten());
-    return result.error.flatten();
-  } else {
-    if (result.data.id) {
-      try {
-        let response = await db.farm.update({
-          where: {
-            id: Number(data.id),
-          },
-          data: {
-            name: result.data.name,
-            visible: result.data.visible,
-            initail: result.data.initail,
-            companyNumber: result.data.companyNumber,
-            address: result.data.address,
-            mainPhone: result.data.mainPhone,
-            resevationManager: result.data.resevationManager,
-            resevationPhone: result.data.resevationPhone,
-            introduction: result.data.introduction,
-            lat: result.data.lat,
-            lang: result.data.lang,
-            sigungu: result.data.sigungu,
-            sido: result.data.sido,
-            owner: { connect: { id: Number(result.data.farmerId) } },
-            updated_at: getDateTime(),
-          },
+
+  try {
+    let response = await db.farm.update({
+      where: {
+        id: Number(data.id),
+      },
+      data: {
+        name: data.name || "",
+        visible: data.visible || false,
+        initail: data.initail || "",
+        companyNumber: data.companyNumber || "",
+        address: data.address || "",
+        mainPhone: data.mainPhone || "",
+        resevationManager: data.resevationManager || "",
+        resevationPhone: data.resevationPhone || "",
+        introduction: data.introduction || "",
+        lat: data.lat || "",
+        lang: data.lang || "",
+        sigungu: data.sigungu || "",
+        sido: data.sido || "",
+        owner: { connect: { id: Number(data.farmerId) } },
+        updated_at: getDateTime(),
+        mainImage: data.mainImage ? data.mainImage : null,
+      },
+      select: {
+        products: {
           select: {
-            products: {
-              select: {
-                id: true,
-              },
-            },
-            magazines: {
-              select: {
-                id: true,
-              },
-            },
+            id: true,
           },
-        });
-        if (!result.data.visible) {
-          await db.product.updateMany({
-            where: {
-              farmId: Number(data.id),
-            },
-            data: {
-              visible: result.data.visible,
-              updated_at: getDateTime(),
-            },
-          });
-          await db.magazine.updateMany({
-            where: {
-              farmId: Number(data.id),
-            },
-            data: {
-              visible: result.data.visible,
-              updated_at: getDateTime(),
-            },
-          });
-          await db.review.updateMany({
-            where: {
-              farmId: Number(data.id),
-            },
-            data: {
-              visible: result.data.visible,
-              updated_at: getDateTime(),
-            },
-          });
-        }
-        console.log("response", response);
-        return response;
-      } catch (e: any) {
-        console.log(e);
-        return { error: e };
-      }
-    } else {
-      return { error: "id error" };
+        },
+        magazines: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (!data.visible) {
+      await db.product.updateMany({
+        where: {
+          farmId: Number(data.id),
+        },
+        data: {
+          visible: data.visible,
+          updated_at: getDateTime(),
+        },
+      });
+      await db.magazine.updateMany({
+        where: {
+          farmId: Number(data.id),
+        },
+        data: {
+          visible: data.visible,
+          updated_at: getDateTime(),
+        },
+      });
+      await db.review.updateMany({
+        where: {
+          farmId: Number(data.id),
+        },
+        data: {
+          visible: data.visible,
+          updated_at: getDateTime(),
+        },
+      });
     }
+    console.log("response", response);
+    return response;
+  } catch (e: any) {
+    console.log(e);
+    return { error: e };
   }
 }
 export async function deleteFarm(id: number) {

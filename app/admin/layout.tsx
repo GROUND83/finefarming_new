@@ -22,6 +22,7 @@ import { ManagerAuth } from "@/components/userName";
 import { getSession } from "next-auth/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import LogoWrap from "@/components/logowrap";
+import { Calendar, PaperclipIcon, ShoppingBag } from "lucide-react";
 
 export const superAdminMenu = [
   {
@@ -33,7 +34,7 @@ export const superAdminMenu = [
   },
   {
     title: "상품 관리",
-    icon: <BuildingStorefrontIcon className="size-4" />,
+    icon: <ShoppingBag className="size-4" />,
     link: "product",
     disable: false,
     subMenu: [],
@@ -67,8 +68,15 @@ export const superAdminMenu = [
     subMenu: [],
   },
   {
+    title: "월별체험상품 관리",
+    icon: <Calendar className="size-4" />,
+    link: "monthly",
+    disable: false,
+    subMenu: [],
+  },
+  {
     title: "매일 구독 관리",
-    icon: <BookOpenIcon className="size-4" />,
+    icon: <PaperclipIcon className="size-4" />,
     link: "subscriber",
     disable: false,
     subMenu: [],
@@ -185,7 +193,7 @@ export const adminMenu = [
   },
   {
     title: "상품 관리",
-    icon: <BuildingStorefrontIcon className="size-4" />,
+    icon: <ShoppingBag className="size-4" />,
     link: "product",
     disable: false,
     subMenu: [],
@@ -219,8 +227,15 @@ export const adminMenu = [
     subMenu: [],
   },
   {
+    title: "월별체험상품 관리",
+    icon: <Calendar className="size-4" />,
+    link: "monthly",
+    disable: false,
+    subMenu: [],
+  },
+  {
     title: "매일 구독 관리",
-    icon: <BookOpenIcon className="size-4" />,
+    icon: <PaperclipIcon className="size-4" />,
     link: "subscriber",
     disable: false,
     subMenu: [],

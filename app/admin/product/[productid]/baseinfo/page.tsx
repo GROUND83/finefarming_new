@@ -65,6 +65,7 @@ import {
 } from "@/app/admin/_component/form/form";
 import { Prisma } from "@prisma/client";
 import SubSectionWrap from "@/app/admin/_component/subSectionWrap";
+import { UploadFileClient } from "@/lib/fileUploaderClient";
 
 export default function Page({ params }: { params: { productid: string } }) {
   const [toolData, setToolsData] = useState<any>([]);
@@ -122,25 +123,80 @@ export default function Page({ params }: { params: { productid: string } }) {
     //   return;
     // }
     setUpdateLoading(true);
-
+    const formData = new FormData();
     if (data) {
-      let mainImage = data.mainImage.downUrl;
+      if (data.mainImage?.file) {
+        //
+        let res = await UploadFileClient({
+          file: data.mainImage.file,
+          folderName: "product",
+        });
+        if (res?.location) {
+          console.log(res.location);
+          formData.append("mainImage", res.location);
+        }
+      } else {
+        //
+      }
       let imagesArray = [];
       if (data.images.length > 0) {
+        //
+
         for (const image of data.images) {
-          if (image.downUrl) {
-            imagesArray.push(image.downUrl);
+          if (image.file) {
+            let res = await UploadFileClient({
+              file: image.file,
+              folderName: "product",
+            });
+            if (res?.location) {
+              console.log(res.location);
+              imagesArray.push(res.location);
+              // formData.append("mainImage", res.location);
+            }
+            // imagesArray.push(image.downUrl);
+          } else {
+            if (image.image) {
+              imagesArray.push(image.image);
+            } else {
+            }
           }
         }
       }
+      // let mainImage = data.mainImage?.downUrl;
+      // let imagesArray = [];
+      // if (data.images.length > 0) {
+      //   for (const image of data.images) {
+      //     if (image.downUrl) {
+      //       imagesArray.push(image.downUrl);
+      //     }
+      //   }
+      // }
+
+      let coupydata = {
+        cloth: data.cloth,
+        description: data.description,
+        educationData: data.educationData,
+        educationSubject: data.educationSubject,
+        educationTitle: data.educationTitle,
+        farmInsideType: data.farmInsideType,
+        groupLimit: data.groupLimit,
+        groupMember: data.groupMember,
+        groupPrice: data.groupPrice,
+        personalPrice: data.personalPrice,
+        priceType: data.priceType,
+        process: data.process,
+        processNotice: data.processNotice,
+        status: data.status,
+        title: data.title,
+        tools: data.tools,
+        visible: data.visible,
+      };
 
       let newData = JSON.stringify({
-        ...data,
-        mainImage,
-        images: imagesArray,
+        ...coupydata,
       });
       console.log("newData", newData);
-      const formData = new FormData();
+      formData.append("imagesArray", JSON.stringify(imagesArray));
       formData.append("newData", newData);
       // formData.append("farmId", params.id);
       formData.append("productId", params.productid);
@@ -189,39 +245,44 @@ export default function Page({ params }: { params: { productid: string } }) {
     }
     const file = files[0];
     console.log(file);
-    if (file.size > 2000000) {
-      toast.warning("이미지 사이즈가 2mb를 초과 하였습니다.");
+    if (file.size > 50000000) {
+      toast.warning("이미지 사이즈가 50mb를 초과 하였습니다.");
       return;
     }
 
     const url = URL.createObjectURL(file);
     console.log(url);
+    let key = `mainImage.image`;
+    let fileKey = `mainImage.file`;
+    console.log(key, event.target.name);
+    form.setValue(key as any, url, { shouldDirty: true });
+    form.setValue(fileKey as any, file, { shouldDirty: true });
 
-    const { success, result } = await getUploadUrl();
-    console.log(result);
-    if (success) {
-      const { id, uploadURL } = result;
-      // upload?
-      const mainImageUpload = new FormData();
-      mainImageUpload.append("file", file);
-      // 시잔 업로드
-      const response = await fetch(uploadURL, {
-        method: "POST",
-        body: mainImageUpload,
-      });
-      if (response.status !== 200) {
-        return;
-      }
-      form.setValue(
-        "mainImage" as any,
-        {
-          image: url,
-          uploadUrl: uploadURL,
-          downUrl: `https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/${id}/public`,
-        },
-        { shouldValidate: true }
-      );
-    }
+    // const { success, result } = await getUploadUrl();
+    // console.log(result);
+    // if (success) {
+    //   const { id, uploadURL } = result;
+    //   // upload?
+    //   const mainImageUpload = new FormData();
+    //   mainImageUpload.append("file", file);
+    //   // 시잔 업로드
+    //   const response = await fetch(uploadURL, {
+    //     method: "POST",
+    //     body: mainImageUpload,
+    //   });
+    //   if (response.status !== 200) {
+    //     return;
+    //   }
+    //   form.setValue(
+    //     "mainImage" as any,
+    //     {
+    //       image: url,
+    //       uploadUrl: uploadURL,
+    //       downUrl: `https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/${id}/public`,
+    //     },
+    //     { shouldValidate: true }
+    //   );
+    // }
   };
   const onOtherImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -235,41 +296,45 @@ export default function Page({ params }: { params: { productid: string } }) {
     }
     const file = files[0];
     console.log(file);
-    if (file.size > 2000000) {
-      toast.warning("이미지 사이즈가 2mb를 초과 하였습니다.");
+    if (file.size > 50000000) {
+      toast.warning("이미지 사이즈가 50mb를 초과 하였습니다.");
       return;
     }
 
     const url = URL.createObjectURL(file);
     console.log(url);
+    let key = `images.${event.target.alt}.image`;
+    let fileKey = `images.${event.target.alt}.file`;
+    console.log(key, event.target.name);
+    form.setValue(key as any, url, { shouldDirty: true });
+    form.setValue(fileKey as any, file, { shouldDirty: true });
+    // const { success, result } = await getUploadUrl();
+    // console.log(result);
+    // if (success) {
+    //   const { id, uploadURL } = result;
+    //   // upload?
+    //   const mainImageUpload = new FormData();
+    //   mainImageUpload.append("file", file);
+    //   // 시잔 업로드
+    //   const response = await fetch(uploadURL, {
+    //     method: "POST",
+    //     body: mainImageUpload,
+    //   });
+    //   if (response.status !== 200) {
+    //     return;
+    //   }
+    //   let key = `images.${event.target.alt}`;
 
-    const { success, result } = await getUploadUrl();
-    console.log(result);
-    if (success) {
-      const { id, uploadURL } = result;
-      // upload?
-      const mainImageUpload = new FormData();
-      mainImageUpload.append("file", file);
-      // 시잔 업로드
-      const response = await fetch(uploadURL, {
-        method: "POST",
-        body: mainImageUpload,
-      });
-      if (response.status !== 200) {
-        return;
-      }
-      let key = `images.${event.target.alt}`;
-
-      form.setValue(
-        key as any,
-        {
-          image: url,
-          uploadUrl: uploadURL,
-          downUrl: `https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/${id}/public`,
-        },
-        { shouldValidate: true }
-      );
-    }
+    //   form.setValue(
+    //     key as any,
+    //     {
+    //       image: url,
+    //       uploadUrl: uploadURL,
+    //       downUrl: `https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/${id}/public`,
+    //     },
+    //     { shouldValidate: true }
+    //   );
+    // }
   };
 
   const reload = async () => {
@@ -301,9 +366,9 @@ export default function Page({ params }: { params: { productid: string } }) {
         for (const images of newdata.images) {
           newImages.push({
             image: images,
-            uploadUrl: images,
-            downUrl: images,
-            file: "",
+            uploadUrl: "",
+            downUrl: "",
+            file: undefined,
           });
         }
       }
@@ -321,18 +386,18 @@ export default function Page({ params }: { params: { productid: string } }) {
     } else {
       let newob = {
         image: newdata?.mainImage,
-        uploadUrl: newdata?.mainImage,
-        downUrl: newdata?.mainImage,
-        file: "",
+        uploadUrl: "",
+        downUrl: "",
+        file: undefined,
       };
       let newImages = [];
       if (newdata.images.length > 0) {
         for (const images of newdata.images) {
           newImages.push({
             image: images,
-            uploadUrl: images,
-            downUrl: images,
-            file: "",
+            uploadUrl: "",
+            downUrl: "",
+            file: undefined,
           });
         }
       }
@@ -590,7 +655,7 @@ export default function Page({ params }: { params: { productid: string } }) {
                                       {
                                         image: "",
                                         uploadUrl: "",
-                                        file: "",
+                                        file: undefined,
                                         downUrl: "",
                                       },
                                       { shouldTouch: true, shouldDirty: true }
@@ -621,6 +686,7 @@ export default function Page({ params }: { params: { productid: string } }) {
                     <div className="col-span-8 grid grid-cols-4 ">
                       <div className="grid grid-cols-8  gap-6 col-span-4  ">
                         {imagesForm.fields.map((field, index) => {
+                          console.log("field", field);
                           return (
                             <div
                               className="flex flex-col items-start gap-2 relative  col-span-2"
@@ -660,7 +726,7 @@ export default function Page({ params }: { params: { productid: string } }) {
                                 type="file"
                                 accept="image/*"
                                 className="hidden"
-                                name={`images.${index}.image`}
+                                name={`images.${index}`}
                                 onChange={onOtherImageChange}
                                 key={field.id}
                               />
@@ -683,7 +749,7 @@ export default function Page({ params }: { params: { productid: string } }) {
                                   imagesForm.append({
                                     image: "",
                                     uploadUrl: "",
-                                    file: "",
+                                    file: undefined,
                                     downUrl: "",
                                   });
                                 }

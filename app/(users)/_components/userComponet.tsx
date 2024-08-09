@@ -160,7 +160,7 @@ export function MobileUserComponet() {
                       <span>커뮤니티</span>
                     </Button>
                   </div>
-                  <div className="w-full flex flex-col items-start ">
+                  {/* <div className="w-full flex flex-col items-start ">
                     <Button
                       onClick={() => {
                         router.push("/recommand");
@@ -186,7 +186,7 @@ export function MobileUserComponet() {
                       <ChatBubbleLeftEllipsisIcon className="size-4" />
                       <span>체험 매칭</span>
                     </Button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
