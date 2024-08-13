@@ -5,24 +5,36 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 
 import { usePathname } from "next/navigation";
+import React from "react";
+import { getProductTitle } from "./_component/actions";
 
 interface farmDetailProps {
   children: React.ReactNode;
   params: {
     productid: string;
-    id: string | undefined;
   };
 }
 export default function LayOut({ children, params }: farmDetailProps) {
   // console.log(params);
+  const [title, setTitle] = React.useState<string>();
   const pathname = usePathname();
+  const gettitle = async () => {
+    let res = await getProductTitle(Number(params.productid));
+    console.log("res", res);
+    if (res?.title) {
+      setTitle(res.title);
+    }
+  };
+  React.useEffect(() => {
+    gettitle();
+  }, [params.productid]);
   return (
     <>
       {pathname && (
         <div className="relative  flex flex-col items-start flex-1  h-full w-full  ">
           <div className="flex flex-row items-center w-full px-3  py-3  bg-white border-b h-[50px]">
             <div className="flex-1">
-              <p>상품 정보</p>
+              <p>{title}</p>
             </div>
             <div className="px-6  flex flex-col items-start gap-4 ">
               <div className="flex flex-row items-center gap-2 text-sm h-full">

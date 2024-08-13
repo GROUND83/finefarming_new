@@ -2,9 +2,11 @@ import { PhotoIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
 export default function ImageUploadComponent({
+  value,
   image,
   setValue,
   onMainImageChange,
+  ref,
 }: any) {
   return (
     <div className="w-full flex flex-col items-start gap-2">
@@ -54,6 +56,7 @@ export default function ImageUploadComponent({
 
       <input
         type="file"
+        ref={ref}
         accept="image/*"
         id="mainImage"
         className="hidden"

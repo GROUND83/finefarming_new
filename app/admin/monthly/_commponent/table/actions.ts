@@ -11,14 +11,6 @@ export async function getMoreData(options: {
   const response = await db.$transaction([
     db.monthly.count(),
     db.monthly.findMany({
-      include: {
-        products: {
-          select: {
-            id: true,
-            title: true,
-          },
-        },
-      },
       skip: options.pageSize * options.pageIndex,
       take: options.pageSize,
       orderBy: {
@@ -35,14 +27,6 @@ export async function getMoreData(options: {
 export async function getMonthlyData() {
   //
   let data = await db.monthly.findMany({
-    include: {
-      products: {
-        select: {
-          id: true,
-          title: true,
-        },
-      },
-    },
     orderBy: {
       id: "asc",
     },
@@ -62,67 +46,116 @@ export async function getProductData() {
   });
   return { data };
 }
-export async function updateMonthly(formData: FormData) {
+export async function updateMonthly(formData: string) {
   // let images: any = formData.get("images");
-  const data = {
-    mainImage: formData.get("mainImage") as string,
-    // images: JSON.parse(images),
-    id: formData.get("id"),
-  };
-  console.log("data", data);
-  const products = formData.get("products") as string;
-  if (products) {
-    const productsData = JSON.parse(products);
-    let productArray = [];
-    for (const product of productsData) {
-      let dataProduct = await db.product.findFirst({
+  let datas = JSON.parse(formData);
+  // const data = {
+  //   mainImage: formData.get("mainImage") as string,
+  //   // images: JSON.parse(images),
+  //   id: formData.get("id"),
+  // };
+  console.log("datas", datas);
+  for (const data of datas.data) {
+    const products = data.products;
+
+    // const productsData = JSON.parse(products);
+    if (data.month) {
+      if (products.length > 0) {
+        // const productsData = JSON.parse(products);
+        let productArray = [];
+
+        let updateDatafrist = await db.monthly.update({
+          where: {
+            id: Number(data.id),
+          },
+          data: {
+            updated_at: getDateTime(),
+            products: { set: [] },
+          },
+        });
+        let updateData = await db.monthly.update({
+          where: {
+            id: Number(data.id),
+          },
+          data: {
+            updated_at: getDateTime(),
+            products: products,
+          },
+        });
+        console.log("updateData", updateData);
+      } else {
+        let updateDatafrist = await db.monthly.update({
+          where: {
+            id: Number(data.id),
+          },
+          data: {
+            updated_at: getDateTime(),
+            products: { set: [] },
+          },
+        });
+      }
+      let updateData = await db.monthly.update({
         where: {
-          id: product.id,
+          id: Number(data.id),
+        },
+        data: {
+          image: data.newImage,
+          updated_at: getDateTime(),
         },
       });
-      productArray.push(dataProduct);
-    }
-    let updateDatafrist = await db.monthly.update({
-      where: {
-        id: Number(data.id),
-      },
-      data: {
-        image: data.mainImage,
-        updated_at: getDateTime(),
-        products: { set: [] },
-      },
-      include: {
-        products: true,
-      },
-    });
-    let updateData = await db.monthly.update({
-      where: {
-        id: Number(data.id),
-      },
-      data: {
-        image: data.mainImage,
-        updated_at: getDateTime(),
-        products: {
-          connect: productsData,
+    } else {
+      let createData = await db.monthly.create({
+        data: {
+          month: data.month,
+          image: data.newImage,
+          updated_at: getDateTime(),
         },
-      },
-      include: {
-        products: true,
-      },
-    });
-    return { data: updateData };
-  } else {
-    // const productsData = JSON.parse(products);
-    let updateData = await db.monthly.update({
-      where: {
-        id: Number(data.id),
-      },
-      data: {
-        image: data.mainImage,
-
-        updated_at: getDateTime(),
-      },
-    });
-    return { data: updateData };
+      });
+      if (products.length > 0) {
+        // const productsData = JSON.parse(products);
+        let updateDatafrist = await db.monthly.update({
+          where: {
+            id: Number(createData.id),
+          },
+          data: {
+            updated_at: getDateTime(),
+            products: { set: [] },
+          },
+        });
+        let productArray = [];
+        for (const product of products) {
+          let dataProduct = await db.product.findUnique({
+            where: {
+              id: product.id,
+            },
+          });
+          if (dataProduct) {
+            productArray.push(dataProduct);
+          }
+        }
+        if (productArray.length > 0) {
+          let updateData = await db.monthly.update({
+            where: {
+              id: Number(data.id),
+            },
+            data: {
+              updated_at: getDateTime(),
+              products: products,
+            },
+          });
+        }
+      } else {
+        let updateDatafrist = await db.monthly.update({
+          where: {
+            id: Number(createData.id),
+          },
+          data: {
+            updated_at: getDateTime(),
+            products: { set: [] },
+          },
+        });
+      }
+    }
   }
+  return { data: JSON.stringify(datas) };
 }

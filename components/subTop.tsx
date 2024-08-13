@@ -9,11 +9,6 @@ import NewManager from "@/app/admin/(user)/manager/components/new/newData";
 import NewWriter from "@/app/admin/(user)/writer/components/new/newData";
 import NewCustomer from "@/app/admin/(user)/customer/components/new/newData";
 import NewFarm from "@/app/admin/farm/new/newData";
-import NewReservation from "@/app/admin/reservation/_components/new/newData";
-import NewCommunity from "@/app/admin/community/_component/newModal";
-import NewMagazineModal from "@/app/admin/magazine/_commponent/new/newMagazineModal";
-import NewCommunityUser from "@/app/admin/community/_component/newModal";
-import NewMonthlyModal from "@/app/admin/monthly/_commponent/new/newMonthlyModal";
 
 export default function SubTop({
   title,
@@ -30,7 +25,7 @@ export default function SubTop({
 }) {
   let pathname = usePathname();
   return (
-    <div className="flex flex-col border-b h-[70px]  w-full  justify-center">
+    <div className="flex flex-col border-b h-[70px]  w-full  justify-center bg-white">
       <div className="flex flex-row  items-center justify-between   px-3   w-full ">
         <div className=" ">
           <h1 className="font-semibold  text-md">{title}</h1>

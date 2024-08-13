@@ -47,8 +47,8 @@ export default async function Page({
           </h1>
         </header>
         <div className="w-full grid grid-cols-12 gap-3 lg:gap-4 p-3 mt-3  ">
-          {data.products.length > 0 &&
-            data.products.map((item: any, index: any) => {
+          {data.newProducts.length > 0 &&
+            data.newProducts.map((item: any, index: any) => {
               return (
                 <section
                   key={index}

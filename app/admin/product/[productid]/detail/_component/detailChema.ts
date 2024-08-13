@@ -1,12 +1,7 @@
 import { z } from "zod";
 
 export const detailSchema = z.object({
-  image: z.object({
-    image: z.string(),
-    uploadUrl: z.string(),
-    downUrl: z.string(),
-    file: z.any(),
-  }),
+  image: z.string(),
   title: z.string(),
   titleDescription: z.string(),
   sections: z.array(
@@ -17,9 +12,6 @@ export const detailSchema = z.object({
       images: z.array(
         z.object({
           image: z.string(),
-          uploadUrl: z.string(),
-          downUrl: z.string(),
-          file: z.any(),
         })
       ),
     })

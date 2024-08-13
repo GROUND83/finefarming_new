@@ -31,16 +31,11 @@ import { getUploadUrl } from "@/lib/uploadUrl";
 import { Input } from "@/components/ui/input";
 import { NestedImage } from "./_component/nestImage";
 import { LoadingEditSubmitButton } from "@/components/ButtonComponent";
-
-// import { getFarmDetail } from "./components/getFarmDetail";
-// import { newDetail, newDetailType } from "./components/newFarmImageSchema";
-// import { farmDetailUpload } from "./components/farmImageUpload";
-// import QuillEditor from "./components/QuillEditer";
-// import QuillEditor from "./components/QuillEditer";
-// import QuillEditorWrap from "./components/QuillEditerWrap";
+import ImageSelector from "@/app/admin/_component/imageSelector";
 
 export default function Page({ params }: { params: { productid: string } }) {
   //
+  const [wholeImage, setWholeImage] = useState<any>([]);
   const [sectionType, setSectionType] = useState("mobile");
   const [product, setProduct] = useState<any>();
   const [previewModal, setPreviewModal] = useState(false);
@@ -62,44 +57,6 @@ export default function Page({ params }: { params: { productid: string } }) {
     name: "sections",
   });
 
-  const onMainImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    console.log(event.target, event.target.name);
-    const {
-      target: { files },
-    } = event;
-    if (!files) {
-      return;
-    }
-    const file = files[0];
-    console.log(file);
-    if (file.size > 2000000) {
-      alert("이미지 사이즈가 2mb를 초과 하였습니다.");
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
-    console.log(url);
-
-    const { success, result } = await getUploadUrl();
-    console.log(result);
-    if (success) {
-      const { id, uploadURL } = result;
-
-      form.setValue(
-        "image",
-        {
-          image: url,
-          uploadUrl: uploadURL,
-          downUrl: `https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/${id}`,
-          file: file,
-        },
-        { shouldDirty: true }
-      );
-    }
-  };
-
   const onSubmit = form.handleSubmit(async (data) => {
     setUpdateLoading(true);
     console.log("data", data);
@@ -110,26 +67,9 @@ export default function Page({ params }: { params: { productid: string } }) {
       sections: [] as any,
     };
     if (data) {
-      if (data.image.file) {
-        console.log("data.file", data.image.file);
-        if (data.image.file.size > 2000000) {
-          alert("이미지 사이즈가 2mb를 초과 하였습니다.");
-          return;
-        }
-        const mainImageUpload = new FormData();
-        mainImageUpload.append("file", data.image.file);
-        // 시잔 업로드
-        const response = await fetch(data.image.uploadUrl, {
-          method: "POST",
-          body: mainImageUpload,
-        });
-        console.log("response", response);
-        if (response.status !== 200) {
-          return;
-        }
-        checkData.image = `${data.image.downUrl}/public`;
-      } else {
-        checkData.image = `${data.image.downUrl}`;
+      if (data.image) {
+        console.log("data.file", data.image);
+        checkData.image = data.image;
       }
       checkData.title = data.title;
       checkData.titleDescription = data.titleDescription;
@@ -143,24 +83,8 @@ export default function Page({ params }: { params: { productid: string } }) {
         } as any;
         if (sections.images.length > 0) {
           for (const images of sections.images) {
-            if (images.file) {
-              if (images.file.size > 2000000) {
-                alert("이미지 사이즈가 2mb를 초과 하였습니다.");
-                return;
-              }
-              const mainImageUpload = new FormData();
-              mainImageUpload.append("file", images.file);
-              // 시잔 업로드
-              const response = await fetch(images.uploadUrl, {
-                method: "POST",
-                body: mainImageUpload,
-              });
-              if (response.status !== 200) {
-                return;
-              }
-              sectionData.images.push(`${images.downUrl}/public`);
-            } else {
-              sectionData.images.push(`${images.downUrl}`);
+            if (images) {
+              sectionData.images.push(images);
             }
           }
         }
@@ -203,6 +127,7 @@ export default function Page({ params }: { params: { productid: string } }) {
       console.log("detail", response);
       console.log("farm", response.farm);
       console.log("detail", response.detail);
+      setWholeImage(response.wholeImages);
       if (!response) {
         notFound();
       }
@@ -211,21 +136,14 @@ export default function Page({ params }: { params: { productid: string } }) {
         setRefund(response.farm.refundPolicy);
 
         let newDetailData = {
-          image: {
-            image: "",
-            uploadUrl: "",
-            downUrl: "",
-            file: "",
-          },
+          image: "",
           title: "",
           titleDescription: "",
           sections: [] as any,
         };
         if (response.detail) {
           if (response.detail.image) {
-            newDetailData.image.image = response.detail.image;
-            newDetailData.image.uploadUrl = response.detail.image;
-            newDetailData.image.downUrl = response.detail.image;
+            newDetailData.image = response.detail.image;
           }
           if (response.detail.title) {
             newDetailData.title = response.detail.title;
@@ -241,12 +159,7 @@ export default function Page({ params }: { params: { productid: string } }) {
               images: [] as any,
             };
             for (const image of sections.images) {
-              newSectionData.images.push({
-                image: image,
-                uploadUrl: image,
-                downUrl: image,
-                file: "",
-              });
+              newSectionData.images.push(image);
             }
             newDetailData.sections.push(newSectionData);
           }
@@ -337,9 +250,9 @@ export default function Page({ params }: { params: { productid: string } }) {
                             return (
                               <div className="w-full h-[480px]   rounded-b-3xl bg-gradient-to-t from-primary relative overflow-hidden bg-white">
                                 <div className="w-full h-full bg-gradient-to-t from-[#063824] to-from-[#063824] to-55%  z-10 absolute"></div>
-                                {value?.image && (
+                                {value && (
                                   <Image
-                                    src={value.image}
+                                    src={value}
                                     alt="농장이미지"
                                     fill
                                     priority
@@ -348,33 +261,30 @@ export default function Page({ params }: { params: { productid: string } }) {
                                   />
                                 )}
                                 <div className="  absolute z-40 top-0 left-0 p-6 text-black">
-                                  {!value?.image ? (
-                                    <label
-                                      htmlFor="mainImage"
-                                      className=" text-sm flex flex-row items-center gap-2  border bg-white p-2 cursor-pointer"
-                                    >
-                                      <PlusIcon className="w-4" />
-                                      <p className="text-xs">
-                                        사진을 추가해주세요.
-                                      </p>
+                                  {!value ? (
+                                    <label className=" text-sm flex flex-row items-center gap-2  border bg-white p-2 cursor-pointer">
+                                      <ImageSelector
+                                        wholeImage={wholeImage}
+                                        form={form}
+                                        value={value}
+                                        onChange={(value: any) => {
+                                          console.log("value", value);
+
+                                          form.setValue("image", value, {
+                                            shouldDirty: true,
+                                            shouldTouch: true,
+                                          });
+                                        }}
+                                      />
                                     </label>
                                   ) : (
                                     <button
                                       type="button"
                                       onClick={() => {
-                                        form.setValue(
-                                          "image",
-                                          {
-                                            image: "",
-                                            uploadUrl: "",
-                                            file: "",
-                                            downUrl: "",
-                                          },
-                                          {
-                                            shouldTouch: true,
-                                            shouldDirty: true,
-                                          }
-                                        );
+                                        form.setValue("image", "", {
+                                          shouldTouch: true,
+                                          shouldDirty: true,
+                                        });
                                         if (imageRef?.current) {
                                           imageRef.current.value = null;
                                         }
@@ -386,16 +296,6 @@ export default function Page({ params }: { params: { productid: string } }) {
                                   )}
                                   <FormMessage />
                                 </div>
-
-                                <input
-                                  ref={imageRef}
-                                  type="file"
-                                  accept="image/*"
-                                  id="mainImage"
-                                  className="hidden"
-                                  name="mainImage"
-                                  onChange={onMainImageChange}
-                                />
 
                                 <div className="absolute z-20 bottom-0 left-0 p-6 text-white w-full">
                                   <div className="flex flex-col items-start gap-1 w-full">
@@ -514,6 +414,8 @@ export default function Page({ params }: { params: { productid: string } }) {
                                       nestIndex={index}
                                       control={form.control}
                                       setValue={form.setValue}
+                                      wholeImage={wholeImage}
+                                      form={form}
                                     />
 
                                     <div>

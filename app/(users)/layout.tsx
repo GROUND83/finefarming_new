@@ -49,7 +49,7 @@ export default function RootLayout({
                 >
                   커뮤니티
                 </Link>
-                {/* <Link
+                <Link
                   href={"/recommand"}
                   className="text-black hover:text-primary transition-colors delay-75"
                 >
@@ -60,7 +60,7 @@ export default function RootLayout({
                   className="text-black hover:text-primary transition-colors delay-75"
                 >
                   체험매칭
-                </Link> */}
+                </Link>
               </div>
             </div>
             <UserComponet />

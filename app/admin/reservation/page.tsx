@@ -7,7 +7,7 @@ import { columns } from "./_components/table/columns";
 
 export default function Page() {
   return (
-    <div className="w-full p-3">
+    <div className="w-full">
       {/* <DataTable /> */}
       <DataTableComponent
         getdata={getMoreData}

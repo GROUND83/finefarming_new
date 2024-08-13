@@ -22,7 +22,7 @@ import { ManagerAuth } from "@/components/userName";
 import { getSession } from "next-auth/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import LogoWrap from "@/components/logowrap";
-import { Calendar, PaperclipIcon, ShoppingBag } from "lucide-react";
+import { Calendar, Equal, PaperclipIcon, ShoppingBag } from "lucide-react";
 
 export const superAdminMenu = [
   {
@@ -71,6 +71,13 @@ export const superAdminMenu = [
     title: "월별체험상품 관리",
     icon: <Calendar className="size-4" />,
     link: "monthly",
+    disable: false,
+    subMenu: [],
+  },
+  {
+    title: "체험매칭 관리",
+    icon: <Equal className="size-4" />,
+    link: "matching",
     disable: false,
     subMenu: [],
   },
@@ -234,6 +241,13 @@ export const adminMenu = [
     subMenu: [],
   },
   {
+    title: "체험매칭 관리",
+    icon: <Equal className="size-4" />,
+    link: "matching",
+    disable: false,
+    subMenu: [],
+  },
+  {
     title: "매일 구독 관리",
     icon: <PaperclipIcon className="size-4" />,
     link: "subscriber",
@@ -354,7 +368,7 @@ export default function AdminLayOut({
   }, []);
 
   return (
-    <div className="w-full flex flex-row  items-stretch relative">
+    <div className=" h-screen w-screen flex flex-row items-stretch ">
       <div className="py-6 border-r-[1px]  bg-white  w-[220px] h-screen  relative">
         <div className="fixed top-0 left-0 h-full w-[220px]">
           <div className="flex flex-col items-center h-[180px] g-3 py-6">
@@ -483,7 +497,7 @@ export default function AdminLayOut({
           </div>
         </div>
       </div>
-      <div className="  w-[calc(100vw-220px)] absolute top-0 right-0 h-full   overflow-y-auto">
+      <div className="flex-1 flex flex-col items-stretch bg-neutral-100 h-screen  ">
         {children}
       </div>
     </div>

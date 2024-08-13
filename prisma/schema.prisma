@@ -229,8 +229,8 @@ model Product {
   reservation Reservation[]
   farmerId Int?
   status ProductStatusType @default(POSSIBLE)
-  monthly Monthly? @relation(fields: [monthlyId], references: [id],onDelete: Cascade) // 상품
-  monthlyId Int?  // 상품
+  // monthly Monthly? @relation(fields: [monthlyId], references: [id],onDelete: Cascade) // 상품
+  // monthlyId Int?  // 상품
 }
 enum ProductStatusType {
   POSSIBLE
@@ -511,7 +511,7 @@ model Monthly {
   id Int @id @default(autoincrement())
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  products Product[]
+  products Json[] 
   month String
   image String?
 }

@@ -44,7 +44,32 @@ export async function createBaseImageProduct(formData: FormData) {
     return product;
   }
 }
+export async function createBaseImageSettingProduct(formData: FormData) {
+  let mainImage = formData.get("mainImage") as string;
+  let imagesArray = formData.get("imagesArray") as string;
+  let imagesArrayParser = JSON.parse(imagesArray);
 
+  let productId = Number(formData.get("productId"));
+
+  console.log("imagesArrayParser", imagesArrayParser);
+  let newArray = [];
+  if (imagesArrayParser.length > 0) {
+    for (const imagesArray of imagesArrayParser) {
+      newArray.push(imagesArray.image);
+    }
+  }
+  let product = await db.product.update({
+    where: {
+      id: productId,
+    },
+    data: {
+      mainImage: mainImage,
+      images: newArray,
+      updated_at: getDateTime(),
+    },
+  });
+  return product;
+}
 export async function getProductBase(id: number) {
   const product = await db.product.findUnique({
     where: {

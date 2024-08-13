@@ -27,7 +27,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { ScrollArea } from "../ui/scroll-area";
 
 export function DataTableComponent({
   getdata,
@@ -76,8 +76,8 @@ export function DataTableComponent({
     );
   }
   return (
-    <div className="w-full ">
-      <div className="flex flex-row items-center   h-[50px]   px-3 border-b">
+    <div className="w-full h-[calc(100vh-70px)]">
+      <div className="flex flex-row items-center   h-[50px]   px-3 border-b bg-white">
         <div className="flex-1 text-sm text-neutral-500 flex flex-row items-center gap-2 ">
           <p> 총 {data?.pageCount}개의 데이터가 있습니다.</p>
         </div>
@@ -138,10 +138,9 @@ export function DataTableComponent({
           </div>
         ) : null}
       </div>
-
-      <ScrollArea className={`bg-neutral-100  w-full ${height} `}>
-        <Table>
-          <TableHeader className="bg-white">
+      <ScrollArea className={`bg-neutral-100  w-full ${height}  flex flex-col`}>
+        <Table className="">
+          <TableHeader className="h-[50px]">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -159,6 +158,7 @@ export function DataTableComponent({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody className="bg-white">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (

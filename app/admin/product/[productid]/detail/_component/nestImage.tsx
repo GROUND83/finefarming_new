@@ -1,3 +1,4 @@
+import ImageSelector from "@/app/admin/_component/imageSelector";
 import { FormField } from "@/components/ui/form";
 import { getUploadUrl } from "@/lib/uploadUrl";
 import { PlusIcon } from "lucide-react";
@@ -8,49 +9,22 @@ type nestedProps = {
   nestIndex: any;
   control: any;
   setValue: any;
+  wholeImage: any;
+  form: any;
 };
-export const NestedImage = ({ nestIndex, control, setValue }: nestedProps) => {
+export const NestedImage = ({
+  nestIndex,
+  control,
+  setValue,
+  wholeImage,
+  form,
+}: nestedProps) => {
+  //
   const { fields, remove, append } = useFieldArray({
     control,
     name: `sections.${nestIndex}.images`,
   });
-  const onMainImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    console.log(event.target.id, event.target.name);
-    const {
-      target: { files },
-    } = event;
-    if (!files) {
-      return;
-    }
-    const file = files[0];
-    console.log(file);
-    if (file.size > 2000000) {
-      alert("이미지 사이즈가 2mb를 초과 하였습니다.");
-      return;
-    }
 
-    const url = URL.createObjectURL(file);
-    console.log(url);
-
-    const { success, result } = await getUploadUrl();
-    console.log(result);
-    if (success) {
-      const { id, uploadURL } = result;
-
-      setValue(
-        event.target.name,
-        {
-          image: url,
-          uploadUrl: uploadURL,
-          downUrl: `https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/${id}`,
-          file: file,
-        },
-        { shouldDirty: true }
-      );
-    }
-  };
   return (
     <div className="w-full">
       <div className="flex flex-row items-center justify-end py-1  px-6 ">
@@ -111,12 +85,24 @@ export const NestedImage = ({ nestIndex, control, setValue }: nestedProps) => {
                     <div className="  flex flex-col items-center justify-center w-full h-full">
                       {!value ? (
                         <div>
-                          <label
-                            htmlFor={`sections.${nestIndex}.images.${k}`}
-                            className=" text-sm flex flex-row items-center gap-2   p-2 cursor-pointer"
-                          >
-                            <PlusIcon className="w-4" />
-                            <p className="text-xs">사진을 추가해주세요.</p>
+                          <label className=" text-sm flex flex-row items-center gap-2   p-2 cursor-pointer">
+                            <ImageSelector
+                              wholeImage={wholeImage}
+                              form={form}
+                              value={value}
+                              onChange={(value: any) => {
+                                console.log("value", value);
+
+                                form.setValue(
+                                  `sections.${nestIndex}.images.${k}.image`,
+                                  value,
+                                  {
+                                    shouldDirty: true,
+                                    shouldTouch: true,
+                                  }
+                                );
+                              }}
+                            />
                           </label>
                           <button
                             type="button"
@@ -136,14 +122,6 @@ export const NestedImage = ({ nestIndex, control, setValue }: nestedProps) => {
                         </button>
                       )}
                     </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      id={`sections.${nestIndex}.images.${k}`}
-                      className="hidden"
-                      name={`sections.${nestIndex}.images.${k}`}
-                      onChange={onMainImageChange}
-                    />
                   </div>
                 );
               }}

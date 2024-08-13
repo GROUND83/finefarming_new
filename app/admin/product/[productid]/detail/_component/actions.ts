@@ -45,6 +45,7 @@ export async function getProductDetail(productId: number) {
         subProduct: true,
         process: true,
         processNotice: true,
+        wholeImages: true,
       },
     });
     console.log(product);

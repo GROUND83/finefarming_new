@@ -29,12 +29,30 @@ export async function getMonthlyDetail(monthlyId: number) {
     },
     select: {
       id: true,
-      products: {
-        include: { farm: true },
-      },
+      products: true,
       month: true,
       image: true,
     },
   });
-  return monthly;
+  if (monthly) {
+    let newArray = [];
+    let products = monthly.products as any;
+    for (const product of products) {
+      if (product?.id) {
+        let productdata = await db.product.findUnique({
+          where: {
+            id: Number(product.id) as any,
+          },
+          include: {
+            farm: true,
+          },
+        });
+        newArray.push(productdata);
+      }
+    }
+    let newMonthly = { ...monthly, newProducts: newArray };
+    // monthly.newProducts = newArray
+    console.log("newMonthly", newMonthly);
+    return newMonthly;
+  }
 }

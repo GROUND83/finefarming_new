@@ -58,7 +58,10 @@ export default async function Page() {
                   </div>
                   <div className="col-span-2 lg:col-span-2 lg:px-3 py-3 px-3 lg:py-3 flex flex-col items-start justify-start bg-neutral-50 border">
                     <div>
-                      <p>{item.month} 체험상품</p>
+                      <p className=" text-md">
+                        <span className=" text-lg font-bold">{item.month}</span>{" "}
+                        체험상품
+                      </p>
                     </div>
                     <div className="w-full flex flex-col gap-1 mt-3">
                       <Button asChild variant={"outline"} className="w-full">

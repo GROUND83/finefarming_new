@@ -1,32 +1,14 @@
 "use client";
 import React from "react";
-import { Textarea } from "@/components/ui/textarea";
 
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 
-import { Checkbox } from "@/components/ui/checkbox";
+import { useRouter } from "next/navigation";
 
-import {
-  ExclamationCircleIcon,
-  MinusCircleIcon,
-  MinusIcon,
-  PencilIcon,
-  PhotoIcon,
-  PlusIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
-import { notFound, useRouter } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "sonner";
 import {
   Form,
@@ -37,18 +19,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { XIcon } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { getUploadUrl } from "@/lib/uploadUrl";
-
-import { Switch } from "@/components/ui/switch";
-
-import { Input } from "@/components/ui/input";
-
-import Link from "next/link";
 
 import {
   createBaseImageProduct,
+  createBaseImageSettingProduct,
   createBaseProduct,
   deleteProduct,
   getProductBase,
@@ -64,10 +38,11 @@ import {
   FormTitle,
   FormWrap,
 } from "@/app/admin/_component/form/form";
-import { Prisma } from "@prisma/client";
+
 import SubSectionWrap from "@/app/admin/_component/subSectionWrap";
-import { UploadFileClient } from "@/lib/fileUploaderClient";
+
 import Image from "next/image";
+import ImageSelector from "@/app/admin/_component/imageSelector";
 
 export default function Page({ params }: { params: { productid: string } }) {
   const [wholeImage, setWholeImage] = useState<any>([]);
@@ -95,35 +70,18 @@ export default function Page({ params }: { params: { productid: string } }) {
     setUpdateLoading(true);
     const formData = new FormData();
     if (data) {
-      let imagesArray = [];
       if (data.images.length > 0) {
-        for (const image of data.images) {
-          if (image.file) {
-            let res = await UploadFileClient({
-              file: image.file,
-              folderName: `product/${params.productid}`,
-            });
-            if (res?.location) {
-              console.log(res.location);
-              imagesArray.push(res.location);
-              // formData.append("mainImage", res.location);
-            }
-            // imagesArray.push(image.downUrl);
-          } else {
-            if (image.image) {
-              imagesArray.push(image.image);
-            } else {
-            }
-          }
-        }
+        formData.append("imagesArray", JSON.stringify(data.images));
       }
 
-      formData.append("imagesArray", JSON.stringify(imagesArray));
+      if (data.mainImage) {
+        formData.append("mainImage", data.mainImage);
+      }
 
       formData.append("productId", params.productid);
 
       try {
-        const result = await createBaseImageProduct(formData);
+        const result = await createBaseImageSettingProduct(formData);
         toast.success("데이터 수정이 완료 되었습니다.");
       } catch (e: any) {
         console.log(e);
@@ -194,40 +152,32 @@ export default function Page({ params }: { params: { productid: string } }) {
     setWholeImage(product.wholeImages);
     let newImages = [];
     if (product.images.length > 0) {
-      for (const images of product.images) {
-        newImages.push({
-          image: images,
-          uploadUrl: "",
-          downUrl: "",
-          file: undefined,
-        });
+      for (const element of product.images) {
+        newImages.push({ image: element });
       }
-      form.reset({ images: newImages } as any);
     }
-    if (product.mainImage) {
-      form.reset({
-        mainImage: product.mainImage,
-        uploadUrl: "",
-        downUrl: "",
-        file: undefined,
-      } as any);
-    }
+    console.log("newImages", newImages);
+
+    form.reset({
+      mainImage: product.mainImage || "",
+      images: newImages || [],
+    });
 
     setLoading(false);
   };
   //
-  React.useEffect(() => {
-    if (form.formState.isSubmitSuccessful) {
-      console.log(
-        "form.formState.isSubmitSuccessful",
-        form.formState.isSubmitSuccessful
-      );
-      toast.success("데이터 수정이 완료 되었습니다.");
-      reload();
-      console.log("done");
-      // window.location.reload();
-    }
-  }, [form.formState.isSubmitSuccessful]);
+  // React.useEffect(() => {
+  //   if (form.formState.isSubmitSuccessful) {
+  //     console.log(
+  //       "form.formState.isSubmitSuccessful",
+  //       form.formState.isSubmitSuccessful
+  //     );
+  //     toast.success("데이터 수정이 완료 되었습니다.");
+  //     reload();
+  //     console.log("done");
+  //     // window.location.reload();
+  //   }
+  // }, [form.formState.isSubmitSuccessful]);
   //
   React.useEffect(() => {
     if (params.productid) {
@@ -236,6 +186,10 @@ export default function Page({ params }: { params: { productid: string } }) {
     }
   }, [params.productid]);
   //
+
+  const images = form.getFieldState("mainImage");
+
+  console.log("images", images);
   return (
     <div className=" w-full flex    flex-1 ">
       <SubSectionWrap isLoading={loading}>
@@ -243,61 +197,118 @@ export default function Page({ params }: { params: { productid: string } }) {
           <div className="p-6 flex-1 border rounded-md  bg-white   flex flex-col items-start justify-between w-full  ">
             <Form {...form}>
               <form
-                className="w-full flex flex-col items-start gap-6 text-sm "
+                className="w-full flex flex-col items-start gap-6 text-sm  "
                 onSubmit={onSubmit}
               >
-                <FormWrap>
-                  <FormTitle
-                    title="대표이미지 선택"
-                    sub="미리 등록한 사진 중 대표이미지를 선택하세요."
-                  />
-                  <FormField
-                    control={form.control}
-                    name="mainImage"
-                    render={({ field }) => (
-                      <FormItem className="space-y-3 w-full col-span-9">
-                        {/* <FormLabel>Notify me about...</FormLabel> */}
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value?.image || ""}
-                            className="w-full grid grid-cols-12 gap-2 "
-                          >
-                            {wholeImage.map((item: any, index: any) => {
-                              return (
-                                <FormItem
-                                  key={index}
-                                  className="flex items-center   col-span-4  gap-2"
-                                >
-                                  <FormControl>
-                                    <RadioGroupItem
-                                      value={item}
-                                      className="size-4"
+                <FormField
+                  control={form.control}
+                  name="mainImage"
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <div className="grid grid-cols-12 gap-6 w-full border-b pb-12">
+                      <FormTitle
+                        title="대표이미지 선택"
+                        sub="미리 등록한 사진 중 대표이미지를 선택하세요."
+                      />
+                      {value && (
+                        <div className=" aspect-square w-full relative col-span-3 ">
+                          <Image
+                            src={value || ""}
+                            fill
+                            className="object-cover "
+                            alt={`image`}
+                          />
+                        </div>
+                      )}
+                      <div className=" col-span-6">
+                        <ImageSelector
+                          wholeImage={wholeImage}
+                          form={form}
+                          value={value}
+                          onChange={onChange}
+                        />
+                      </div>
+                    </div>
+                  )}
+                />
+                <div className=" w-full grid grid-cols-12 gap-2 ">
+                  <div className=" col-span-3">
+                    <FormTitle
+                      title="이미지 슬라이드 선택"
+                      sub="미리 등록한 사진 중 대표이미지를 선택하세요."
+                    />
+                    <div className="mt-3">
+                      <Button
+                        variant={"secondary"}
+                        onClick={() => imagesForm.append({ image: "" })}
+                        type="button"
+                      >
+                        + 이미지 추가
+                      </Button>
+                    </div>
+                  </div>
+                  <div className=" col-span-9  grid grid-cols-12 gap-2">
+                    {imagesForm.fields.map((field, index) => {
+                      return (
+                        <FormField
+                          key={index}
+                          control={form.control}
+                          name={`images.${index}.image`}
+                          render={({ field: { value, onChange } }) => {
+                            console.log("value", value);
+                            return (
+                              <div
+                                className="flex flex-col items-start gap-2 relative  border  col-span-4 aspect-square p-3 "
+                                key={index}
+                              >
+                                {value ? (
+                                  <div className=" aspect-square w-full relative col-span-3 ">
+                                    <Image
+                                      src={value || ""}
+                                      fill
+                                      className="object-cover "
+                                      alt={`image`}
                                     />
-                                  </FormControl>
-                                  <FormLabel className="w-full">
-                                    <div className=" aspect-square w-full relative">
-                                      <Image
-                                        src={item}
-                                        fill
-                                        className=" object-cover"
-                                        alt={`image${index}`}
-                                      />
-                                    </div>
-                                  </FormLabel>
-                                  {/* <FormLabel className="font-normal">
-                                    All new messages
-                                  </FormLabel> */}
-                                </FormItem>
-                              );
-                            })}
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </FormWrap>
+                                  </div>
+                                ) : (
+                                  <div className=" aspect-square w-full relative col-span-3  flex flex-col items-center justify-center">
+                                    <p>이미지를 선택하세요.</p>
+                                  </div>
+                                )}
+                                <div className="w-full flex flex-row items-center justify-between gap-2">
+                                  <ImageSelector
+                                    wholeImage={wholeImage}
+                                    form={form}
+                                    value={value}
+                                    onChange={(value: any) => {
+                                      console.log("value", value);
+
+                                      form.setValue(
+                                        `images.${index}.image`,
+                                        value,
+                                        {
+                                          shouldDirty: true,
+                                          shouldTouch: true,
+                                        }
+                                      );
+                                    }}
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant={"outline"}
+                                    size={"sm"}
+                                    onClick={() => imagesForm.remove(index)}
+                                  >
+                                    <Trash2 className="size-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            );
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
 
                 <FormFooter>
                   <div>
