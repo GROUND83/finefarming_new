@@ -21,12 +21,14 @@ export default function ImageSlider({ images }: { images: any }) {
           {images.map((image: any, index: any) => {
             return (
               <SwiperSlide key={index}>
-                <div className=" relative w-full bg-neutral-100  aspect-[4/3] lg:aspect-video">
+                <div className=" relative w-full bg-neutral-100  aspect-video">
                   <Image
                     src={image}
                     alt={`image-${index}`}
-                    fill
-                    className="object-cover "
+                    priority
+                    width={200}
+                    height={200}
+                    className="object-cover w-full aspect-video"
                   />
                 </div>
               </SwiperSlide>

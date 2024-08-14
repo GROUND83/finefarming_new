@@ -21,6 +21,8 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { UploadFileClient } from "@/lib/fileUploaderClient";
+import dayjs from "dayjs";
 
 const myStyles = {
   itemShapes: RoundedStar,
@@ -85,38 +87,37 @@ export default function Page({
     console.log("etdata", data);
     console.log(!form.formState.isDirty);
     if (form.formState.isDirty) {
-      const mainImageUpload = new FormData();
-      mainImageUpload.append("file", data.image.file);
-      // 시잔 업로드
-      const response = await fetch(data.image.uploadUrl, {
-        method: "POST",
-        body: mainImageUpload,
-      });
-      if (response.status !== 200) {
-        return;
-      }
+      if (data.image.file) {
+        let res = await UploadFileClient({
+          file: data.image.file,
+          folderName: `review/${dayjs().unix()}`,
+        });
+        if (res?.location) {
+          console.log(res.location);
 
-      let newData = {
-        userId: session?.user.id,
-        productId: Number(params.productId),
-        reservationId: Number(params.reservationId),
-        image: `${data.image.downUrl}/public`,
-        point: data.point,
-        title: data.title,
-      };
-      let newString = JSON.stringify(newData);
-      const formData = new FormData();
+          // formData.append("mainImage", res.location);
+          let newData = {
+            userId: Number(session?.user.id),
+            productId: Number(params.productId),
+            reservationId: Number(params.reservationId),
+            image: res.location,
+            point: data.point,
+            title: data.title,
+          };
+          let newString = JSON.stringify(newData);
 
-      try {
-        const result = await createReview(newString);
-        console.log(result);
-        toast.success("리뷰 작성을 완료 했습니다.");
-        router.push("/profile");
-      } catch (e: any) {
-        // console.log(e);
-      } finally {
-        setUpdateLoading(false);
-        // window.location.reload();
+          try {
+            const result = await createReview(newString);
+            console.log(result);
+            toast.success("리뷰 작성을 완료 했습니다.");
+            router.push("/profile");
+          } catch (e: any) {
+            // console.log(e);
+          } finally {
+            setUpdateLoading(false);
+            // window.location.reload();
+          }
+        }
       }
     } else {
       // 수정
@@ -181,22 +182,16 @@ export default function Page({
     const url = URL.createObjectURL(file);
     console.log(url);
 
-    const { success, result } = await getUploadUrl();
-    console.log(result);
-    if (success) {
-      const { id, uploadURL } = result;
-
-      form.setValue(
-        "image",
-        {
-          image: url,
-          uploadUrl: uploadURL,
-          downUrl: `https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/${id}`,
-          file: file,
-        },
-        { shouldDirty: true }
-      );
-    }
+    form.setValue(
+      "image",
+      {
+        image: url,
+        uploadUrl: "",
+        downUrl: "",
+        file: file,
+      },
+      { shouldDirty: true }
+    );
   };
 
   //

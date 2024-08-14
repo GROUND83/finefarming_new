@@ -45,6 +45,7 @@ import { toast } from "sonner";
 import { updateMagazine } from "./actions";
 import { useRouter } from "next/navigation";
 import ModalPcComponent from "./_component/modalPcComponent";
+import { UploadFileClient } from "@/lib/fileUploaderClient";
 
 export default function Page({ params }: { params: { magazineId: string } }) {
   const router = useRouter();
@@ -130,30 +131,24 @@ export default function Page({ params }: { params: { magazineId: string } }) {
     }
     const file = files[0];
     console.log(file);
-    if (file.size > 2000000) {
-      alert("이미지 사이즈가 2mb를 초과 하였습니다.");
+    if (file.size > 5000000) {
+      alert("이미지 사이즈가 50mb를 초과 하였습니다.");
       return;
     }
 
     const url = URL.createObjectURL(file);
     console.log(url);
 
-    const { success, result } = await getUploadUrl();
-    console.log(result);
-    if (success) {
-      const { id, uploadURL } = result;
-
-      form.setValue(
-        "image",
-        {
-          image: url,
-          uploadUrl: uploadURL,
-          downUrl: `https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/${id}`,
-          file: file,
-        },
-        { shouldDirty: true }
-      );
-    }
+    form.setValue(
+      "image",
+      {
+        image: url,
+        uploadUrl: "",
+        downUrl: "",
+        file: file,
+      },
+      { shouldDirty: true }
+    );
   };
   const onSubmit = form.handleSubmit(async (data) => {
     setUpdateLoading(true);
@@ -171,20 +166,18 @@ export default function Page({ params }: { params: { magazineId: string } }) {
     };
     if (data) {
       if (data.image.file) {
-        const mainImageUpload = new FormData();
-        mainImageUpload.append("file", data.image.file);
-        // 시잔 업로드
-        const response = await fetch(data.image.uploadUrl, {
-          method: "POST",
-          body: mainImageUpload,
+        let res = await UploadFileClient({
+          file: data.image.file,
+          folderName: `magazine/${dayjs().unix()}`,
         });
-        console.log("response", response);
-        if (response.status !== 200) {
-          return;
+        if (res?.location) {
+          console.log(res.location);
+          checkData.image = res.location;
+          // imagesArray.push(res.location);
+          // formData.append("mainImage", res.location);
         }
-        checkData.image = `${data.image.downUrl}/public`;
       } else {
-        checkData.image = `${data.image.downUrl}`;
+        checkData.image = `${data.image.image}`;
       }
       checkData.title = data.title;
       for (const sections of data.sections) {
@@ -197,19 +190,18 @@ export default function Page({ params }: { params: { magazineId: string } }) {
         if (sections.images.length > 0) {
           for (const images of sections.images) {
             if (images.file) {
-              const mainImageUpload = new FormData();
-              mainImageUpload.append("file", images.file);
-              // 시잔 업로드
-              const response = await fetch(images.uploadUrl, {
-                method: "POST",
-                body: mainImageUpload,
+              let res = await UploadFileClient({
+                file: images.file,
+                folderName: `magazine/${dayjs().unix()}`,
               });
-              if (response.status !== 200) {
-                return;
+              if (res?.location) {
+                console.log(res.location);
+
+                // formData.append("mainImage", res.location);
+                sectionData.images.push(res.location);
               }
-              sectionData.images.push(`${images.downUrl}/public`);
             } else {
-              sectionData.images.push(`${images.downUrl}`);
+              sectionData.images.push(`${images.image}`);
             }
           }
         }

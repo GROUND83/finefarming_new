@@ -31,7 +31,7 @@ export default function ImageSelector({
           {value ? "이미지 수정" : "이미지 선택"}
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[80vw] p-12">
+      <DialogContent className="w-[80vw] p-12 h-[90vh]">
         <DialogClose asChild className=" flex flex-col items-end w-full">
           <div>
             <Button
@@ -47,21 +47,23 @@ export default function ImageSelector({
           <DialogTitle>이미지 선택</DialogTitle>
           <DialogDescription>이미지를 선택하세요.</DialogDescription>
         </DialogHeader>
-        <ScrollArea className="w-full h-[800px] mt-12">
+        <ScrollArea className="w-full h-[calc(90vh-200px)] mt-6 ">
           <div className="w-full grid grid-cols-12 gap-2">
             {wholeImage.map((item: any, index: any) => {
               //   console.log("item", item);
               return (
                 <div
                   key={index}
-                  className="flex flex-col items-center   col-span-4 "
+                  className="flex flex-col items-center   col-span-3 "
                 >
                   <div className=" aspect-square w-full relative ">
                     <Image
                       src={item}
-                      fill
-                      className="object-cover "
                       alt={`image${index}`}
+                      width={100}
+                      height={100}
+                      className="object-cover w-full aspect-square"
+                      priority
                     />
                   </div>
                   <div className="w-full">

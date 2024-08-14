@@ -60,7 +60,7 @@ export async function generateMetadata(
   const { result, images } = await getProductsDetailData(
     Number(params.productId)
   );
-  console.log("result", result);
+  // console.log("result", result);
   return {
     metadataBase: new URL("https://www.finefarming.co.kr"),
     alternates: {
@@ -97,23 +97,17 @@ export default async function Page({
     return notFound();
   }
   //
-  console.log("result", result.reviews);
+  console.log("resultdetail", result.detail.sections);
 
   return (
     <article className="w-full bg-white  ">
       {result && (
         <div className="container mx-auto flex-col items-start grid grid-cols-12 gap-3">
           {images.length > 0 && <ImageSlider images={images} />}
-          {event && (
+          {/* {event && (
             <EventWrap event={event} />
-            // <section className="col-span-12 bg-primary p-6 flex flex-col items-start gap-2 mt-6">
-            //   <p className="text-sm  text-white">EVENT</p>
-            //   <p className="text-lg text-white font-semibold">{event.title}</p>
-            //   <p className="text-base whitespace-pre-line text-neutral-300">
-            //     {event.description}
-            //   </p>
-            // </section>
-          )}
+          
+          )} */}
           <section className="col-span-12 bg-white">
             <ProductTitleWrap
               productId={result.id}
@@ -306,11 +300,11 @@ export default async function Page({
                         <div className="w-full h-full bg-gradient-to-t from-[#063824] to-from-[#063824] to-55%  z-10 absolute"></div>
                         <Image
                           src={result.detail.image}
-                          fill
                           alt={result.detail.title}
-                          style={{ objectFit: "cover" }}
-                          className=" z-0"
-                          sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
+                          priority
+                          width={200}
+                          height={200}
+                          className="object-cover w-full  h-[480px]"
                         />
                         <div className="absolute z-20 bottom-0 left-0 p-6 text-white w-full">
                           <div className="flex flex-col items-start gap-1 w-full">
@@ -359,6 +353,7 @@ export default async function Page({
                                   >
                                     {session.images.map(
                                       (image: any, k: any) => {
+                                        // console.log("image", image.image);
                                         return (
                                           <div
                                             key={k}
@@ -385,11 +380,31 @@ export default async function Page({
                                             } relative border`}
                                           >
                                             <Image
-                                              src={image}
-                                              fill
+                                              src={image.image}
+                                              width={200}
+                                              height={200}
+                                              className={`object-cover ${
+                                                session.images.length > 2 &&
+                                                k === 0
+                                                  ? "  aspect-square relative"
+                                                  : session.images.length > 2 &&
+                                                    k === 0
+                                                  ? "  aspect-square relative"
+                                                  : session.images.length > 1 &&
+                                                    k === 0
+                                                  ? "  aspect-square relative"
+                                                  : session.images.length > 1 &&
+                                                    k !== 0
+                                                  ? "  aspect-square relative"
+                                                  : session.images.length ===
+                                                      1 && k !== 0
+                                                  ? "  aspect-[4/3] relative"
+                                                  : session.images.length ===
+                                                      1 && k === 0
+                                                  ? "   aspect-square relative"
+                                                  : "  aspect-square relative"
+                                              } w-full`}
                                               alt={`image${k}`}
-                                              style={{ objectFit: "cover" }}
-                                              sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                                             />
                                           </div>
                                         );
@@ -675,9 +690,10 @@ export default async function Page({
                                   <div className="w-[100px]  aspect-square relative">
                                     <Image
                                       src={review.image}
-                                      fill
+                                      width={100}
+                                      height={100}
                                       alt={`review-${index}`}
-                                      className=" object-cover"
+                                      className=" object-cover w-full aspect-square"
                                     />
                                   </div>
                                 </Link>

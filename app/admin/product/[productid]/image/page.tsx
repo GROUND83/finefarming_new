@@ -67,6 +67,7 @@ import {
 import { Prisma } from "@prisma/client";
 import SubSectionWrap from "@/app/admin/_component/subSectionWrap";
 import { UploadFileClient } from "@/lib/fileUploaderClient";
+import Image from "next/image";
 
 export default function Page({ params }: { params: { productid: string } }) {
   const [toolData, setToolsData] = useState<any>([]);
@@ -252,7 +253,34 @@ export default function Page({ params }: { params: { productid: string } }) {
                             className="flex flex-col items-start gap-2 relative  col-span-2"
                             key={index}
                           >
-                            <label
+                            {form.getValues(`images.${index}.image`) ? (
+                              <div className="w-[200px] aspect-square relative col-span-3 bg-red-200">
+                                <Image
+                                  src={
+                                    form.getValues(`images.${index}.image`) ||
+                                    ""
+                                  }
+                                  priority
+                                  width={200}
+                                  height={200}
+                                  className="object-cover w-[200px] h-[200px]"
+                                  alt={`image`}
+                                />
+                              </div>
+                            ) : (
+                              <label
+                                htmlFor={field.id}
+                                className=" aspect-square  flex flex-col items-center justify-center  bg-center cursor-pointer bg-cover w-full border "
+                              >
+                                <div className="text-neutral-400 text-sm flex flex-col items-center gap-2 w-full justify-center">
+                                  <PhotoIcon className="w-6" />
+                                  <p className="text-xs">
+                                    사진을 추가해주세요.
+                                  </p>
+                                </div>
+                              </label>
+                            )}
+                            {/* <label
                               htmlFor={field.id}
                               className=" aspect-square  flex flex-col items-center justify-center  bg-center cursor-pointer bg-cover w-full border "
                               style={{
@@ -270,7 +298,7 @@ export default function Page({ params }: { params: { productid: string } }) {
                                   </p>
                                 </div>
                               ) : null}
-                            </label>
+                            </label> */}
                             <div className="flex flex-row items-center justify-end w-full absolute top-0 right-0">
                               <button
                                 type="button"

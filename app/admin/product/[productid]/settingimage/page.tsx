@@ -210,11 +210,13 @@ export default function Page({ params }: { params: { productid: string } }) {
                         sub="미리 등록한 사진 중 대표이미지를 선택하세요."
                       />
                       {value && (
-                        <div className=" aspect-square w-full relative col-span-3 ">
+                        <div className="aspect-square w-full relative col-span-3 bg-red-200">
                           <Image
                             src={value || ""}
-                            fill
-                            className="object-cover "
+                            width={200}
+                            height={200}
+                            className="object-cover w-full aspect-square"
+                            priority
                             alt={`image`}
                           />
                         </div>
@@ -264,8 +266,10 @@ export default function Page({ params }: { params: { productid: string } }) {
                                   <div className=" aspect-square w-full relative col-span-3 ">
                                     <Image
                                       src={value || ""}
-                                      fill
-                                      className="object-cover "
+                                      width={200}
+                                      height={200}
+                                      className="object-cover w-full aspect-square"
+                                      priority
                                       alt={`image`}
                                     />
                                   </div>

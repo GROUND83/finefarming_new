@@ -81,9 +81,10 @@ export default async function Page({ params }: Props) {
           <Image
             src={magazine.image}
             alt={magazine.title}
-            fill
-            className="object-cover   brightness-50"
-            sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
+            width={200}
+            height={200}
+            priority
+            className="object-cover   brightness-50  w-full aspect-video lg:aspect-[16/4]"
           />
         </div>
 
@@ -102,13 +103,13 @@ export default async function Page({ params }: Props) {
       </section>
       <div className="bg-white py-6 px-3 flex flex-col items-start gap-2">
         <div className="w-full  container mx-auto">
-          <div className="bg-white  px-3 flex flex-col items-start gap-2 border-b mt-3 ">
+          <div className="bg-white  px-3 flex flex-col items-start gap-2 border-b mt-3  w-full">
             {magazine.sections.length > 0 &&
               magazine.sections.map((section: any, sectionIndex) => {
                 return (
-                  <section key={sectionIndex}>
+                  <section key={sectionIndex} className="w-full">
                     {section && (
-                      <div className="mt-6">
+                      <div className="mt-6 w-full">
                         <h2 className=" font-semibold text-lg lg:text-2xl">
                           {section?.title}
                         </h2>
@@ -146,9 +147,22 @@ export default async function Page({ params }: Props) {
                                     <Image
                                       src={image}
                                       alt={section?.title}
-                                      fill
-                                      className=" object-cover"
-                                      sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
+                                      width={200}
+                                      height={200}
+                                      priority
+                                      className={`object-cover w-full ${
+                                        section.images.length === 1
+                                          ? "aspect-[4/3]"
+                                          : section.images.length === 2
+                                          ? "aspect-square"
+                                          : section.images.length === 3 &&
+                                            imageIndex === 2
+                                          ? "aspect-[4/3]"
+                                          : section.images.length === 3 &&
+                                            imageIndex !== 2
+                                          ? "aspect-square"
+                                          : "aspect-square"
+                                      }`}
                                     />
                                   </div>
                                 );

@@ -27,30 +27,24 @@ export const NestedImage = ({ nestIndex, control, setValue }: nestedProps) => {
     }
     const file = files[0];
     console.log(file);
-    // if (file.size > 2000000) {
-    //   alert("이미지 사이즈가 2mb를 초과 하였습니다.");
-    //   return;
-    // }
+    if (file.size > 50000000) {
+      alert("이미지 사이즈가 50mb를 초과 하였습니다.");
+      return;
+    }
 
     const url = URL.createObjectURL(file);
     console.log(url);
 
-    const { success, result } = await getUploadUrl();
-    console.log(result);
-    if (success) {
-      const { id, uploadURL } = result;
-
-      setValue(
-        event.target.name,
-        {
-          image: url,
-          uploadUrl: uploadURL,
-          downUrl: `https://imagedelivery.net/8GmAyNHLnOsSkmaGEU1nuA/${id}`,
-          file: file,
-        },
-        { shouldDirty: true }
-      );
-    }
+    setValue(
+      event.target.name,
+      {
+        image: url,
+        uploadUrl: "",
+        downUrl: "",
+        file: file,
+      },
+      { shouldDirty: true }
+    );
   };
   return (
     <div className="w-full">
