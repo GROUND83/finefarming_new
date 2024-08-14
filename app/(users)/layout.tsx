@@ -25,7 +25,7 @@ export default function RootLayout({
   console.log("userAgent", userAgent, mobileCheck);
   return (
     <div className="w-full  overflow-x-hidden ">
-      {!mobileCheck ? (
+      {/* {!mobileCheck ? (
         <header className="w-full border-b-[1px] fixed top-0 left-0 h-[85px] bg-white z-50 sm:hidden md:hidden xs:hidden">
           <nav className=" flex flex-row items-center gap-12 justify-between h-full w-full container mx-auto">
             <div className="flex flex-row items-center gap-12 ">
@@ -49,7 +49,7 @@ export default function RootLayout({
                 >
                   커뮤니티
                 </Link>
-                {/* <Link
+                <Link
                   href={"/recommand"}
                   className="text-black hover:text-primary transition-colors delay-75"
                 >
@@ -60,7 +60,7 @@ export default function RootLayout({
                   className="text-black hover:text-primary transition-colors delay-75"
                 >
                   체험매칭
-                </Link> */}
+                </Link>
               </div>
             </div>
             <UserComponet />
@@ -73,11 +73,15 @@ export default function RootLayout({
             <MobileUserComponet />
           </nav>
         </header>
-      )}
+      )} */}
 
-      <main className="pt-[70px] lg:pt-[85px] w-full bg-white h-full  ">
+      {/* <main className="pt-[70px] lg:pt-[85px] w-full bg-white h-full  ">
         {children}
-      </main>
+      </main> */}
+      <div className="w-full h-screen flex flex-col items-center justify-center ">
+        <p>홈페이지 보수중 입니다.</p>
+        <p>8월 14일 오후 3시 이전 완료예정입니다.</p>
+      </div>
       <Footer />
       <Script
         type="text/javascript"
