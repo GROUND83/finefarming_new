@@ -125,19 +125,19 @@ export default function Page({ params }: { params: { productid: string } }) {
     setUpdateLoading(true);
     const formData = new FormData();
     if (data) {
-      if (data.mainImage?.file) {
-        //
-        let res = await UploadFileClient({
-          file: data.mainImage.file,
-          folderName: "product",
-        });
-        if (res?.location) {
-          console.log(res.location);
-          formData.append("mainImage", res.location);
-        }
-      } else {
-        //
-      }
+      // if (data.mainImage?.file) {
+      //   //
+      //   let res = await UploadFileClient({
+      //     file: data.mainImage.file,
+      //     folderName: "product",
+      //   });
+      //   if (res?.location) {
+      //     console.log(res.location);
+      //     formData.append("mainImage", res.location);
+      //   }
+      // } else {
+      //   //
+      // }
       let imagesArray = [];
       if (data.images.length > 0) {
         //
@@ -376,7 +376,7 @@ export default function Page({ params }: { params: { productid: string } }) {
         ...newdata,
         personalPrice: [...product.personalPrice] as Prisma.JsonValue[],
         educationSubject: [...product.educationSubject] as Prisma.JsonValue[],
-        mainImage: newob,
+
         images: newImages,
       };
 
@@ -384,12 +384,6 @@ export default function Page({ params }: { params: { productid: string } }) {
         form.reset(newone as any);
       }
     } else {
-      let newob = {
-        image: newdata?.mainImage,
-        uploadUrl: "",
-        downUrl: "",
-        file: undefined,
-      };
       let newImages = [];
       if (newdata.images.length > 0) {
         for (const images of newdata.images) {
@@ -401,7 +395,7 @@ export default function Page({ params }: { params: { productid: string } }) {
           });
         }
       }
-      let newone = { ...newdata, mainImage: newob, images: newImages };
+      let newone = { ...newdata, images: newImages };
       console.log("newone", newone);
       form.reset(newone as any);
     }
@@ -414,7 +408,7 @@ export default function Page({ params }: { params: { productid: string } }) {
         "form.formState.isSubmitSuccessful",
         form.formState.isSubmitSuccessful
       );
-      toast.success("데이터 수정이 완료 되었습니다.");
+      // toast.success("데이터 수정이 완료 되었습니다.");
       reload();
       console.log("done");
       // window.location.reload();
@@ -616,7 +610,7 @@ export default function Page({ params }: { params: { productid: string } }) {
                     </div>
                   </div>
                 </FormWrap>
-                <FormWrap>
+                {/* <FormWrap>
                   <FormTitle title="사진 정보" sub="" />
                   <div className="col-span-9 grid grid-cols-12 gap-6 ">
                     <div className="col-span-4">
@@ -763,7 +757,7 @@ export default function Page({ params }: { params: { productid: string } }) {
                       </div>
                     </div>
                   </div>
-                </FormWrap>
+                </FormWrap> */}
                 <FormWrap>
                   <FormTitle title="요금 정보" sub="" />
 

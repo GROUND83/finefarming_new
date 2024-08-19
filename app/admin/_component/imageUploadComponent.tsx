@@ -15,12 +15,12 @@ export default function ImageUploadComponent({
           <div className="w-[200px]  aspect-[4/3] relative bg-neutral-100">
             <Image
               src={image}
-              fill
               priority
               alt="업체이미지"
-              className=""
-              style={{ objectFit: "cover" }}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className=" object-cover aspect-[4/3] w-full"
+              width={200}
+              height={200}
+              // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
           <div className="flex flex-row items-center justify-end  ">

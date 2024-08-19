@@ -26,6 +26,7 @@ export default async function Page({
 }) {
   //
   const data = await getMonthlyDetaildata(Number(params.monthlyId));
+  console.log("data", data);
   if (!data) {
     return notFound();
   }
@@ -46,9 +47,9 @@ export default async function Page({
             {data.month} 체험 상품을 추천 합니다.
           </h1>
         </header>
-        <div className="w-full grid grid-cols-12 gap-3 lg:gap-4 p-3 mt-3  ">
-          {data.newProducts.length > 0 &&
-            data.newProducts.map((item: any, index: any) => {
+        {data.newProducts.length > 0 ? (
+          <div className="w-full grid grid-cols-12 gap-3 lg:gap-4 p-3 mt-3  ">
+            {data.newProducts.map((item: any, index: any) => {
               return (
                 <section
                   key={index}
@@ -57,14 +58,17 @@ export default async function Page({
                   <div className="col-span-2 lg:col-span-1 aspect-[4/3] lg:aspect-square relative   ">
                     {item.mainImage ? (
                       <Image
+                        priority
                         src={item.mainImage}
-                        fill
+                        width={200}
+                        height={200}
                         alt={item.title}
-                        style={{
-                          objectFit: "cover",
-                          objectPosition: "center center",
-                        }}
-                        sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
+                        className=" object-cover w-full aspect-[4/3] lg:aspect-square"
+                        // style={{
+                        //   objectFit: "cover",
+                        //   objectPosition: "center center",
+                        // }}
+                        // sizes="(min-width: 768px) 50vw, (min-width: 1440) 100vw, 100vw"
                       />
                     ) : (
                       <div className="col-span-2 h-full bg-neutral-100"></div>
@@ -129,7 +133,12 @@ export default async function Page({
                 </section>
               );
             })}
-        </div>
+          </div>
+        ) : (
+          <div className="w-full flex flex-col items-center justify-center h-[calc(100vh-200px)] gap-3 lg:gap-4 p-3 mt-3  ">
+            <p>데이터가 없습니다.</p>
+          </div>
+        )}
       </div>
     </article>
   );

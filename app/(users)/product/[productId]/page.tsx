@@ -97,7 +97,7 @@ export default async function Page({
     return notFound();
   }
   //
-  console.log("resultdetail", result.detail.sections);
+  console.log("resultdetail", result.detail);
 
   return (
     <article className="w-full bg-white  ">

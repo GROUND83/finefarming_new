@@ -254,7 +254,7 @@ export default function Page({ params }: { params: { productid: string } }) {
                             key={index}
                           >
                             {form.getValues(`images.${index}.image`) ? (
-                              <div className="w-[200px] aspect-square relative col-span-3 bg-red-200">
+                              <div className="w-full aspect-square relative col-span-3 bg-red-200">
                                 <Image
                                   src={
                                     form.getValues(`images.${index}.image`) ||
@@ -263,7 +263,7 @@ export default function Page({ params }: { params: { productid: string } }) {
                                   priority
                                   width={200}
                                   height={200}
-                                  className="object-cover w-[200px] h-[200px]"
+                                  className="object-cover w-full  aspect-square"
                                   alt={`image`}
                                 />
                               </div>
@@ -299,7 +299,7 @@ export default function Page({ params }: { params: { productid: string } }) {
                                 </div>
                               ) : null}
                             </label> */}
-                            <div className="flex flex-row items-center justify-end w-full absolute top-0 right-0">
+                            <div className="flex flex-row items-center justify-end w-full absolute top-4 right-4">
                               <button
                                 type="button"
                                 onClick={() => imagesForm.remove(index)}

@@ -515,7 +515,14 @@ model Monthly {
   month String
   image String?
 }
-
+// model ReplyMatch {
+//   id Int @id @default(autoincrement())
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   mathching Matching? @relation(fields: [mathchingId], references: [id],onDelete: Cascade) // 상품
+//   mathchingId Int? 
+//   depth Int @default(1)
+// }
 model Matching {
   id Int @id @default(autoincrement())
   created_at DateTime @default(now())
@@ -526,4 +533,5 @@ model Matching {
   endDate DateTime @default(now())
   user User @relation(fields: [userId], references: [id],onDelete: Cascade) // 상품
   userId Int   
+  // replys ReplyMatch[]
 }

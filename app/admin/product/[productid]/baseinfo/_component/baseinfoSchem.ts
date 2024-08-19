@@ -5,14 +5,14 @@ export const baseInfoSchem = z.object({
   description: z.string().nullable(),
   visible: z.boolean(),
   status: z.string(),
-  mainImage: z
-    .object({
-      image: z.string().optional(),
-      uploadUrl: z.string().optional(),
-      downUrl: z.string().optional(),
-      file: z.instanceof(File).optional(),
-    })
-    .optional(),
+  // mainImage: z
+  //   .object({
+  //     image: z.string().optional(),
+  //     uploadUrl: z.string().optional(),
+  //     downUrl: z.string().optional(),
+  //     file: z.instanceof(File).optional(),
+  //   })
+  //   .optional(),
   images: z.array(
     z.object({
       image: z.string().optional(),

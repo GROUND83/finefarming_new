@@ -55,7 +55,7 @@ export async function getTools() {
 }
 export async function createBaseProduct(formData: FormData) {
   let data: any = formData.get("newData");
-  let mainImage = formData.get("mainImage") as string;
+  // let mainImage = formData.get("mainImage") as string;
   let imagesArray = formData.get("imagesArray") as string;
   let imagesArrayParser = JSON.parse(imagesArray);
 
@@ -69,22 +69,19 @@ export async function createBaseProduct(formData: FormData) {
   if (data) {
     let parserData = JSON.parse(data);
     console.log("parserData", parserData);
-    if (mainImage) {
-      // let parserMainImage = JSON.parse(mainImage);
-      let product = await db.product.update({
-        where: {
-          id: productId,
-        },
-        data: {
-          ...parserData,
-          mainImage: mainImage,
-          groupLimit: parserData.groupLimit ? Number(parserData.groupLimit) : 0,
-          created_at: getDateTime(),
-          updated_at: getDateTime(),
-        },
-      });
-      // return product;
-    }
+    let product = await db.product.update({
+      where: {
+        id: productId,
+      },
+      data: {
+        ...parserData,
+        groupLimit: parserData.groupLimit ? Number(parserData.groupLimit) : 0,
+        created_at: getDateTime(),
+        updated_at: getDateTime(),
+      },
+    });
+    // return product;
+
     console.log("imagesArrayParser", imagesArrayParser);
     if (imagesArrayParser.length > 0) {
       // let parserMainImage = JSON.parse(mainImage);
@@ -93,10 +90,7 @@ export async function createBaseProduct(formData: FormData) {
           id: productId,
         },
         data: {
-          ...parserData,
           images: imagesArrayParser,
-          groupLimit: parserData.groupLimit ? Number(parserData.groupLimit) : 0,
-          created_at: getDateTime(),
           updated_at: getDateTime(),
         },
       });
