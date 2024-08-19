@@ -36,9 +36,6 @@ export async function getMonthlyData() {
 export async function getProductData() {
   //
   let data = await db.product.findMany({
-    where: {
-      status: "POSSIBLE",
-    },
     select: {
       id: true,
       title: true,

@@ -59,7 +59,7 @@ export default async function Page() {
                     <div>
                       <p className=" text-md">
                         <span className=" text-lg font-bold">{item.month}</span>{" "}
-                        체험상품
+                        체험추천
                       </p>
                     </div>
                     {item.products.length > 0 ? (
