@@ -1,8 +1,10 @@
 "use server";
+import { authOptions } from "@/lib/auth";
 import db from "@/lib/db";
 import getDateTime from "@/lib/getDateTime";
 import dayjs from "dayjs";
 import { connect } from "http2";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 // export async function getCommunity(options: {
@@ -56,11 +58,34 @@ export async function createMatching(data: string) {
   return { data: result };
 }
 export async function getMatchDetail(matchId: string) {
+  let session = await getServerSession(authOptions);
+  console.log("session", session);
   let result = await db.matching.findUnique({
     where: {
       id: Number(matchId),
     },
     include: { user: { select: { id: true, email: true, username: true } } },
   });
-  return { data: result };
+  if (session?.user.role === "user") {
+    if (session?.user.id === result?.user.id) {
+      //
+      return { data: result };
+    } else {
+      //
+      let newResult = {
+        ...result,
+        user: { username: "******", email: "******", userphone: "******" },
+      };
+      return { data: newResult };
+      // newResult?.user.username = "******"
+    }
+  }
+  if (session?.user.role === "farmer") {
+    //
+    return { data: result };
+  }
+  if (session?.user.role === "manager" || session?.user.role === "superAdmin") {
+    //
+    return { data: result };
+  }
 }

@@ -22,26 +22,28 @@ export default function Page({ params }: { params: { matchId: string } }) {
   const getData = async () => {
     let res = await getMatchDetail(params.matchId);
     console.log("res", res);
-    setMatch(res.data);
-    if (session.status === "authenticated" && res.data) {
-      if (session?.data?.user.role === "user") {
-        if (res.data?.userId === session?.data?.user.id) {
-          //'
-          // router.push("/match/permition");
-        } else {
-          //
-          router.push("/match/notmine");
-        }
-      } else if (session?.data?.user.role === "manager") {
-        //
-        router.push("/match/permition");
-      } else if (session?.data?.user.role === "farmer") {
-        //
-        // router.push("/match/permition");
-      } else {
-        router.push("/match/permition");
-      }
+    if (res) {
+      setMatch(res.data);
     }
+    // if (session.status === "authenticated" && res.data) {
+    //   if (session?.data?.user.role === "user") {
+    //     if (res.data?.userId === session?.data?.user.id) {
+    //       //'
+    //       // router.push("/match/permition");
+    //     } else {
+    //       //
+    //       router.push("/match/notmine");
+    //     }
+    //   } else if (session?.data?.user.role === "manager") {
+    //     //
+    //     router.push("/match/permition");
+    //   } else if (session?.data?.user.role === "farmer") {
+    //     //
+    //     // router.push("/match/permition");
+    //   } else {
+    //     router.push("/match/permition");
+    //   }
+    // }
   };
   React.useEffect(() => {
     getData();
