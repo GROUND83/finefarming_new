@@ -1,6 +1,7 @@
 "use server";
 import db from "@/lib/db";
 import getDateTime from "@/lib/getDateTime";
+import dayjs from "dayjs";
 import { connect } from "http2";
 import { redirect } from "next/navigation";
 
@@ -31,7 +32,18 @@ export async function createMatching(data: string) {
   console.log("newdata", newdata);
   let result = await db.matching.create({
     data: {
-      ...newdata,
+      title: newdata.title || "",
+      description: newdata.description || "",
+      region: newdata.region || "",
+      number: Number(newdata.number) || 0,
+      preference: newdata.preference || "",
+      spent: newdata.spent || "",
+      startDate: dayjs(newdata.dob.from).format("YYYY-MM-DD"),
+      endDate: dayjs(newdata.dob.to).format("YYYY-MM-DD"),
+      lastDate: dayjs(newdata.lastDate).format("YYYY-MM-DD"),
+      authorName: newdata.user.username,
+      authorPhone: newdata.user.phone,
+      authorEmail: newdata.user.email,
       user: {
         connect: {
           id: newdata.user.id,

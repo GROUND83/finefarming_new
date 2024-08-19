@@ -529,9 +529,18 @@ model Matching {
   updated_at DateTime @updatedAt
   title String
   description String?
-  region String?
-  endDate DateTime @default(now())
+  region String? // 희망지역
+  number Int? // 희망 인원
+  preference String? // 선호하는 체험종류
+  spent String?
+  endDate String? // 시작일
+  startDate String? // 종료일
+  lastDate String? // 제안 마감을
   user User @relation(fields: [userId], references: [id],onDelete: Cascade) // 상품
-  userId Int   
+  userId Int
+  authorName String?
+  authorPhone String?
+  authorEmail String?
+  
   // replys ReplyMatch[]
 }

@@ -30,7 +30,7 @@ export default function Page({ params }: { params: { matchId: string } }) {
           // router.push("/match/permition");
         } else {
           //
-          router.push("/match/permition");
+          router.push("/match/notmine");
         }
       } else if (session?.data?.user.role === "manager") {
         //
