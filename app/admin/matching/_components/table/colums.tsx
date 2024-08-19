@@ -58,39 +58,39 @@ export const columns: ColumnDef<any>[] = [
     },
   },
 
-  {
-    accessorKey: "visible",
-    header: ({ column }) => {
-      return (
-        <div>
-          <Button
-            variant="ghost"
-            className="text-sm "
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            공개
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="text-sm ">
-        {row.getValue("visible") ? (
-          <Badge variant={"primary"} className="  text-sm font-light">
-            공개
-          </Badge>
-        ) : (
-          <Badge
-            variant="outline"
-            className="text-neutral-400  text-sm font-light"
-          >
-            비공개
-          </Badge>
-        )}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "visible",
+  //   header: ({ column }) => {
+  //     return (
+  //       <div>
+  //         <Button
+  //           variant="ghost"
+  //           className="text-sm "
+  //           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //         >
+  //           공개
+  //           <ArrowUpDown className="ml-2 h-4 w-4" />
+  //         </Button>
+  //       </div>
+  //     );
+  //   },
+  //   cell: ({ row }) => (
+  //     <div className="text-sm ">
+  //       {row.getValue("visible") ? (
+  //         <Badge variant={"primary"} className="  text-sm font-light">
+  //           공개
+  //         </Badge>
+  //       ) : (
+  //         <Badge
+  //           variant="outline"
+  //           className="text-neutral-400  text-sm font-light"
+  //         >
+  //           비공개
+  //         </Badge>
+  //       )}
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "created_at",
     header: ({ column }) => {
