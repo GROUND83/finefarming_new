@@ -1,4 +1,6 @@
+"use client";
 import { BuildingStorefrontIcon, UserIcon } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -8,6 +10,8 @@ export default function WriterLayOut({
 }: {
   children: React.ReactNode;
 }) {
+  let session = useSession();
+  console.log("session", session);
   return (
     <div className="w-full flex flex-row items-start">
       <div className="py-6 border-r-[1px]  bg-white  w-[180px] h-screen fixed top-0 left-0">

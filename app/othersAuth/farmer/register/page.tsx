@@ -63,7 +63,7 @@ export default function Page() {
           redirect: false,
         });
         if (result?.ok) {
-          router.replace("/dashFarmer/farm");
+          router.replace("/dashfarmer/farm");
         } else {
           toast.error(result?.error?.toString());
           form.reset();

@@ -2,6 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { getSession } from "next-auth/react";
 import { NextURL } from "next/dist/server/web/next-url";
 import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
 import { NextRequest, NextResponse, URLPattern } from "next/server";
 
 // interface Routes {
@@ -123,12 +124,22 @@ export async function middleware(req: NextRequest) {
   }
   if (pathname.startsWith("/dashfarmer")) {
     if (session) {
-      console.log("session writer", session, session.role, session.id);
+      console.log(
+        "session writer",
+        session,
+        session.approve,
+        session.role,
+        session.id
+      );
       if (session.id && session.role) {
         console.log("check");
         if (session.role === "farmer") {
-          console.log("check");
-          return NextResponse.next();
+          if (session.approve) {
+            console.log("check");
+            return NextResponse.next();
+          } else {
+            return NextResponse.redirect(new URL("/notapprove", req.url));
+          }
         } else {
           return NextResponse.redirect(
             new URL("/othersAuth/farmer/login", req.url)
@@ -147,7 +158,36 @@ export async function middleware(req: NextRequest) {
       );
     }
   }
-
+  if (pathname.startsWith("/match")) {
+    if (session) {
+      console.log(
+        "session writer",
+        session,
+        session.approve,
+        session.role,
+        session.id
+      );
+      if (session.id && session.role) {
+        console.log("check");
+        if (session.role === "farmer") {
+          if (session.approve) {
+            console.log("check");
+            return NextResponse.next();
+          } else {
+            return NextResponse.redirect(new URL("/notapprove", req.url));
+          }
+        } else {
+          return NextResponse.next();
+        }
+        //
+      } else {
+        // console.log("session", session);
+        return NextResponse.redirect(new URL("/", req.url));
+      }
+    } else {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  }
   // if (pathname.startsWith("/match")) {
   //   // console.log("session", session);
   //   if (req.url) {

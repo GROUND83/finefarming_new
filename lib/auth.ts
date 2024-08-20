@@ -39,6 +39,7 @@ function checkCredential({
             role: true,
             phone: true,
             provider: true,
+            approve: true,
           },
         });
         if (findUser) {
@@ -68,6 +69,7 @@ function checkCredential({
             role: true,
             phone: true,
             provider: true,
+            approve: true,
           },
         });
         if (findUser) {
@@ -97,6 +99,7 @@ function checkCredential({
             role: true,
             phone: true,
             provider: true,
+            approve: true,
           },
         });
         if (findUser) {
@@ -126,6 +129,7 @@ function checkCredential({
             role: true,
             phone: true,
             provider: true,
+            approve: true,
           },
         });
         if (findUser) {
@@ -381,6 +385,7 @@ export const authOptions: NextAuthOptions = {
                   avatar: true,
                   role: true,
                   id: true,
+                  approve: true,
                 },
               });
               db_user = { ...userdata };
@@ -414,6 +419,7 @@ export const authOptions: NextAuthOptions = {
                   avatar: true,
                   role: true,
                   id: true,
+                  approve: true,
                 },
               });
               db_user = { ...userdata };
@@ -443,6 +449,7 @@ export const authOptions: NextAuthOptions = {
                   avatar: true,
                   role: true,
                   id: true,
+                  approve: true,
                 },
               });
               db_user = { ...userdata };
@@ -473,6 +480,7 @@ export const authOptions: NextAuthOptions = {
                   avatar: true,
                   role: true,
                   id: true,
+                  approve: true,
                 },
               });
               db_user = { ...userdata };
@@ -503,6 +511,7 @@ export const authOptions: NextAuthOptions = {
                   avatar: true,
                   role: true,
                   id: true,
+                  approve: true,
                 },
               });
               db_user = { ...userdata };
