@@ -541,6 +541,7 @@ model Matching {
   authorName String?
   authorPhone String?
   authorEmail String?
+  visible Boolean @default(false)
   
   // replys ReplyMatch[]
 }

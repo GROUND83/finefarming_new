@@ -68,6 +68,9 @@ const FormSchema = z.object({
     email: z.string().optional(),
     phone: z.string(),
   }),
+  authorName: z.string(),
+  authorPhone: z.string(),
+  authorEmail: z.string(),
 });
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -110,6 +113,9 @@ export default function Page() {
             email: session.data.user?.email || "",
             phone: session.data.user?.phone || "",
           },
+          authorName: session.data.user?.username || "",
+          authorPhone: session.data.user?.email || "",
+          authorEmail: session.data.user?.phone || "",
         });
       }
     }
@@ -120,7 +126,7 @@ export default function Page() {
       console.log(form.formState);
     }
   }, [form.formState]);
-  const onError = (errors, e) => console.log(errors, e);
+  // const onError = (errors, e) => console.log(errors, e);
   async function onSubmit(data: any) {
     console.log("Data", data);
     setLoading(true);
@@ -144,6 +150,9 @@ export default function Page() {
             email: data.user.email,
             phone: data.user.phone,
           },
+          authorName: data.authorName,
+          authorPhone: data.authorPhone,
+          authorEmail: data.authorEmail,
         });
         let result = await createMatching(newData);
         console.log("result", result);
@@ -167,7 +176,7 @@ export default function Page() {
       <div className="container mx-auto  p-3">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit, onError)}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="w-full p-6 flex flex-col gap-6 items-start "
           >
             <div className="w-full flex flex-col gap-6">
@@ -385,7 +394,7 @@ export default function Page() {
                 <div className=" w-full grid grid-cols-12 gap-3 border p-6 rounded-md">
                   <FormField
                     control={form.control}
-                    name="user.username"
+                    name="authorName"
                     render={({ field }) => (
                       <FormItem className="flex flex-col items-start justify-between  col-span-4">
                         <FormLabel className="">의뢰자 이름</FormLabel>
@@ -403,7 +412,7 @@ export default function Page() {
                   />
                   <FormField
                     control={form.control}
-                    name="user.email"
+                    name="authorEmail"
                     render={({ field }) => (
                       <FormItem className="flex flex-col items-start justify-between col-span-4">
                         <FormLabel className="">의뢰자 이메일</FormLabel>
@@ -421,7 +430,7 @@ export default function Page() {
                   />
                   <FormField
                     control={form.control}
-                    name="user.phone"
+                    name="authorPhone"
                     render={({ field }) => (
                       <FormItem className="flex flex-col items-start justify-between col-span-4">
                         <FormLabel className="">의뢰자 전호번호</FormLabel>

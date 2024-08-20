@@ -75,6 +75,9 @@ export async function getMatchDetail(matchId: string) {
       let newResult = {
         ...result,
         user: { username: "******", email: "******", userphone: "******" },
+        authorName: "******",
+        authorPhone: "******",
+        authorEmail: "******",
       };
       return { data: newResult };
       // newResult?.user.username = "******"
