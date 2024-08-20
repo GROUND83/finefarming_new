@@ -13,6 +13,7 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
 import { isMobile } from "@/lib/isMobile";
+import Image from "next/image";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -21,8 +22,8 @@ export default async function Page() {
   return (
     <div className="  ">
       <div className="container mx-auto  p-3 flex flex-col items-start gap-3">
-        <div className="w-full p-12 border rounded-md bg-neutral-100 flex  flex-col lg:flex-row items-center justify-between gap-3">
-          <div className="flex flex-col items-start  justify-start  lg:h-[200px] gap-3">
+        <div className="w-full border rounded-md bg-white flex  flex-col lg:flex-row items-center justify-between gap-3">
+          <div className="p-6 flex flex-col items-start  justify-start h-[200px] gap-3">
             <h1 className=" font-bold text-2xl">체험 매칭 게시판</h1>
             <p>
               농장 체험이 필요하시다면 체험 매칭 게시판에 의뢰를 남겨보세요.
@@ -33,8 +34,17 @@ export default async function Page() {
               </Button>
             </div>
           </div>
-          <div className="w-[300px] bg-white h-[200px]">
-            <p>이미지</p>
+          <div className="w-[250px] bg-white p-3 ">
+            <Image
+              src={
+                "https://tbucqnuyvwwhuqebboev.supabase.co/storage/v1/object/public/finefarming/match/match.jpg"
+              }
+              priority
+              width={200}
+              height={200}
+              alt="단체이미지"
+              className=" object-cover w-full aspect-square  "
+            />
           </div>
         </div>
 

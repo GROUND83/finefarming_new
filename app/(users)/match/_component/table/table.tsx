@@ -135,7 +135,7 @@ export function DataTable() {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  게시글이 없습니다.
                 </TableCell>
               </TableRow>
             )}

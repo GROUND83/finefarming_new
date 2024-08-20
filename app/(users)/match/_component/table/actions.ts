@@ -7,9 +7,16 @@ export async function getCommunity(options: {
   pageSize: number;
 }) {
   const response = await db.$transaction([
-    db.matching.count(),
+    db.matching.count({
+      where: {
+        visible: true,
+      },
+    }),
 
     db.matching.findMany({
+      where: {
+        visible: true,
+      },
       skip: options.pageSize * options.pageIndex,
       take: options.pageSize,
       orderBy: {
