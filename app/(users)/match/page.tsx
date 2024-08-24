@@ -19,6 +19,8 @@ export default async function Page() {
   const session = await getServerSession(authOptions);
   const userAgent = headers().get("user-agent") || "";
   const mobileCheck = isMobile(userAgent);
+
+  console.log("session", session);
   return (
     <div className="  ">
       <div className="container mx-auto  p-3 flex flex-col items-start gap-3">
@@ -28,10 +30,17 @@ export default async function Page() {
             <p>
               농장 체험이 필요하시다면 체험 매칭 게시판에 의뢰를 남겨보세요.
             </p>
-            <div>
-              <Button asChild>
-                <Link href={"/match/new"}>글쓰기</Link>
-              </Button>
+            <div className="flex flex-row items-center gap-3">
+              <div>
+                <Button asChild>
+                  <Link href={"/match/new"}>글쓰기</Link>
+                </Button>
+              </div>
+              {session?.user?.role === "user" && (
+                <Button variant={"backdelete"} asChild>
+                  <Link href={"/match/mine"}>내가 쓴글</Link>
+                </Button>
+              )}
             </div>
           </div>
           <div className="w-[250px] bg-white p-3 ">

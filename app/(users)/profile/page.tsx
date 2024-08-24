@@ -142,7 +142,7 @@ export default function Page() {
                 <TabsList className="grid w-full grid-cols-3 ">
                   <TabsTrigger value="reservation">예약</TabsTrigger>
                   <TabsTrigger value="review">체험 후기</TabsTrigger>
-                  {/* <TabsTrigger value="qna">문의사항</TabsTrigger> */}
+                  {/* <TabsTrigger value="match">체험 매칭</TabsTrigger> */}
                 </TabsList>
                 <TabsContent value="reservation">
                   <div className="w-full flex flex-row items-center  justify-between gap-3 ">
@@ -248,13 +248,7 @@ export default function Page() {
                     )}
                   </div>
                 </TabsContent>
-                {/* <TabsContent value="qna">
-                  <div className="w-full flex flex-row items-center  justify-between gap-3 p-3  ">
-                    <div className="w-full h-[200px]">
-                      <EmptyData title="문의사항이" />
-                    </div>
-                  </div>
-                </TabsContent> */}
+
                 <TabsContent value="review">
                   <div className="w-full flex flex-row items-center  justify-between gap-3 p-3  ">
                     {reviews.length > 0 ? (
@@ -293,6 +287,13 @@ export default function Page() {
                     )}
                   </div>
                 </TabsContent>
+                {/* <TabsContent value="match">
+                  <div className="w-full flex flex-row items-center  justify-between gap-3 p-3  ">
+                    <div className="w-full h-[200px]">
+                      <EmptyData title="문의사항이" />
+                    </div>
+                  </div>
+                </TabsContent> */}
               </Tabs>
             </div>
           )}
