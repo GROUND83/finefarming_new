@@ -182,10 +182,12 @@ export async function middleware(req: NextRequest) {
         //
       } else {
         // console.log("session", session);
-        return NextResponse.redirect(new URL("/notlogin", req.url));
+        // return NextResponse.redirect(new URL("/notlogin", req.url));
+        return NextResponse.next();
       }
     } else {
-      return NextResponse.redirect(new URL("/notlogin", req.url));
+      return NextResponse.next();
+      // return NextResponse.redirect(new URL("/notlogin", req.url));
     }
   }
   // if (pathname.startsWith("/match")) {
@@ -249,7 +251,7 @@ export async function middleware(req: NextRequest) {
 export const config = {
   //   matcher: ["/", "/profile", "auth/:path*"], // 미들웨어 실행할 path
   matcher: [
-    "/match/:path*",
+    // "/match/:path*",
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.svg$).*)", //제외
   ], // 미들웨어 실행할 path
 };

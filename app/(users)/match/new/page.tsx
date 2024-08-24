@@ -40,6 +40,7 @@ import { createMatching } from "../_component/actions";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 //
 const FormSchema = z.object({
@@ -114,8 +115,8 @@ export default function Page() {
             phone: session.data.user?.phone || "",
           },
           authorName: session.data.user?.username || "",
-          authorPhone: session.data.user?.email || "",
-          authorEmail: session.data.user?.phone || "",
+          authorPhone: session.data.user?.phone || "",
+          authorEmail: session.data.user?.email || "",
         });
       }
     }
@@ -174,286 +175,297 @@ export default function Page() {
   return (
     <div className="  ">
       <div className="container mx-auto  p-3">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full p-6 flex flex-col gap-6 items-start "
-          >
-            <div className="w-full flex flex-col gap-6">
-              <h3 className="mb-4 text-lg font-medium">체험매칭 글쓰기</h3>
-              <div className="w-full flex flex-col items-start gap-3">
-                <div className=" w-full grid grid-cols-12 gap-3 border p-6 rounded-md">
-                  <FormField
-                    control={form.control}
-                    name="region"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col col-span-4">
-                        <FormLabel>희망지역</FormLabel>
+        <ScrollArea className="h-[calc(100vh-70px)] flex flex-col">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full p-6 flex flex-col gap-6 items-start "
+            >
+              <div className="w-full flex flex-col gap-6">
+                <h3 className="mb-4 text-lg font-medium">체험매칭 글쓰기</h3>
+                <div className="w-full flex flex-col items-start gap-3">
+                  <div className=" w-full grid grid-cols-12 gap-3 border p-6 rounded-md">
+                    <FormField
+                      control={form.control}
+                      name="region"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col col-span-4">
+                          <FormLabel>희망지역</FormLabel>
 
-                        <FormControl>
-                          <Input
-                            required
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="number"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col col-span-4">
-                        <FormLabel>희망인원</FormLabel>
-
-                        <FormControl>
-                          <Input
-                            required
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="preference"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col col-span-4">
-                        <FormLabel>선호하는 체험종류</FormLabel>
-
-                        <FormControl>
-                          <Input
-                            required
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className=" w-full grid grid-cols-12 gap-3 border p-6 rounded-md">
-                  <FormField
-                    control={form.control}
-                    name="dob"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col col-span-4">
-                        <FormLabel>체험일정</FormLabel>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant={"outline"}
-                                className={cn(
-                                  "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                {field.value ? (
-                                  <span>
-                                    {dayjs(field.value.from).format(
-                                      "YYYY-MM-DD"
-                                    )}{" "}
-                                    ~{" "}
-                                    {dayjs(field.value.to).format("YYYY-MM-DD")}
-                                  </span>
-                                ) : (
-                                  <span>체험일정을 선택하세요.</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              locale={ko}
-                              mode="range"
-                              numberOfMonths={2}
-                              defaultMonth={field.value.from}
-                              selected={{
-                                from: field.value.from!,
-                                to: field.value.to,
-                              }}
-                              onSelect={field.onChange}
+                          <FormControl>
+                            <Input
+                              required
+                              value={field.value || ""}
+                              onChange={field.onChange}
                             />
-                          </PopoverContent>
-                        </Popover>
-                        <FormDescription>
-                          체험일정을 선택하세요.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="spent"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col col-span-4">
-                        <FormLabel>소요예산</FormLabel>
-                        <FormControl>
-                          <Input
-                            required
-                            value={field.value}
-                            onChange={field.onChange}
-                            placeholder="소요예산을 입력하세요."
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="number"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col col-span-4">
+                          <FormLabel>희망인원</FormLabel>
 
-                  <FormField
-                    control={form.control}
-                    name="lastDate"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col col-span-4">
-                        <FormLabel>제안 마감기한</FormLabel>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant={"outline"}
-                                className={cn(
-                                  "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                {field.value ? (
-                                  <span>
-                                    {dayjs(field.value).format("YYYY-MM-DD")}
-                                  </span>
-                                ) : (
-                                  <span>마감기한을 선택하세요.</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              locale={ko}
-                              mode="single"
-                              numberOfMonths={2}
-                              defaultMonth={field.value}
-                              selected={field.value!}
-                              onSelect={field.onChange}
+                          <FormControl>
+                            <Input
+                              required
+                              value={field.value || ""}
+                              onChange={field.onChange}
                             />
-                          </PopoverContent>
-                        </Popover>
-                        <FormDescription>
-                          마감기한을 입력하세요.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className=" w-full grid grid-cols-12 gap-3 border p-6 rounded-md">
-                  <FormField
-                    control={form.control}
-                    name="title"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-start justify-between  col-span-12 ">
-                        <FormLabel className="">제목</FormLabel>
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="preference"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col col-span-4">
+                          <FormLabel>선호하는 체험종류</FormLabel>
 
-                        <FormControl>
-                          <Input
-                            required
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-startjustify-between col-span-12 ">
-                        <FormLabel className="">내용</FormLabel>
+                          <FormControl>
+                            <Input
+                              required
+                              value={field.value || ""}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className=" w-full grid grid-cols-12 gap-3 border p-6 rounded-md">
+                    <FormField
+                      control={form.control}
+                      name="dob"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col col-span-4">
+                          <FormLabel>체험일정</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "w-full pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    <span>
+                                      {dayjs(field.value.from).format(
+                                        "YYYY-MM-DD"
+                                      )}{" "}
+                                      ~{" "}
+                                      {dayjs(field.value.to).format(
+                                        "YYYY-MM-DD"
+                                      )}
+                                    </span>
+                                  ) : (
+                                    <span>체험일정을 선택하세요.</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                locale={ko}
+                                mode="range"
+                                numberOfMonths={2}
+                                defaultMonth={field.value.from}
+                                selected={{
+                                  from: field.value.from!,
+                                  to: field.value.to,
+                                }}
+                                onSelect={field.onChange}
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormDescription>
+                            체험일정을 선택하세요.
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                        <FormControl>
-                          <Textarea
-                            required
-                            rows={10}
-                            className=" resize-none"
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                    <FormField
+                      control={form.control}
+                      name="spent"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col col-span-4">
+                          <FormLabel>소요예산</FormLabel>
+                          <FormControl>
+                            <Input
+                              required
+                              value={field.value || ""}
+                              onChange={field.onChange}
+                              placeholder="소요예산을 입력하세요."
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
 
-                <div className=" w-full grid grid-cols-12 gap-3 border p-6 rounded-md">
-                  <FormField
-                    control={form.control}
-                    name="authorName"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-start justify-between  col-span-4">
-                        <FormLabel className="">의뢰자 이름</FormLabel>
+                    <FormField
+                      control={form.control}
+                      name="lastDate"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col col-span-4">
+                          <FormLabel>제안 마감기한</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "w-full pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    <span>
+                                      {dayjs(field.value).format("YYYY-MM-DD")}
+                                    </span>
+                                  ) : (
+                                    <span>마감기한을 선택하세요.</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                locale={ko}
+                                mode="single"
+                                numberOfMonths={2}
+                                defaultMonth={field.value}
+                                selected={field.value!}
+                                onSelect={field.onChange}
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormDescription>
+                            마감기한을 입력하세요.
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className=" w-full grid grid-cols-12 gap-3 border p-6 rounded-md">
+                    <FormField
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col items-start justify-between  col-span-12 ">
+                          <FormLabel className="">제목</FormLabel>
 
-                        <FormControl>
-                          <Input
-                            required
-                            className=" resize-none"
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="authorEmail"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-start justify-between col-span-4">
-                        <FormLabel className="">의뢰자 이메일</FormLabel>
+                          <FormControl>
+                            <Input
+                              required
+                              value={field.value || ""}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col items-startjustify-between col-span-12 ">
+                          <FormLabel className="">내용</FormLabel>
 
-                        <FormControl>
-                          <Input
-                            required
-                            className=" resize-none"
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="authorPhone"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-start justify-between col-span-4">
-                        <FormLabel className="">의뢰자 전호번호</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              required
+                              rows={10}
+                              className=" resize-none"
+                              value={field.value || ""}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-                        <FormControl>
-                          <Input
-                            required
-                            className="resize-none"
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
+                  <div className=" w-full grid grid-cols-12 gap-3 border p-6 rounded-md">
+                    <FormField
+                      control={form.control}
+                      name="authorName"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col items-start justify-between  col-span-4">
+                          <FormLabel className="">의뢰자 이름</FormLabel>
+
+                          <FormControl>
+                            <Input
+                              required
+                              className=" resize-none"
+                              value={field.value || ""}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="authorEmail"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col items-start justify-between col-span-4">
+                          <FormLabel className="">의뢰자 이메일</FormLabel>
+
+                          <FormControl>
+                            <Input
+                              required
+                              className=" resize-none"
+                              value={field.value || ""}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="authorPhone"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col items-start justify-between col-span-4">
+                          <FormLabel className="">의뢰자 전호번호</FormLabel>
+
+                          <FormControl>
+                            <Input
+                              required
+                              className="resize-none"
+                              value={field.value || ""}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <Button type="submit">
-              {loading ? <Loader2 className="size-4 animate-spin" /> : "생성"}
-            </Button>
-          </form>
-        </Form>
+              <Button type="submit">
+                {loading ? <Loader2 className="size-4 animate-spin" /> : "생성"}
+              </Button>
+            </form>
+          </Form>
+        </ScrollArea>
       </div>
     </div>
   );

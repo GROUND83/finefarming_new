@@ -91,4 +91,7 @@ export async function getMatchDetail(matchId: string) {
     //
     return { data: result };
   }
+  return {
+    error: "접근권한이 없습니다.",
+  };
 }

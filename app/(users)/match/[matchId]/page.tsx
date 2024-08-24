@@ -23,8 +23,10 @@ export default function Page({ params }: { params: { matchId: string } }) {
   const getData = async () => {
     let res = await getMatchDetail(params.matchId);
     console.log("res", res);
-    if (res) {
+    if (res?.data) {
       setMatch(res.data);
+    } else {
+      router.push("/permition");
     }
     // if (session.status === "authenticated" && res.data) {
     //   if (session?.data?.user.role === "user") {
@@ -82,7 +84,7 @@ export default function Page({ params }: { params: { matchId: string } }) {
                   </p>
                   <p>~</p>
                   <p className=" whitespace-pre-wrap ">
-                    {dayjs(match.endData).format("YYYY-MM-DD")}
+                    {dayjs(match.endDate).format("YYYY-MM-DD")}
                   </p>
                 </div>
               </div>
@@ -122,7 +124,7 @@ export default function Page({ params }: { params: { matchId: string } }) {
                 </p>
               </div>
               <div className=" flex flex-row items-center gap-2">
-                <p className="bg-neutral-100 border p-2 text-xs">이메일</p>
+                <p className="bg-neutral-100 border p-2 text-xs">전화번호</p>
                 <p className=" bg-neutral-100 border p-2 whitespace-pre-wrap text-xs">
                   {match.authorPhone}
                 </p>
