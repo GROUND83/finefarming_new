@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { empty_avatar_url } from "@/lib/constants";
 import Image from "next/image";
+import { Calendar, PictureInPicture } from "lucide-react";
 
 export function MobileUserComponet() {
   const router = useRouter();
@@ -160,7 +161,7 @@ export function MobileUserComponet() {
                       <span>커뮤니티</span>
                     </Button>
                   </div>
-                  {/* <div className="w-full flex flex-col items-start ">
+                  <div className="w-full flex flex-col items-start ">
                     <Button
                       onClick={() => {
                         router.push("/recommand");
@@ -169,11 +170,10 @@ export function MobileUserComponet() {
                       variant={"outline"}
                       className="w-full flex flex-row items-center justify-start gap-2"
                     >
-                      <ChatBubbleLeftEllipsisIcon className="size-4" />
-                      <span>월별 체험</span>
+                      <Calendar className="size-4" />
+                      <span>월별체험</span>
                     </Button>
                   </div>
-
                   <div className="w-full flex flex-col items-start ">
                     <Button
                       onClick={() => {
@@ -183,10 +183,10 @@ export function MobileUserComponet() {
                       variant={"outline"}
                       className="w-full flex flex-row items-center justify-start gap-2"
                     >
-                      <ChatBubbleLeftEllipsisIcon className="size-4" />
-                      <span>체험 매칭</span>
+                      <PictureInPicture className="size-4" />
+                      <span>체험매칭</span>
                     </Button>
-                  </div> */}
+                  </div>
                 </div>
               </div>
             </div>
@@ -201,9 +201,6 @@ export function UserComponet() {
   const [user, setUser] = React.useState<any>("");
   const { data: session } = useSession();
 
-  // React.useEffect(() => {
-  //   console.log("session", session);
-  // }, [session]);
   return (
     <div className="flex flex-row items-center gap-3  ">
       {session?.user ? (

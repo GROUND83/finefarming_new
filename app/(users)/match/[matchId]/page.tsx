@@ -59,23 +59,23 @@ export default function Page({ params }: { params: { matchId: string } }) {
         {match && (
           <div className="w-full flex flex-col items-start gap-3 border p-6 rounded-md">
             <div className="w-full grid grid-cols-12 gap-3">
-              <div className="flex flex-row items-center justify-center gap-2 col-span-4 bg-neutral-100 border p-2">
+              <div className="flex flex-row items-center justify-center gap-2  col-span-12 md:col-span-12 lg:col-span-4 bg-neutral-100 border p-2">
                 <p className="text-sm">희망지역</p>
                 <div className="w-[1px] bg-neutral-500 h-[10px]" />
 
                 <p className=" whitespace-pre-wrap  text-sm">{match.region}</p>
               </div>
-              <div className="flex flex-row items-center justify-center gap-2 col-span-4 bg-neutral-100 border p-2">
+              <div className="flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-12 lg:col-span-4 bg-neutral-100 border p-2">
                 <p className="text-sm">희망인원</p>
                 <div className="w-[1px] bg-neutral-500 h-[10px]" />
                 <p className=" whitespace-pre-wrap  text-sm">{match.number}</p>
               </div>
-              <div className=" text-sm flex flex-row items-center justify-center gap-2 col-span-4 bg-neutral-100 border p-2">
+              <div className=" text-sm flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-12 lg:col-span-4 bg-neutral-100 border p-2">
                 <p>선호하는 체험종류</p>
                 <div className="w-[1px] bg-neutral-500 h-[10px]" />
                 <p className=" whitespace-pre-wrap">{match.preference}</p>
               </div>
-              <div className=" text-sm flex flex-row items-center justify-center gap-2 col-span-4 bg-neutral-100 border p-2">
+              <div className=" text-sm flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-12 lg:col-span-4 bg-neutral-100 border p-2">
                 <p>체험일정</p>
                 <div className="w-[1px] bg-neutral-500 h-[10px]" />
                 <div className="flex flex-row items-center">
@@ -88,12 +88,12 @@ export default function Page({ params }: { params: { matchId: string } }) {
                   </p>
                 </div>
               </div>
-              <div className=" text-sm flex flex-row items-center justify-center gap-2 col-span-4 bg-neutral-100 border p-2">
+              <div className=" text-sm flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-12 lg:col-span-4 bg-neutral-100 border p-2">
                 <p>소요예산</p>
                 <div className="w-[1px] bg-neutral-500 h-[10px]" />
                 <p className=" whitespace-pre-wrap ">{match.spent}</p>
               </div>
-              <div className=" text-sm flex flex-row items-center justify-center gap-2 col-span-4 bg-neutral-100 border p-2">
+              <div className=" text-sm flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-12 lg:col-span-4 bg-neutral-100 border p-2">
                 <p>제안 마감기한</p>
                 <div className="w-[1px] bg-neutral-500 h-[10px]" />
                 <p className=" whitespace-pre-wrap ">

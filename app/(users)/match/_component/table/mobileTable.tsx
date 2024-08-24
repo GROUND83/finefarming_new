@@ -53,7 +53,7 @@ export function MobileTable() {
         {data?.rows.map((item, index) => {
           return (
             <Link
-              href={`/community/${item.id}`}
+              href={`/match/${item.id}`}
               key={index}
               className=" border p-4 w-full flex flex-col items-start gap-3"
             >
@@ -70,31 +70,6 @@ export function MobileTable() {
           );
         })}
       </div>
-      {/* <div className="flex flex-row items-center justify-end space-x-2 py-4 w-full px-3">
-        <div className="flex-1  text-neutral-400  font-light">
-          총 {dataQuery.data?.pageCount}개의 데이터가 있습니다.
-        </div>
-        {dataQuery.data?.pageCount! > 7 && (
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              이전
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              다음
-            </Button>
-          </div>
-        )}
-      </div> */}
     </div>
   );
 }

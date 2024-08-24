@@ -189,7 +189,7 @@ export default function Page() {
                       control={form.control}
                       name="region"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col col-span-4">
+                        <FormItem className="flex flex-col  col-span-12 md:col-span-12  lg:col-span-4">
                           <FormLabel>희망지역</FormLabel>
 
                           <FormControl>
@@ -206,7 +206,7 @@ export default function Page() {
                       control={form.control}
                       name="number"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col col-span-4">
+                        <FormItem className="flex flex-col  col-span-12 md:col-span-12 lg:col-span-4">
                           <FormLabel>희망인원</FormLabel>
 
                           <FormControl>
@@ -223,7 +223,7 @@ export default function Page() {
                       control={form.control}
                       name="preference"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col col-span-4">
+                        <FormItem className="flex flex-col  col-span-12 md:col-span-12 lg:col-span-4">
                           <FormLabel>선호하는 체험종류</FormLabel>
 
                           <FormControl>
@@ -242,7 +242,7 @@ export default function Page() {
                       control={form.control}
                       name="dob"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col col-span-4">
+                        <FormItem className="flex flex-col  col-span-12 md:col-span-12 lg:col-span-4">
                           <FormLabel>체험일정</FormLabel>
                           <Popover>
                             <PopoverTrigger asChild>
@@ -300,7 +300,7 @@ export default function Page() {
                       control={form.control}
                       name="spent"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col col-span-4">
+                        <FormItem className="flex flex-col  col-span-12 md:col-span-12 lg:col-span-4">
                           <FormLabel>소요예산</FormLabel>
                           <FormControl>
                             <Input
@@ -318,7 +318,7 @@ export default function Page() {
                       control={form.control}
                       name="lastDate"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col col-span-4">
+                        <FormItem className="flex flex-col  col-span-12 md:col-span-12 lg:col-span-4">
                           <FormLabel>제안 마감기한</FormLabel>
                           <Popover>
                             <PopoverTrigger asChild>
@@ -407,7 +407,7 @@ export default function Page() {
                       control={form.control}
                       name="authorName"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col items-start justify-between  col-span-4">
+                        <FormItem className="flex flex-col items-start justify-between   col-span-12 md:col-span-12 lg:col-span-4">
                           <FormLabel className="">의뢰자 이름</FormLabel>
 
                           <FormControl>
@@ -425,7 +425,7 @@ export default function Page() {
                       control={form.control}
                       name="authorEmail"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col items-start justify-between col-span-4">
+                        <FormItem className="flex flex-col items-start justify-between  col-span-12 md:col-span-12 lg:col-span-4">
                           <FormLabel className="">의뢰자 이메일</FormLabel>
 
                           <FormControl>
@@ -443,7 +443,7 @@ export default function Page() {
                       control={form.control}
                       name="authorPhone"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col items-start justify-between col-span-4">
+                        <FormItem className="flex flex-col items-start justify-between  col-span-12 md:col-span-12 lg:col-span-4">
                           <FormLabel className="">의뢰자 전호번호</FormLabel>
 
                           <FormControl>
