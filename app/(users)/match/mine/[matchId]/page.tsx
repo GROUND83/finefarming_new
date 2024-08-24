@@ -137,7 +137,6 @@ export default function Page({ params }: { params: { matchId: string } }) {
         authorEmail: res.authorEmail || "",
         authorName: res.authorName || "",
         authorPhone: res.authorPhone || "",
-        visible: res.visible,
       });
       setDetail(res);
     }
@@ -195,7 +194,6 @@ export default function Page({ params }: { params: { matchId: string } }) {
         authorEmail: data.authorEmail || "",
         authorName: data.authorName || "",
         authorPhone: data.authorPhone || "",
-        visible: data.visible,
       });
       let result = await updateMatch(newData);
       console.log("result", result);

@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/table";
 
 import { columns } from "./colums";
-import { getCommunity, getMineMatch } from "./actions";
+import { getMineMatch } from "./actions";
 import { Badge } from "@/components/ui/badge";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -54,7 +54,7 @@ export function MobileTable() {
           {data?.rows.map((item, index) => {
             return (
               <Link
-                href={`/match/${item.id}`}
+                href={`/match/mine/${item.id}`}
                 key={index}
                 className=" border p-4 w-full flex flex-col items-start gap-3"
               >
