@@ -182,10 +182,10 @@ export async function middleware(req: NextRequest) {
         //
       } else {
         // console.log("session", session);
-        return NextResponse.redirect(new URL("/", req.url));
+        return NextResponse.redirect(new URL("/notlogin", req.url));
       }
     } else {
-      return NextResponse.redirect(new URL("/", req.url));
+      return NextResponse.redirect(new URL("/notlogin", req.url));
     }
   }
   // if (pathname.startsWith("/match")) {

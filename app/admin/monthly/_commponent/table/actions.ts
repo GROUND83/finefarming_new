@@ -66,6 +66,7 @@ export async function updateMonthly(formData: string) {
             id: Number(data.id),
           },
           data: {
+            month: data.month,
             updated_at: getDateTime(),
             products: { set: [] },
           },
@@ -75,6 +76,7 @@ export async function updateMonthly(formData: string) {
             id: Number(data.id),
           },
           data: {
+            month: data.month,
             updated_at: getDateTime(),
             products: products,
           },
@@ -86,6 +88,7 @@ export async function updateMonthly(formData: string) {
             id: Number(data.id),
           },
           data: {
+            month: data.month,
             updated_at: getDateTime(),
             products: { set: [] },
           },
@@ -96,6 +99,7 @@ export async function updateMonthly(formData: string) {
           id: Number(data.id),
         },
         data: {
+          month: data.month,
           image: data.newImage,
           updated_at: getDateTime(),
         },
@@ -115,6 +119,7 @@ export async function updateMonthly(formData: string) {
             id: Number(createData.id),
           },
           data: {
+            month: data.month,
             updated_at: getDateTime(),
             products: { set: [] },
           },
@@ -136,6 +141,7 @@ export async function updateMonthly(formData: string) {
               id: Number(data.id),
             },
             data: {
+              month: data.month,
               updated_at: getDateTime(),
               products: products,
             },
@@ -147,6 +153,7 @@ export async function updateMonthly(formData: string) {
             id: Number(createData.id),
           },
           data: {
+            month: data.month,
             updated_at: getDateTime(),
             products: { set: [] },
           },

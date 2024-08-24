@@ -29,7 +29,7 @@ export default async function Page() {
         <header className="p-3">
           <h1 className="text-2xl lg:text-3xl font-semibold">
             파인파밍에서 <br />
-            월별 체험 상품을 추천 합니다.
+            추천하는 월별 대표체험입니다.
           </h1>
         </header>
         <div className="w-full grid grid-cols-12 gap-3 lg:gap-4 p-3 mt-3  ">
