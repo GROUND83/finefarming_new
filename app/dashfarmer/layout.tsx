@@ -1,5 +1,6 @@
 "use client";
 import { BuildingStorefrontIcon, UserIcon } from "@heroicons/react/24/outline";
+import { List, ShoppingCart } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,14 +39,14 @@ export default function WriterLayOut({
               href={"/dashfarmer/product"}
               className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
             >
-              <BuildingStorefrontIcon className="size-4" />
+              <ShoppingCart className="size-4" />
               체험 상품
             </Link>
             <Link
               href={"/dashfarmer/reservation"}
               className="w-full  py-3 px-3 flex flex-row items-center gap-2  hover:bg-neutral-100  transition-colors"
             >
-              <BuildingStorefrontIcon className="size-4" />
+              <List className="size-4" />
               예약 관리
             </Link>
             <Link

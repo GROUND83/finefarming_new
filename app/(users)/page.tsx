@@ -8,21 +8,18 @@ import {
   ArticleHeader,
   ImageWrap,
 } from "./_components/mainImageWrap";
-import Footer from "../../components/footerWrap";
+
 import Subscrip from "./_components/subscrip";
-import MainBanner from "./_components/mainBanner";
-import db from "@/lib/db";
-import { notFound } from "next/navigation";
 
 //
-async function getBanner() {
-  const banners = await db.banner.findMany({
-    where: {
-      visible: true,
-    },
-  });
-  return banners;
-}
+// async function getBanner() {
+//   const banners = await db.banner.findMany({
+//     where: {
+//       visible: true,
+//     },
+//   });
+//   return banners;
+// }
 export default async function Page() {
   // const banners = await getBanner();
   // if (!banners) {

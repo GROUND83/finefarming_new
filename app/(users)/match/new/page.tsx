@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { format } from "date-fns";
+
 import { CalendarIcon } from "lucide-react";
 import { z } from "zod";
 import { Calendar } from "@/components/ui/calendar";
@@ -28,7 +28,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-// import { createCommunity } from "./_component//actions";
+
 import Link from "next/link";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
@@ -77,9 +77,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const session = useSession();
-  // const userAgent = headers().get("user-agent") || "";
-  // const mobileCheck = isMobile(userAgent);
-  // console.log("session", session);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -102,10 +100,11 @@ export default function Page() {
   });
 
   React.useEffect(() => {
+    console.log("session", session);
     if (session.status === "authenticated") {
       console.log("session", session);
       if (session.data?.user.role !== "user") {
-        router.push("/match/permition");
+        router.push("/permition");
       } else {
         form.reset({
           user: {
@@ -119,6 +118,8 @@ export default function Page() {
           authorEmail: session.data.user?.email || "",
         });
       }
+    } else if (session.status === "unauthenticated") {
+      router.push("/permition");
     }
   }, [session]);
 
@@ -171,6 +172,13 @@ export default function Page() {
 
       // window.location.reload();
     }
+  }
+  if (session.status === "loading") {
+    return (
+      <div className="w-full h-[calc(100vh-70px)] flex flex-col items-center justify-center">
+        <Loader2 className=" animate-spin size-4 " />
+      </div>
+    );
   }
   return (
     <div className="  ">

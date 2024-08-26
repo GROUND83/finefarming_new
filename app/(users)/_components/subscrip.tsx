@@ -17,7 +17,7 @@ import { updateSubscriper } from "./actions";
 import { toast } from "sonner";
 
 export const subScriberSchema = z.object({
-  email: z.string(),
+  email: z.string().email({ message: "이메일형식이 아닙니다." }),
 });
 
 type optionSchemaType = z.infer<typeof subScriberSchema>;
@@ -60,13 +60,18 @@ export default function Subscrip() {
             control={form.control}
             name="email"
             render={({ field: { value, onChange } }) => (
-              <Input
-                name="email"
-                placeholder="이메일을 입력하세요."
-                required
-                value={value}
-                onChange={onChange}
-              />
+              <FormItem>
+                <FormControl>
+                  <Input
+                    name="email"
+                    placeholder="이메일을 입력하세요."
+                    required
+                    value={value}
+                    onChange={onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
           />
         </div>
