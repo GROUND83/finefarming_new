@@ -452,7 +452,7 @@ export default function Page() {
                       name="authorPhone"
                       render={({ field }) => (
                         <FormItem className="flex flex-col items-start justify-between  col-span-12 md:col-span-12 lg:col-span-4">
-                          <FormLabel className="">의뢰자 전호번호</FormLabel>
+                          <FormLabel className="">의뢰자 전화번호</FormLabel>
 
                           <FormControl>
                             <Input

@@ -64,7 +64,7 @@ export default function Page() {
               return (
                 <section
                   key={item.id}
-                  className="col-span-4  flex flex-row items-start gap-3 overflow-hidden  h-[150px] border "
+                  className="col-span-4  flex flex-row items-start gap-3 overflow-hidden  h-[150px] border bg-white  "
                 >
                   <div className="w-[150px] h-[150px] relative">
                     {item.mainImage ? (

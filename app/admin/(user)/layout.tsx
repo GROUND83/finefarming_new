@@ -3,20 +3,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SubTop from "@/components/subTop";
+import NewFarmer from "./farmer/components/new/newData";
+
+//
 export default function LayOut({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   return (
-    <div className="flex flex-col items-start   relative w-full  h-full  ">
-      <div className="w-full  relative  top-0 left-0">
-        <SubTop
-          title="사용자 관리"
-          sub="농장주, 매거진 작가, 고객, 관리자를 관리할 수 있습니다."
-          newbutton={false}
-          searchbutton={true}
-          url="user"
-        />
+    <div className="flex flex-col items-start    w-full h-full  ">
+      <div className="flex flex-col border-b h-[70px]  w-full  justify-center bg-white">
+        <div className="flex flex-row  items-center justify-between   px-3   w-full ">
+          <div className=" ">
+            <h1 className="font-semibold  text-md">사용자 관리</h1>
+            <p className="text-neutral-500 text-sm ">
+              농장주, 매거진 작가, 고객, 관리자를 관리할 수 있습니다.
+            </p>
+          </div>
+          <div className="flex flex-row items-center gap-3">
+            {pathname === "/admin/farmer" && <NewFarmer />}
+          </div>
+        </div>
       </div>
-      <div className="  px-3  w-full  h-[70px] flex flex-row  items-center justify-start top-[70px]  fixed border-b  bg-white gap-3">
+
+      <div className="  px-3  w-full flex flex-row  items-center justify-start    border-b  bg-white h-[70px] gap-3">
         <Link
           href={"/admin/farmer"}
           className={
@@ -59,7 +67,7 @@ export default function LayOut({ children }: { children: React.ReactNode }) {
         </Link>
       </div>
 
-      <div className=" flex flex-col items-start w-full mt-[140px]">
+      <div className=" flex flex-col items-start w-full  h-[calc(100vh-140px)]">
         {children}
       </div>
     </div>

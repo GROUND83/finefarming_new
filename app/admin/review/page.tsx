@@ -6,7 +6,7 @@ import { columns } from "./_component/table/colums";
 
 export default async function Page() {
   return (
-    <div className="w-full p-3">
+    <div className="w-full ">
       <div>
         <DataTableComponent
           getdata={getMoreData}
