@@ -197,6 +197,7 @@ model Product {
   updated_at DateTime @updatedAt
   visible Boolean @default(false)
   title String? // 상품명
+  keywords String[]
   description String? // 상품설명
   process Json[]//상품진행설명
   processNotice String? //상품진행설명 노트스
@@ -374,8 +375,10 @@ model Magazine {
   farm  Farm? @relation(fields: [farmId], references: [id],onDelete: Cascade)
   farmId Int?
   product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int? 
+  productId Int?
   title String
+  description String?
+  keywords String[]
   image String
   sections Json[]
   suggestion Json[]

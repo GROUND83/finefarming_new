@@ -17,8 +17,20 @@ import Image from "next/image";
 import SessionWrap from "./_component/sesssionWrap";
 
 export const metadata: Metadata = {
-  title: "체험 매칭",
-  description: "농장 체험이 필요하시다면 체험 매칭 게시판에 의뢰를 남겨보세요.",
+  title: "단체체험 수요 매칭 - 파인파밍",
+  description:
+    "단체 농장체험이 필요하시다면 체험 매칭 게시판에 의뢰를 남겨보세요.",
+  keywords: [
+    "단체체험",
+    "단체체험 수요",
+    "농장체험 수요",
+    "체험제안",
+    "체험의뢰",
+    "농장체험 의뢰",
+    "농업체험 의뢰",
+    "체험 희망수요",
+    "농장체험 제안",
+  ],
   alternates: {
     canonical: `https://www.finefarming.co.kr/match`,
   },

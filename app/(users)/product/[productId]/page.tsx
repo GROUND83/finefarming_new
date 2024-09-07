@@ -66,9 +66,9 @@ export async function generateMetadata(
     alternates: {
       canonical: `/product/${params.productId}`,
     },
-    title: result?.title,
+    title: `${result?.title} - 파인파밍`,
     description: result.description,
-
+    keywords: result?.keywords,
     openGraph: {
       title: result?.title,
       url: `https://www.finefarming.co.kr/product/${result?.id!}`,

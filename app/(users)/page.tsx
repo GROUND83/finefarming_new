@@ -35,9 +35,22 @@ export async function generateMetadata(
     alternates: {
       canonical: `/`,
     },
-    title: `파인파밍`,
+    title: `체험부터 배움까지 - 파인파밍`,
+    keywords: [
+      "농업체험",
+      "농장체험",
+      "수확체험",
+      "농촌체험",
+      "자연체험",
+      "환경체험",
+      "현장학습",
+      "체험추천",
+      "추천체험",
+      "파인파밍",
+      "finefarming",
+    ],
     description:
-      "우리는 농업체험을 선택하는데 필요한 지식을 제공하는 동시에 여러분의 체험활동이 기억에 남고 유익한 추억이 될 수 있도록 돕습니다.",
+      "파인파밍은 농업체험을 선택하는데 필요한 지식을 제공하는 동시에 여러분의 체험활동이 기억에 남고 유익한 추억이 될 수 있도록 돕습니다.",
     openGraph: {
       title: "파인파밍",
       url: `https://www.finefarming.co.kr`,

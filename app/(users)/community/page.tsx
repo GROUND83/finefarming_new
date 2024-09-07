@@ -15,8 +15,15 @@ import { headers } from "next/headers";
 import { isMobile } from "@/lib/isMobile";
 
 export const metadata: Metadata = {
-  title: "커뮤니티",
+  title: "농업체험 정보공유 - 파인파밍",
   description: "파인파밍의 소식과 고객과의 커뮤니티 공간입니다.",
+  keywords: [
+    "파인파밍 공지사항",
+    "파인파밍 체험문의",
+    "파인파밍 오픈채팅방",
+    "파인파밍 예약안내",
+    "농업체험 정보공유",
+  ],
   alternates: {
     canonical: `https://www.finefarming.co.kr/community`,
   },

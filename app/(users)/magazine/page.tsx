@@ -31,8 +31,18 @@ async function getMagazine() {
 }
 
 export const metadata: Metadata = {
-  title: "매거진",
-  description: "농업체험의 유익한 가치를 알아보는 공간",
+  title: "농업체험 추천 후기 - 파인파밍",
+  description: "파인파밍에서 추천하는 농업체험의 유익한 가치를 알아보는 공간",
+  keywords: [
+    "체험후기",
+    "농업체험 추천글",
+    "체험추천 후기",
+    "육아 인플루언서 후기",
+    "농업체험 후기",
+    "농장체험 후기",
+    "농촌체험 후기",
+    "수확체험 후기",
+  ],
   alternates: {
     canonical: `https://www.finefarming.co.kr/magazine`,
   },

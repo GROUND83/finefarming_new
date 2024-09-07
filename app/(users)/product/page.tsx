@@ -9,8 +9,19 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "체험 상품",
+  title: "농업체험 상품 추천 - 파인파밍",
   description: "파인파밍에서 체험농장을 추천 합니다.",
+  keywords: [
+    "체험예약",
+    "농촌체험",
+    "농장 체험 프로그램",
+    "주말체험",
+    "경기도 농산물 체험",
+    "수도권 농장 체험",
+    "도심 근교 농장 체험",
+    "주말 농산물 수확체험",
+    "가족 농장 체험",
+  ],
   alternates: {
     canonical: `https://www.finefarming.co.kr/product`,
   },
