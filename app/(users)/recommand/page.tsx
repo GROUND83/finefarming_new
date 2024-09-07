@@ -12,37 +12,63 @@ async function getMonthlyData() {
   return result;
 }
 
-export async function generateMetadata(
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  return {
-    metadataBase: new URL("https://www.finefarming.co.kr"),
-    alternates: {
-      canonical: `/recommand`,
-    },
-    title: `월별 대표체험 추천 - 파인파밍`,
-    description: `파인파밍에서 월별 대표체험 상품을 추천합니다.`,
-    keywords: [
-      "월별체험",
-      "제철 농산물",
-      "월별 제철 농산물",
-      "제철 농산물 체험",
-      "계절별 농산물 수확",
-      "농산물 수확 시기",
-      "봄 체험",
-      "여름 체험",
-      "가을 체험",
-      "겨울 체험",
-    ],
-    openGraph: {
-      title: "월별체험",
-      url: `https://www.finefarming.co.kr/recommand/`,
-      siteName: "파인파밍",
-      locale: "ko_KR",
-      type: "website",
-    },
-  };
-}
+export const metadata: Metadata = {
+  alternates: {
+    canonical: `/recommand`,
+  },
+  title: `월별 대표체험 추천 - 파인파밍`,
+  description: `파인파밍에서 월별 대표체험 상품을 추천합니다.`,
+  keywords: [
+    "월별체험",
+    "제철 농산물",
+    "월별 제철 농산물",
+    "제철 농산물 체험",
+    "계절별 농산물 수확",
+    "농산물 수확 시기",
+    "봄 체험",
+    "여름 체험",
+    "가을 체험",
+    "겨울 체험",
+  ],
+  openGraph: {
+    title: "월별체험",
+    url: `https://www.finefarming.co.kr/recommand/`,
+    siteName: "파인파밍",
+    locale: "ko_KR",
+    type: "website",
+  },
+};
+// export async function generateMetadata(
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   return {
+//     metadataBase: new URL("https://www.finefarming.co.kr"),
+//     alternates: {
+//       canonical: `/recommand`,
+//     },
+//     title: `월별 대표체험 추천 - 파인파밍`,
+//     description: `파인파밍에서 월별 대표체험 상품을 추천합니다.`,
+//     keywords: [
+//       "월별체험",
+//       "제철 농산물",
+//       "월별 제철 농산물",
+//       "제철 농산물 체험",
+//       "계절별 농산물 수확",
+//       "농산물 수확 시기",
+//       "봄 체험",
+//       "여름 체험",
+//       "가을 체험",
+//       "겨울 체험",
+//     ],
+//     openGraph: {
+//       title: "월별체험",
+//       url: `https://www.finefarming.co.kr/recommand/`,
+//       siteName: "파인파밍",
+//       locale: "ko_KR",
+//       type: "website",
+//     },
+//   };
+// }
 export default async function Page() {
   //
 

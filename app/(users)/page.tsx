@@ -22,44 +22,72 @@ import Head from "next/head";
 //   return banners;
 // }
 
-export async function generateMetadata(
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  // const product = await getProduct(params.productId);
-  // console.log("product", product);
-  // // optionally access and extend (rather than replace) parent metadata
-  // const previousImages = (await parent).openGraph?.images || [];
+export const metadata: Metadata = {
+  title: `체험부터 배움까지 - 파인파밍`,
+  description:
+    "파인파밍은 농업체험을 선택하는데 필요한 지식을 제공하는 동시에 여러분의 체험활동이 기억에 남고 유익한 추억이 될 수 있도록 돕습니다.",
+  keywords: [
+    "농업체험",
+    "농장체험",
+    "수확체험",
+    "농촌체험",
+    "자연체험",
+    "환경체험",
+    "현장학습",
+    "체험추천",
+    "추천체험",
+    "파인파밍",
+    "finefarming",
+  ],
+  alternates: {
+    canonical: `https://www.finefarming.co.kr`,
+  },
+  openGraph: {
+    title: "파인파밍",
+    url: `https://www.finefarming.co.kr`,
+    siteName: "파인파밍",
+    locale: "ko_KR",
+    type: "website",
+  },
+};
+// export async function generateMetadata(
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   // const product = await getProduct(params.productId);
+//   // console.log("product", product);
+//   // // optionally access and extend (rather than replace) parent metadata
+//   // const previousImages = (await parent).openGraph?.images || [];
 
-  return {
-    metadataBase: new URL("https://www.finefarming.co.kr"),
-    alternates: {
-      canonical: `/`,
-    },
-    title: `체험부터 배움까지 - 파인파밍`,
-    keywords: [
-      "농업체험",
-      "농장체험",
-      "수확체험",
-      "농촌체험",
-      "자연체험",
-      "환경체험",
-      "현장학습",
-      "체험추천",
-      "추천체험",
-      "파인파밍",
-      "finefarming",
-    ],
-    description:
-      "파인파밍은 농업체험을 선택하는데 필요한 지식을 제공하는 동시에 여러분의 체험활동이 기억에 남고 유익한 추억이 될 수 있도록 돕습니다.",
-    openGraph: {
-      title: "파인파밍",
-      url: `https://www.finefarming.co.kr`,
-      siteName: "파인파밍",
-      locale: "ko_KR",
-      type: "website",
-    },
-  };
-}
+//   return {
+//     metadataBase: new URL("https://www.finefarming.co.kr"),
+//     alternates: {
+//       canonical: `/`,
+//     },
+//     title: `체험부터 배움까지 - 파인파밍`,
+//     keywords: [
+//       "농업체험",
+//       "농장체험",
+//       "수확체험",
+//       "농촌체험",
+//       "자연체험",
+//       "환경체험",
+//       "현장학습",
+//       "체험추천",
+//       "추천체험",
+//       "파인파밍",
+//       "finefarming",
+//     ],
+//     description:
+//       "파인파밍은 농업체험을 선택하는데 필요한 지식을 제공하는 동시에 여러분의 체험활동이 기억에 남고 유익한 추억이 될 수 있도록 돕습니다.",
+//     openGraph: {
+//       title: "파인파밍",
+//       url: `https://www.finefarming.co.kr`,
+//       siteName: "파인파밍",
+//       locale: "ko_KR",
+//       type: "website",
+//     },
+//   };
+// }
 export default async function Page() {
   // const banners = await getBanner();
   // if (!banners) {
