@@ -11,6 +11,9 @@ import { notFound } from "next/navigation";
 export const metadata: Metadata = {
   title: "체험 상품",
   description: "파인파밍에서 체험농장을 추천 합니다.",
+  alternates: {
+    canonical: `https://www.finefarming.co.kr/product`,
+  },
 };
 async function getProductsData() {
   //

@@ -109,9 +109,6 @@ export default function Page() {
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="username">이름</SelectItem>
-                      {/* <SelectItem value="farmMainPhone">
-                        농장대표번호
-                      </SelectItem> */}
                       <SelectItem value="email">이메일</SelectItem>
                       <SelectItem value="phone">전화번호</SelectItem>
                     </SelectContent>

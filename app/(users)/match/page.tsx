@@ -16,6 +16,13 @@ import { isMobile } from "@/lib/isMobile";
 import Image from "next/image";
 import SessionWrap from "./_component/sesssionWrap";
 
+export const metadata: Metadata = {
+  title: "체험 매칭",
+  description: "농장 체험이 필요하시다면 체험 매칭 게시판에 의뢰를 남겨보세요.",
+  alternates: {
+    canonical: `https://www.finefarming.co.kr/match`,
+  },
+};
 export default async function Page() {
   const session = await getServerSession(authOptions);
   const userAgent = headers().get("user-agent") || "";

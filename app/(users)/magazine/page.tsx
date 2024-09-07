@@ -33,6 +33,9 @@ async function getMagazine() {
 export const metadata: Metadata = {
   title: "매거진",
   description: "농업체험의 유익한 가치를 알아보는 공간",
+  alternates: {
+    canonical: `https://www.finefarming.co.kr/magazine`,
+  },
 };
 export default async function Page({
   params,

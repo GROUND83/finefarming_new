@@ -17,6 +17,9 @@ import { isMobile } from "@/lib/isMobile";
 export const metadata: Metadata = {
   title: "커뮤니티",
   description: "파인파밍의 소식과 고객과의 커뮤니티 공간입니다.",
+  alternates: {
+    canonical: `https://www.finefarming.co.kr/community`,
+  },
 };
 
 export default async function Page() {

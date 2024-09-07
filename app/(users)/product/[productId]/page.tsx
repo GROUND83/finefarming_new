@@ -64,10 +64,11 @@ export async function generateMetadata(
   return {
     metadataBase: new URL("https://www.finefarming.co.kr"),
     alternates: {
-      canonical: "/",
+      canonical: `/product/${params.productId}`,
     },
     title: result?.title,
     description: result.description,
+
     openGraph: {
       title: result?.title,
       url: `https://www.finefarming.co.kr/product/${result?.id!}`,

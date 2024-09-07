@@ -44,7 +44,7 @@ export async function generateMetadata(
   return {
     metadataBase: new URL("https://www.finefarming.co.kr"),
     alternates: {
-      canonical: "/",
+      canonical: `/magazine/${params.magazineId}`,
     },
     title: product?.title,
     openGraph: {

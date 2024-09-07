@@ -4,10 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import { getMonthly } from "./_components/actions";
 import { Button } from "@/components/ui/button";
-export const metadata: Metadata = {
-  title: "월별체험 상품",
-  description: "파인파밍에서 월별체험 상품을 추천 합니다.",
-};
+
 async function getMonthlyData() {
   //
   //   await new Promise((resolve) => setTimeout(resolve, 10000));
@@ -15,6 +12,25 @@ async function getMonthlyData() {
   return result;
 }
 
+export async function generateMetadata(
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  return {
+    metadataBase: new URL("https://www.finefarming.co.kr"),
+    alternates: {
+      canonical: `/recommand`,
+    },
+    title: `월별체험`,
+    description: `파인파밍에서 추천하는 월별 대표체험입니다.`,
+    openGraph: {
+      title: "월별체험",
+      url: `https://www.finefarming.co.kr/recommand/`,
+      siteName: "파인파밍",
+      locale: "ko_KR",
+      type: "website",
+    },
+  };
+}
 export default async function Page() {
   //
 
